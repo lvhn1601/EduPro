@@ -80,6 +80,7 @@
         }
     </style>
     <body>
+        <%@include file="components/header-signIn-signUp.jsp" %>
         <form action="sign-in" method="post">
             <h3>Sign in</h3>
             <div style="color: #b5bccaed; margin-top: 10px">
