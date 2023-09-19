@@ -10,6 +10,7 @@
     <link href="assets/css/sign-up.css?v=3" rel="stylesheet" type="text/css" media="all">
 
     <body>
+         <%@include file="components/footer-signIn-signUp.jsp" %>
         <form action="sign-up" method="post">
             <br><br>
             <h2>SIGN UP</h2>
