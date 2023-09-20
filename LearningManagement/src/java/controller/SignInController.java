@@ -37,8 +37,8 @@ public class SignInController extends HttpServlet {
             UserGoogleDto user = getUserInfo(accessToken);
             System.out.println(user);
             for (Account a : accs) {
-                if (a.getAccountEmail().equals(user.getEmail())) {
-                    accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId());
+                if (a.getEmail().equals(user.getEmail())) {
+                    accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
                     response.sendRedirect("/LearningManagement");
                     return;
                 }

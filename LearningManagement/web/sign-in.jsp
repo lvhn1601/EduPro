@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LMS</title>
+        <title>EduPro - Online Learning</title>
     </head>
     <link href="assets/css/sign-in.css" rel="stylesheet" type="text/css" media="all">
     <style>
@@ -79,24 +79,25 @@
             border-radius: 50%;
         }
     </style>
-    <body>
+    <body style="
+          background: url(assets/img/sanhAlpha.png);">
         <%@include file="components/header-signIn-signUp.jsp" %>
-        <form action="sign-in" method="post">
-            <h3>Sign in</h3>
-            <div style="color: #b5bccaed; margin-top: 10px">
+        <form action="sign-in" method="post" style="background-color: #f2f2f2">
+            <h3 style="color: #06BBCC">Sign in</h3>
+            <div style="color: #b5bccaed">
                 ${requestScope.msg}
             </div>
-            <label for="username">Username</label>
-            <input type="email" placeholder="Email" name="username" required="">
+            <label style="color: #06BBCC" for="username">Username</label>
+            <input style="color: #000" type="email" placeholder="Email" name="username" required="">
 
-            <label for="password">Password</label>
-            <input type="password" placeholder="Password" name="password" required="">
+            <label style="color: #06BBCC" for="password">Password</label>
+            <input style="color: #000" type="password" placeholder="Password" name="password" required="">
             <label class="switch">
                 <input class=" btn-check" name="isRemeberMe" type="checkbox" id="rememberMe" checked>
                 <span class="slider round" ></span>
-                <h4 style="margin-left: 100px">Remember me</h4>
+                <h4  style="color: #06BBCC; margin-left: 100px">Remember me</h4>
             </label>
-            <button type="submit">SIGN IN</button>
+            <button style="color: #06BBCC" type="submit">SIGN IN</button>
             <div class="social" style="margin-top: 20px">
                 <a href="sign-up" style="margin-left: 50px; text-decoration: none">Sign Up</a>
                 <a href="${GOOGLE_LOGIN_HREF}">Login With Google</a>

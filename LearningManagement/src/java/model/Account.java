@@ -11,11 +11,19 @@ import lombok.ToString;
 @ToString
 public class Account {
 
-    private int accountId;
-    private String accountEmail;
-    private String accountPassword;
-    private AccountDetail accountDetailId;
-    private boolean accountDeleted;
-    private Setting accountSettingId;
+    private int id;
+    private String email;
+    private String phone;
+    private String password;
+    private boolean active;
+    private String name;
+    private String avatar_url;
+    private String dob;
+    private Setting role;
+    private String created_by;
+    private String created_at;
+    private String update_by;
+    private String update_at;
+    private String oauth;
 
 }
