@@ -9,7 +9,7 @@
         <url-pattern>/sign-in</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>homepage.jsp</welcome-file>
     </welcome-file-list>
     <session-config>
         <session-timeout>

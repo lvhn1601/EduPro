@@ -9,7 +9,11 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Setting {
-    private int settingId;
-    private int settingRole;
-    private String setttingSemester;
+    private int id;
+    private String title;
+    private boolean status;
+    private String created_by;
+    private String created_at;
+    private String update_by;
+    private String update_at;
 }
