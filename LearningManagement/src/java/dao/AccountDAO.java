@@ -4,50 +4,48 @@
  */
 package dao;
 
-import connection.MySQLConnection;
-import java.sql.Connection;
+import connection.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Account;
-import model.AccountDetail;
 import model.Setting;
 
 /**
  *
  * @author dell
  */
-public class AccountDAO {
+public class AccountDAO extends DBContext {
 
     public Account authenticate(String username, String password) {
+        String sql = "select "
+                + "account_id, "
+                + "account_email, "
+                + "account_password, "
+                + "account_active, "
+                + "account_role_id, "
+                + "s.setting_id " // Thay đổi tên cột thành "setting_id"
+                + "from account a\n"
+                + "inner join setting s on a.account_role_id = s.setting_id "
+                + "where account_password = ? and account_email = ? and account_active = 1";
 
-        String sql = "SELECT a.account_id, a.account_email, a.account_password, a.account_deleted, d.account_detail_oauth, s.setting_role_id\n"
-                + "FROM account a\n"
-                + "INNER JOIN account_detail d ON a.account_detail_id = d.account_detail_id\n"
-                + "INNER JOIN setting s ON a.account_setting_id = s.setting_id \n"
-                + "where a.account_email = ? and a.account_password = ? and a.account_deleted = 0";
-
-        try ( Connection connection = MySQLConnection.getConnection();  PreparedStatement ps = connection.prepareStatement(sql);) {
-            ps.setObject(1, username);
-            ps.setObject(2, password);
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setObject(1, password);
+            ps.setObject(2, username);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 Account a = Account.builder()
-                        .accountId(rs.getInt("account_id"))
-                        .accountEmail(rs.getString("account_email"))
-                        .accountPassword(rs.getString("account_password"))
-                        .accountDetailId(AccountDetail.builder()
-                                .OAuthId(rs.getString("account_detail_oauth"))
-                                .build())
-                        .accountSettingId(Setting.builder()
-                                .settingId(rs.getInt("setting_role_id"))
-                                .settingRole(rs.getInt("setting_role_id"))
+                        .id(rs.getInt("account_id"))
+                        .email(rs.getString("account_email"))
+                        .password(rs.getString("account_password"))
+                        .active(rs.getBoolean("account_active"))
+                        .role(Setting.builder()
+                                .id(rs.getInt("account_role_id")) 
                                 .build())
                         .build();
+
                 return a;
             }
         } catch (SQLException e) {
@@ -57,46 +55,52 @@ public class AccountDAO {
     }
 
     public ArrayList<Account> getAll() {
-        ArrayList<Account> accs = new ArrayList<>();
-        String sql = "SELECT a.account_id, a.account_email, a.account_password, d.account_detail_oauth, s.setting_role_id\n"
-                + "FROM account a\n"
-                + "INNER JOIN account_detail d ON a.account_detail_id = d.account_detail_id\n"
-                + "INNER JOIN setting s ON a.account_setting_id = s.setting_id \n";
-        try ( Connection connection = MySQLConnection.getConnection();  PreparedStatement stm = connection.prepareStatement(sql);) {
+    ArrayList<Account> accs = new ArrayList<>();
+    String sql = "select a.account_id, "
+            + "a.account_email, "
+            + "a.account_password, "
+            + "a.account_active, "
+            + "a.account_role_id, "
+            + "s.setting_title, "
+            + "a.account_phone "
+            + "from account a "
+            + "inner join setting s on a.account_role_id = s.setting_id "
+            + "where a.account_active = 1";
+    try (PreparedStatement stm = connection.prepareStatement(sql)) {
 
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                Account a = Account.builder()
-                        .accountId(rs.getInt("account_id"))
-                        .accountEmail(rs.getString("account_email"))
-                        .accountPassword(rs.getString("account_password"))
-                        .accountDetailId(AccountDetail.builder()
-                                .OAuthId(rs.getString("account_detail_oauth"))
-                                .build())
-                        .accountSettingId(Setting.builder()
-                                .settingId(rs.getInt("setting_role_id"))
-                                .settingRole(rs.getInt("setting_role_id"))
-                                .build())
-                        .build();
-                accs.add(a);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(System.out);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            Account a = Account.builder()
+                    .id(rs.getInt("account_id"))
+                    .email(rs.getString("account_email"))
+                    .password(rs.getString("account_password"))
+                    .active(rs.getBoolean("account_active"))
+                    .phone(rs.getString("account_phone")) // Lấy giá trị account_phone từ ResultSet
+                    .role(Setting.builder()
+                            .id(rs.getInt("account_role_id")) // Sử dụng tên cột đúng
+                            .build())
+                    .build();
+            accs.add(a);
         }
-        return accs;
+    } catch (SQLException e) {
+        e.printStackTrace(System.out);
     }
+    return accs;
+}
 
-    public boolean updateGoogleAcc(String name, String avatar, String oauth) {
+
+    public boolean updateGoogleAcc(String name, String avatar, String oauth, String gmail) {
         int check = 0;
-        String sql = "update account a\n"
-                + "inner join account_detail d on a.account_detail_id = d.account_detail_id\n"
-                + "set account_detail_name = ?, account_detail_avatar = ?, account_detail_oauth = ?\n"
-                + "where a.account_email = 'tungtshe171091@fpt.edu.vn'";
+        String sql = "select * from account\n"
+                + "update account a\n"
+                + "set account_name = ?, account_avatar = ?, account_oauth = ?\n"
+                + "where a.account_email = ?";
 
-        try ( Connection con = MySQLConnection.getConnection();  PreparedStatement ps = con.prepareStatement(sql);) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setObject(1, name);
             ps.setObject(2, avatar);
             ps.setObject(3, oauth);
+            ps.setObject(4, gmail);
             check = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
@@ -104,8 +108,9 @@ public class AccountDAO {
         return check > 0;
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         ArrayList<Account> l = new AccountDAO().getAll();
-        System.out.println(new AccountDAO().authenticate("tungtshe171091@fpt.edu.vn", "123"));
+//        System.out.println(new AccountDAO().authenticate("tungtshe171091@fpt.edu.vn", "123"));
+        System.out.println(l);
     }
 }
