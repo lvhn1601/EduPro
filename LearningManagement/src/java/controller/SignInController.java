@@ -13,6 +13,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import model.Account;
 import static utils.Helper.getToken;
@@ -52,6 +53,7 @@ public class SignInController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         HttpSession session = request.getSession();
         AccountDAO accountDAO = new AccountDAO();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -60,6 +62,7 @@ public class SignInController extends HttpServlet {
             request.setAttribute("msg", "Sign in fail username or pasword");
             request.getRequestDispatcher("sign-in.jsp").forward(request, response);
         } else {
+            session.setAttribute("accountCur", accountDAO.getOne(account.getId()));
             response.sendRedirect("/LearningManagement");
         }
     }

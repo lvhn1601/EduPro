@@ -39,7 +39,7 @@
     class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
     >
     <a
-        href="index.html"
+        href="/LearningManagement/"
         class="navbar-brand d-flex align-items-center px-4 px-lg-5"
         >
         <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>EduPro</h2>
@@ -54,8 +54,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-            <a href="index.html" class="nav-item nav-link active">Home</a>
-            <a href="courses.html" class="nav-item nav-link">Lesson</a>
+            <a href="/LearningManagement/" class="nav-item nav-link active">Home</a>
+            <a href="/LearningManagement/" class="nav-item nav-link">Lesson</a>
             <div class="nav-item dropdown">
                 <a
                     href="#"
@@ -67,9 +67,22 @@
             </div>
             <a href="contact.html" class="nav-item nav-link">Contact</a>
         </div>
-        <a href="" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block"
-           >Join Now<i class="fa fa-arrow-right ms-3"></i
-            ></a>
+        <c:if test="${sessionScope.accountCur == null}">           
+            <a href="sign-in" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block"
+               >Join Now<i class="fa fa-arrow-right ms-3"></i
+                ></a>
+            </c:if>
     </div>
+    <c:if test="${sessionScope.accountCur != null}">   
+    <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user p-2"></i>${sessionScope.accountCur.name}</button>
+        <div class="dropdown-menu dropdown-menu-right">
+            
+            <a href="profile" class="dropdown-item" type="button">My profile</a>
+            <a href="log-out" class="dropdown-item" type="button">Log out</a>
+            
+        </div>
+    </div>
+        </c:if>
 </nav>
 <!-- Navbar End -->

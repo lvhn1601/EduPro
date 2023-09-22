@@ -36,7 +36,7 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="profile-img">
-                        <img src="assets/img/banner2.jpg" alt="" />
+                        <img src="${sessionScope.accountCur.avatar_url}" alt="" />
                         <div class="file btn btn-lg btn-primary">
                             Change Photo
                             <input type="file" name="file" />
@@ -46,8 +46,8 @@
                 <div class="row col-md-9">
                     <div class="col-md-9">
                         <div class="profile-head">
-                            <h5>${sessionScope.accountDetail.accountDetailName}</h5>
-                            <h6>Email: ${sessionScope.accountCur.accountEmail}</h6>
+                            <h5>${sessionScope.accountCur.name}</h5>
+                            <h6>Email: ${sessionScope.accountCur.email}</h6>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -122,7 +122,7 @@
                                     <label><i class="fa-solid fa-envelope icon"></i>Email</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <p>${sessionScope.accountCur.accountEmail}</p>
+                                    <p>${sessionScope.accountCur.email}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -130,7 +130,7 @@
                                     <label><i class="fa-solid fa-signature icon"></i> Name</label>
                                 </div>
                                 <div class="col-md-4">
-                                    <p>${sessionScope.accountDetail.accountDetailName}</p>
+                                    <p>${sessionScope.accountCur.name}</p>
                                 </div>
                                 <div class="col-md-2">
                                     <p><i class="fa-regular fa-pen-to-square"></i></p>
@@ -144,21 +144,10 @@
                                     >
                                 </div>
                                 <div class="col-md-4">
-                                    <p><fmt:formatDate value="${sessionScope.accountDetail.accountDetailDob}" pattern="dd/MM/yyyy" /><p>
+                                    <p><fmt:formatDate value="${sessionScope.accountCur.dob}" pattern="dd/MM/yyyy" /><p>
                                 </div>
                                 <div class="col-md-2">
                                     <p><i class="fa-regular fa-pen-to-square"></i></p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label
-                                        ><i class="fa-solid fa-calendar-days icon"></i> Date Of
-                                        Creation</label
-                                    >
-                                </div>
-                                <div class="col-md-6">
-                                    <p><fmt:formatDate value="${sessionScope.accountDetail.accountDetailDoc}" pattern="dd/MM/yyyy" /><p>
                                 </div>
                             </div>
                             <div class="row">

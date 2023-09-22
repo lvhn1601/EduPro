@@ -5,6 +5,7 @@
 package dao;
 
 import connection.DBContext;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -107,10 +108,52 @@ public class AccountDAO extends DBContext {
         }
         return check > 0;
     }
+      
+       public Account getOne(int accountId) {
+              
+    String sql = "select * from Account where account_id = ?";//
+    try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setObject(1, accountId);
+        ResultSet rs = stm.executeQuery();
+         while (rs.next()) {
+                Account s = Account.builder()
+                        .id(rs.getInt("account_id"))
+                        .email(rs.getString("account_email"))
+                        .phone(rs.getString("account_phone"))
+                        .password(rs.getString("account_password"))
+                        .active(rs.getBoolean("account_active"))
+                        .name(rs.getString("account_name"))
+                        .avatar_url(rs.getString("account_avatar_url"))
+                        .dob(rs.getString("account_dob"))
+                        .role(Setting.builder()
+                         .id(rs.getInt("account_role_id")) 
+                            .build())
+                        .build();
+                return s;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return null;
+    }
+        public boolean changePassword(int account_id, String account_password) {
+        int check = 0;
+        String sql = "UPDATE Account SET account_password = ? WHERE account_id = ?";
+
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setObject(1, account_id);
+            stm.setObject(2, account_password);
+            check = stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return check > 0;
+    }
+
 
     public static void main(String[] args) {
-        ArrayList<Account> l = new AccountDAO().getAll();
+        Account acc = new AccountDAO().getOne(1);
 //        System.out.println(new AccountDAO().authenticate("tungtshe171091@fpt.edu.vn", "123"));
-        System.out.println(l);
+System.out.println(acc);
     }
 }
