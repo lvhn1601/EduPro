@@ -50,7 +50,7 @@ public class SignInController extends HttpServlet {
                 if (user.getEmail().equals(a.getEmail())) {
 
 //                    accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
-                    
+                    session.setAttribute("accountCur", accountDAO.getOneByEmail(user.getEmail()));
                     response.sendRedirect("/LearningManagement");
                     foundMatch = true;
                     return;
@@ -101,6 +101,7 @@ public class SignInController extends HttpServlet {
             request.getRequestDispatcher("sign-in.jsp").forward(request, response);
         } else {
             session.setAttribute("accountCur", accountDAO.getOneByAccountId(account.getId()));
+            System.out.println(accountDAO.getOneByAccountId(account.getId()));
             response.sendRedirect("/LearningManagement");
         }
     }

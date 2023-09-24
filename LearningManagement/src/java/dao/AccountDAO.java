@@ -167,7 +167,19 @@ public class AccountDAO extends DBContext {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Account a = Account.builder().email(rs.getString("account_email")).build();
+                Account a = Account.builder()
+                        .id(rs.getInt("account_id"))
+                        .email(rs.getString("account_email"))
+                        .phone(rs.getString("account_phone"))
+                        .password(rs.getString("account_password"))
+                        .active(rs.getBoolean("account_active"))
+                        .name(rs.getString("account_name"))
+                        .avatar_url(rs.getString("account_avatar_url"))
+                        .dob(rs.getDate("account_dob"))
+                        .role(Setting.builder()
+                                .id(rs.getInt("account_role_id"))
+                                .build())
+                        .build();
                 return a;
             }
         } catch (SQLException e) {
