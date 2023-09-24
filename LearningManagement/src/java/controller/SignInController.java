@@ -25,12 +25,12 @@ import static utils.Helper.getUserInfo;
 import utils.Mail;
 
 public class SignInController extends HttpServlet {
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -38,31 +38,36 @@ public class SignInController extends HttpServlet {
         AccountDAO accountDAO = new AccountDAO();
         ArrayList<Account> accs = accountDAO.getAll();
         SettingDAO settingdao = new SettingDAO();
-        
+
         if (request.getParameter("code") != null) {
             String code = request.getParameter("code");
             String accessToken = getToken(code);
             UserGoogleDto user = getUserInfo(accessToken);
             System.out.println(user);
             boolean foundMatch = false;
-            
+
             for (Account a : accs) {
                 if (user.getEmail().equals(a.getEmail())) {
+
+//                    accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
                     
-                    accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
                     response.sendRedirect("/LearningManagement");
                     foundMatch = true;
                     return;
                 }
             }
-            
+
             if (!foundMatch) {
                 List<Setting> list = settingdao.getListDomain();
+                List<String> domains = new ArrayList<>();
+                for (Setting s : list) {
+                    domains.add(s.getTitle());
+                }
                 String email = user.getEmail();
                 int atIndex = email.indexOf('@');
                 String domain = email.substring(atIndex + 1);
-                
-                if (list.contains(domain)) {
+
+                if (domains.contains(domain)) {
                     String otp = Helper.genRandSixDigit();
                     session.setAttribute("systemOtp", otp);
                     session.setAttribute("user", user);
@@ -74,15 +79,15 @@ public class SignInController extends HttpServlet {
                     response.sendRedirect("sign-in");
                     return;
                 }
-                
+
             }
-            
+
         } else {
             request.setAttribute("GOOGLE_LOGIN_HREF", IConstants.GOOGLE_LOGIN_HREF);
         }
         request.getRequestDispatcher("sign-in.jsp").forward(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -99,7 +104,7 @@ public class SignInController extends HttpServlet {
             response.sendRedirect("/LearningManagement");
         }
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";
