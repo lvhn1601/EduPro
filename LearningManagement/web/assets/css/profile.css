@@ -424,7 +424,7 @@ body {
   border: none;
   border-radius: 0;
   font-size: 15px;
-  background: #c1c105b8;
+  background:#06BBCC ;
 }
 .profile-img .file input {
   position: absolute;
@@ -436,7 +436,7 @@ body {
   color: #333;
 }
 .profile-head h6 {
-  color: #0062cc;
+  color: #06BBCC ;
 }
 .profile-edit-btn {
   background-color: #f0f0f0;
@@ -467,7 +467,7 @@ body {
 }
 .profile-head .nav-tabs .nav-link.active {
   border: none;
-  border-bottom: 2px solid #0062cc;
+  border-bottom: 2px solid #06BBCC ;
 }
 .profile-work {
   padding: 14%;
@@ -493,7 +493,7 @@ body {
 }
 .profile-tab p {
   font-weight: 600;
-  color: #0062cc;
+  color: #06BBCC ;
 }
 
 .icon {

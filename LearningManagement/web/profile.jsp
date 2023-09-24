@@ -30,7 +30,7 @@
     </head>
 
     <body>
-       <%@include file="components/header.jsp" %>
+        <%@include file="components/header.jsp" %>
         <!-- Topbar End -->
         <div class="container emp-profile">
             <div class="row">
@@ -168,7 +168,6 @@
                         </div>
                         <!---------------- END TAB ABOUT------------->
                         <!----------------START TAB CLASS JOIN------------->
-                      
                         <div
                             class="tab-pane fade"
                             id="class-join"
@@ -179,30 +178,20 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">No</th>
-                                        <th scope="col">Name Contact</th>
-                                        <th scope="col">Phone Contact</th>
-                                        <th scope="col">Order Date</th>
-                                        <th scope="col">Expected Date</th>
-                                        <th scope="col">View</th>
-                                        <th scope="col">Delete</th>
+                                        <th scope="col">Class</th>
+                                        <th scope="col">Lecturers</th>
+                                        <th scope="col">Number of students</th>
+                                        <th scope="col">Semester</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="${requestScope.lstNewOrder}" var="o" varStatus="i">
+                                    <c:forEach items="${requestScope.lstClass}" var="o" varStatus="i">
                                         <tr>
-                                            <td>${i.count}</td>
-                                            <td>${o.orderNameContact}</td>
-                                            <td>${o.orderPhoneContact}</td>
-                                            <td>${o.orderCreateDate}</td>
-                                            <td>${o.orderExpectedDate}</td>
-                                            <td><a data-bs-toggle="modal" data-bs-target="#modal-order-detail" href="javascript:void(0)" onclick="getAllOrderDetail(${o.orderId});"><i class="fa-solid fa-eye"></i></a></td>
-                                            <td>
-                                                <form action="profile" method="post">
-                                                    <input type="hidden" name="orderId" value="${o.orderId}">
-                                                    <input type="hidden" name="type" value="deleteNewOrder">
-                                                    <button type="submit" class="btn"><i class="fa-solid fa-trash text-danger"></i></button>
-                                                </form>
-                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>    
                                         </tr>
                                     </c:forEach>
                                 </tbody>
@@ -221,30 +210,21 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">No</th>
-                                        <th scope="col">Name Contact</th>
-                                        <th scope="col">Phone Contact</th>
-                                        <th scope="col">Order Date</th>
-                                        <th scope="col">Expected Date</th>
+                                        <th scope="col">Name Lesson</th>
+                                        <th scope="col">Started Date</th>
+                                        <th scope="col">Done Date</th>
                                         <th scope="col">View</th>
-                                        <th scope="col">Delete</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach items="${requestScope.lstNewOrder}" var="o" varStatus="i">
                                         <tr>
-                                            <td>${i.count}</td>
-                                            <td>${o.orderNameContact}</td>
-                                            <td>${o.orderPhoneContact}</td>
-                                            <td>${o.orderCreateDate}</td>
-                                            <td>${o.orderExpectedDate}</td>
-                                            <td><a data-bs-toggle="modal" data-bs-target="#modal-order-detail" href="javascript:void(0)" onclick="getAllOrderDetail(${o.orderId});"><i class="fa-solid fa-eye"></i></a></td>
-                                            <td>
-                                                <form action="profile" method="post">
-                                                    <input type="hidden" name="orderId" value="${o.orderId}">
-                                                    <input type="hidden" name="type" value="deleteNewOrder">
-                                                    <button type="submit" class="btn"><i class="fa-solid fa-trash text-danger"></i></button>
-                                                </form>
-                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
@@ -261,13 +241,13 @@
         <!------------------------MODAL CHANGE INFORMATION-------------------------->
         <%@include file="modal/modal-change-information.jsp" %>
 
-         <%@include file="components/footer.jsp" %>
+        <%@include file="components/footer.jsp" %>
     </body>
-<!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-   
+    <!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
                                                 $("#about-tab").addClass("active");
                                                 $("#about").addClass("show active");
