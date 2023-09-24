@@ -14,7 +14,7 @@ public class DBContext {
             // Edit URL , username, password to authenticate with your MS SQL Server
             String url = "jdbc:mysql://localhost:3306/edupro";
             String username = "root";
-            String password = "123456";
+            String password = "160103";
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
 //            if (connection != null) {
