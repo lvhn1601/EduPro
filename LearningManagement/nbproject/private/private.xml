@@ -3,47 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-up-bySMS.jsp</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/SignInController.java</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/SignUpController.java</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/model/Setting.java</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-in.jsp</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/OTPConfirmationController.java</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-up-byMail.jsp</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/dao/SettingDAO.java</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/assets/css/sign-up.css</file>
-=======
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/sign-in.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/OTPConfirmationController.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/modal/modal-change-information.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/model/Student.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/SignInController.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/consts/IConstants.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/dao/StudentDAO.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/tab/profile/tab-address.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/dao/AccountDAO.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/modal/modal-change-password.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/utils/Helper.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/components/header-signIn-signUp.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/error.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/core/UserFilter.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/ErrorController.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/ProfileController.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/model/Setting.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/otp-confirmation.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/homepage.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/otp-sms.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/components/header.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/connection/DBContext.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/ABC.html</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/LogOutController.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/tab/profile/tab-about.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/model/Account.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/profile.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/dto/UserGoogleDto.java</file>
->>>>>>> c2d5b8f4f0e8b6095cf9452552830fdbbc335806
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Setting.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Account.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/SystemSettingServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/AddSubjectServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Subject.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/AddSettingServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/dao/AdminDAO.java</file>
         </group>
     </open-files>
 </project-private>
