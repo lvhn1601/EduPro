@@ -114,6 +114,50 @@ public class AccountDAO extends DBContext {
         return check > 0;
     }
 
+    public Account getOneByAccountId(int accountId) {
+
+        String sql = "select * from Account where account_id = ?";//
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setObject(1, accountId);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Account s = Account.builder()
+                        .id(rs.getInt("account_id"))
+                        .email(rs.getString("account_email"))
+                        .phone(rs.getString("account_phone"))
+                        .password(rs.getString("account_password"))
+                        .active(rs.getBoolean("account_active"))
+                        .name(rs.getString("account_name"))
+                        .avatar_url(rs.getString("account_avatar_url"))
+                        .dob(rs.getDate("account_dob"))
+                        .role(Setting.builder()
+                                .id(rs.getInt("account_role_id"))
+                                .build())
+                        .build();
+                return s;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return null;
+    }
+
+    public boolean changePassword(int account_id, String account_password) {
+        int check = 0;
+        String sql = "UPDATE Account SET account_password = ? WHERE account_id = ?";
+
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
+
+            stm.setObject(1, account_password);
+            stm.setObject(2, account_id);
+
+            check = stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return check > 0;
+    }
+
     public Account getOneByEmail(String email) {
 
         String sql = "Select * FROM Account WHERE account_email = ?";
@@ -217,16 +261,6 @@ public class AccountDAO extends DBContext {
         return check > 0;
     }
 
-    
     public static void main(String[] args) {
-//        ArrayList<Account> l = new AccountDAO().getAll();
-//        Account a = Account.builder()
-//                .email("tung")
-//                .password("123")
-//                .name("TUNGTRAN")
-//                .build();
-//        new AccountDAO().register(a);
-//        System.out.println(new AccountDAO().getOneByEmail("tungtshe171091@fpt.edu.vn"));
-        System.out.println(new AccountDAO().getAll());
     }
 }

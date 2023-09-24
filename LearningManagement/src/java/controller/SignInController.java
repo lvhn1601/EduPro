@@ -86,6 +86,7 @@ public class SignInController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         HttpSession session = request.getSession();
         AccountDAO accountDAO = new AccountDAO();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -94,6 +95,7 @@ public class SignInController extends HttpServlet {
             request.setAttribute("msg", "Sign in fail username or pasword");
             request.getRequestDispatcher("sign-in.jsp").forward(request, response);
         } else {
+            session.setAttribute("accountCur", accountDAO.getOneByAccountId(account.getId()));
             response.sendRedirect("/LearningManagement");
         }
     }
