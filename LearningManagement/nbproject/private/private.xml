@@ -3,16 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/connection/DBContext.java</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/WEB-INF/web.xml</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/assets/css/sign-in.css</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/homepage.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-up-bySMS.jsp</file>
             <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/SignInController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/SignUpController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/model/Setting.java</file>
             <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-in.jsp</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/dao/AccountDAO.java</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-up.jsp</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sms-confirmation.html</file>
-            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/ABC.html</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/OTPConfirmationController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-up-byMail.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/dao/SettingDAO.java</file>
             <file>file:/D:/SWP_LMS/g5/LearningManagement/web/assets/css/sign-up.css</file>
         </group>
     </open-files>

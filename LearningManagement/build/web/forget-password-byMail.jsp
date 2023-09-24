@@ -5,27 +5,26 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>LMS</title>
+        <title>EduPro - Online Learning</title>
     </head>
     <link href="assets/css/sign-up.css?v=3" rel="stylesheet" type="text/css" media="all">
 
     <body>
-        <form action="sign-up" method="post">
+        <form action="forget-password-byMail" method="post" style="background-color: #f2f2f2">
             <br><br>
-            <h2>SIGN UP</h2>
+            <h2 style="color: #06BBCC">Enter your email</h2>
             <br>
-            <p>Enter your email to sign up </p>
+            <p  style="color: #06BBCC">Verify OTP to reset password</p>
             <br>
-            <input name="email" type="email" placeholder="Email" >
+            <input style="background: #ffffff" name="email" type="email" placeholder="Enter your email" >
             <br>
-            
             <div style="color: #b5bccaed">
                 ${requestScope.msg}
             </div>
             <button type="submit">Continue</button>
             <div class="social">
-                <a href="sign-in" style="margin-left: 50px; text-decoration: none" > Sign In</a>
-                <a href="/WebLaptop" style="margin-left: 120px; text-decoration: none" >Home</a>
+                <a href="sign-in" style="margin-left: 50px; text-decoration: none;color: #06BBCC" > Sign In</a>
+                <a href="/LearningManagement" style="margin-left: 120px; text-decoration: none; color: #06BBCC" >Home</a>
             </div>
         </form>
     </body>

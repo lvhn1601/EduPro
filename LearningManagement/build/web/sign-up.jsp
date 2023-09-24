@@ -8,15 +8,21 @@
         <title>EduPro - Online Learning</title>
     </head>
     <link href="assets/css/sign-up.css?v=3" rel="stylesheet" type="text/css" media="all">
-    <body style="
-          background: url(assets/img/sanhAlpha.png);">
+    <style>
+        body {
+            background: url(assets/img/sanhAlpha.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+    <body>
         <%@include file="components/header-signIn-signUp.jsp" %>
         <form style="background-color: #f2f2f2">
             <br><br>
             <h2 style="color: #06BBCC">SIGN UP</h2>
             <br>
-            <button style="margin-top: 10px" id="sendMail" type="button" onclick="location.href = '/LearningManagement/otp-confirmation';">Sign up with email</button>
-            <button style="margin-top: 10px" id="sendSms" type="button"onclick="location.href = '/LearningManagement/otp-confirmation';" > Sign up with phone number </button>
+            <button style="margin-top: 10px" id="sendMail" type="button" onclick="location.href = '/LearningManagement/sign-up-byMail';">Sign up with email</button>
+            <button style="margin-top: 10px" id="sendSms" type="button"onclick="location.href = 'sign-up-bySMS.jsp';" > Sign up with phone number </button>
             <br>
             <br>
             <div style="color: #b5bccaed">

@@ -13,23 +13,27 @@
             background: url(assets/img/sanhAlpha.png);
             background-size: cover;
             background-repeat: no-repeat;
+
         }
     </style>
     <body>
         <%@include file="components/header-signIn-signUp.jsp" %>
-        <form style="background-color: #f2f2f2">
+        <form action="sign-up-byMail" method="post" style="background-color: #f2f2f2">
             <br><br>
             <h2 style="color: #06BBCC">SIGN UP</h2>
             <br>
-            <button style="margin-top: 10px" id="sendMail" type="button" onclick="location.href = '/LearningManagement/sign-up-byMail';">Sign up with email</button>
-            <button style="margin-top: 10px" id="sendSms" type="button"onclick="location.href = 'sign-up-bySMS.jsp';" > Sign up with phone number </button>
+            <p  style="color: #06BBCC">Enter your email to get OTP</p>
             <br>
+            <input style="background: #ffffff;color: #000" name="email" type="email" placeholder="Email" >
             <br>
             <div style="color: #b5bccaed">
                 ${requestScope.msg}
             </div>
-            Adready have account?<a href="sign-in" style="margin-left: 50px; " >Sign In</a>
-            <br>
+            <button type="submit">Continue</button>
+            <div class="social">
+                <a href="sign-in" style="margin-left: 50px; text-decoration: none;color: #06BBCC" > Sign In</a>
+                <a href="/LearningManagement" style="margin-left: 120px; text-decoration: none; color: #06BBCC" >Home</a>
+            </div>
         </form>
     </body>
 

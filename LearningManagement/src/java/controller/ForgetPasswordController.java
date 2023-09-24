@@ -1,10 +1,10 @@
-package controller;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-import com.google.gson.Gson;
+package controller;
+
+import dao.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +13,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import com.google.gson.JsonObject;
-import dao.AccountDAO;
-import dto.UserGoogleDto;
+import utils.Helper;
+import utils.Mail;
 
 /**
  *
- * @author DELL
+ * @author dell
  */
-@WebServlet(name = "OTPConfirmation", urlPatterns = {"/otp-confirmation"})
-public class OTPConfirmationController extends HttpServlet {
+@WebServlet(name = "ForgetPasswordController", urlPatterns = {"/forget-password-byMail"})
+public class ForgetPasswordController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +40,10 @@ public class OTPConfirmationController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OTPConfirmation</title>");
+            out.println("<title>Servlet ResetPasswordByMail</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OTPConfirmation at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ResetPasswordByMail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,7 +61,7 @@ public class OTPConfirmationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
+        request.getRequestDispatcher("forget-password-byMail.jsp").forward(request, response);
     }
 
     /**
@@ -76,38 +75,22 @@ public class OTPConfirmationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         AccountDAO accountDAO = new AccountDAO();
-        UserGoogleDto user = (UserGoogleDto) session.getAttribute("user");
-        
-        if (user != null) {
-            String otp = request.getParameter("otp");
-            String systemOTP = (String) session.getAttribute("systemOtp");
-            if (otp.equals(systemOTP)) {
-                session.removeAttribute("otp");
-                session.setAttribute("isOtpConfirmSuccess", "true");
-                
-                accountDAO.registerGoogleAcc(user);
-                response.sendRedirect("/LearningManagement");
-                return;
-            } else {
-                request.setAttribute("msg", "OTP wrong, enter again");
-                request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
-                return;
-            }
-        }
-        String otp = request.getParameter("otp");
-        String systemOTP = (String) session.getAttribute("systemOtp");
 
-        if (otp.equals(systemOTP)) {
-            session.removeAttribute("otp");
-            session.setAttribute("isOtpConfirmSuccess", "true");
-            response.sendRedirect("password-creation");
+        String email = request.getParameter("email");
+        if (accountDAO.getOneByEmail(email) == null) {
+            request.setAttribute("msg", "This email is not registered! Input again");
+            request.getRequestDispatcher("forget-password-byMail.jsp").forward(request, response);
         } else {
-            request.setAttribute("msg", "OTP wrong, enter again");
-            request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
+            session.setAttribute("email", email);
+            String otp = Helper.genRandSixDigit();
+            session.setAttribute("systemOtp", otp);
+            System.out.println(email);
+            Mail.send(email, "OTP to reset password", otp);
+            response.sendRedirect("otp-reset-password");
         }
-
     }
 
     /**
