@@ -3,6 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-up-bySMS.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/SignInController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/SignUpController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/model/Setting.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-in.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/OTPConfirmationController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-up-byMail.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/dao/SettingDAO.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/assets/css/sign-up.css</file>
+=======
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/sign-in.jsp</file>
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/OTPConfirmationController.java</file>
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/WEB-INF/web.xml</file>
@@ -32,6 +43,7 @@
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/model/Account.java</file>
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/profile.jsp</file>
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/dto/UserGoogleDto.java</file>
+>>>>>>> c2d5b8f4f0e8b6095cf9452552830fdbbc335806
         </group>
     </open-files>
 </project-private>

@@ -262,6 +262,5 @@ public class AccountDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-
     }
 }

@@ -3,7 +3,7 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="assets/css/otp-confirmation.css" rel="stylesheet" type="text/css" media="all">
+        <link href="assets/css/sign-up.css?v=3" rel="stylesheet" type="text/css" media="all">
     </head>
     <style>
         .container {
@@ -55,11 +55,14 @@
     </style>
 
     <body>
-        <form action="otp-confirmation" method="post">
+        <%@include file="components/header-signIn-signUp.jsp" %>
+        <form style="background-color: #f2f2f2">
             <div class="container">
                 <div id="sender">
-                    <h2>Enter your phone number</h2>
-                    <input type="text" id="number" placeholder="+843...">
+                    <h2 style="color: #06BBCC">SIGN UP</h2>
+                    <p style="color: #06BBCC">Enter your phone number to get OTP</p>
+                    <br>
+                    <input style="background: #ffffff" type="text" name="number" id="number" placeholder="+843...">
                     <div id="recaptcha-container"></div>
                     <button type="button" id="send" onClick="phoneAuth()">Send</button>
                 </div>
@@ -75,6 +78,8 @@
         <!--	add firebase SDK-->
         <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+
+
         <script>
                         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
                         const firebaseConfig = {
@@ -103,9 +108,12 @@
                                 coderesult = confirmationResult;
                                 document.getElementById('sender').style.display = 'none';
                                 document.getElementById('verifier').style.display = 'block';
+
+                                sessionStorage.setItem('phoneNumber', number);
                             }).catch(function (error) {
                                 alert(error.message);
                             });
+
                         }
                         // function for code verify
                         function codeverify() {
@@ -113,6 +121,7 @@
                             coderesult.confirm(code).then(function () {
                                 document.getElementsByClassName('p-conf')[0].style.display = 'block';
                                 document.getElementsByClassName('n-conf')[0].style.display = 'none';
+                                window.location.href = 'password-creation';
                             }).catch(function () {
                                 document.getElementsByClassName('p-conf')[0].style.display = 'none';
                                 document.getElementsByClassName('n-conf')[0].style.display = 'block';

@@ -7,6 +7,7 @@ package controller;
 import consts.IConstants;
 import static consts.IConstants.GOOGLE_LOGIN_HREF;
 import dao.AccountDAO;
+import dao.SettingDAO;
 import dto.UserGoogleDto;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -15,41 +16,73 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.List;
 import model.Account;
+import model.Setting;
+import utils.Helper;
 import static utils.Helper.getToken;
 import static utils.Helper.getUserInfo;
+import utils.Mail;
 
 public class SignInController extends HttpServlet {
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         AccountDAO accountDAO = new AccountDAO();
         ArrayList<Account> accs = accountDAO.getAll();
-
+        SettingDAO settingdao = new SettingDAO();
+        
         if (request.getParameter("code") != null) {
             String code = request.getParameter("code");
             String accessToken = getToken(code);
             UserGoogleDto user = getUserInfo(accessToken);
             System.out.println(user);
+            boolean foundMatch = false;
+            
             for (Account a : accs) {
-                if (a.getEmail().equals(user.getEmail())) {
+                if (user.getEmail().equals(a.getEmail())) {
+                    
                     accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
                     response.sendRedirect("/LearningManagement");
+                    foundMatch = true;
                     return;
                 }
             }
+            
+            if (!foundMatch) {
+                List<Setting> list = settingdao.getListDomain();
+                String email = user.getEmail();
+                int atIndex = email.indexOf('@');
+                String domain = email.substring(atIndex + 1);
+                
+                if (list.contains(domain)) {
+                    String otp = Helper.genRandSixDigit();
+                    session.setAttribute("systemOtp", otp);
+                    session.setAttribute("user", user);
+                    Mail.send(user.getEmail(), "OTP to sign up", otp);
+                    response.sendRedirect("otp-confirmation");
+                    return;
+                } else {
+                    request.setAttribute("msg", "Invalid domain!");
+                    response.sendRedirect("sign-in");
+                    return;
+                }
+                
+            }
+            
         } else {
             request.setAttribute("GOOGLE_LOGIN_HREF", IConstants.GOOGLE_LOGIN_HREF);
         }
         request.getRequestDispatcher("sign-in.jsp").forward(request, response);
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -66,7 +99,7 @@ public class SignInController extends HttpServlet {
             response.sendRedirect("/LearningManagement");
         }
     }
-
+    
     @Override
     public String getServletInfo() {
         return "Short description";

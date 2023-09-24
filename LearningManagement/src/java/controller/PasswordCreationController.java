@@ -1,10 +1,11 @@
-package controller;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-import com.google.gson.Gson;
+package controller;
+
+import dao.AccountDAO;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +14,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import com.google.gson.JsonObject;
-import dao.AccountDAO;
-import dto.UserGoogleDto;
+import model.Account;
 
 /**
  *
  * @author DELL
  */
-@WebServlet(name = "OTPConfirmation", urlPatterns = {"/otp-confirmation"})
-public class OTPConfirmationController extends HttpServlet {
+@WebServlet(name = "PasswordCreationController", urlPatterns = {"/password-creation"})
+public class PasswordCreationController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +40,10 @@ public class OTPConfirmationController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OTPConfirmation</title>");
+            out.println("<title>Servlet PasswordCreationController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OTPConfirmation at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PasswordCreationController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,7 +61,7 @@ public class OTPConfirmationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
+        request.getRequestDispatcher("password-creation.jsp").forward(request, response);
     }
 
     /**
@@ -78,35 +77,29 @@ public class OTPConfirmationController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         AccountDAO accountDAO = new AccountDAO();
-        UserGoogleDto user = (UserGoogleDto) session.getAttribute("user");
-        
-        if (user != null) {
-            String otp = request.getParameter("otp");
-            String systemOTP = (String) session.getAttribute("systemOtp");
-            if (otp.equals(systemOTP)) {
-                session.removeAttribute("otp");
-                session.setAttribute("isOtpConfirmSuccess", "true");
-                
-                accountDAO.registerGoogleAcc(user);
-                response.sendRedirect("/LearningManagement");
-                return;
-            } else {
-                request.setAttribute("msg", "OTP wrong, enter again");
-                request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
-                return;
-            }
-        }
-        String otp = request.getParameter("otp");
-        String systemOTP = (String) session.getAttribute("systemOtp");
 
-        if (otp.equals(systemOTP)) {
-            session.removeAttribute("otp");
-            session.setAttribute("isOtpConfirmSuccess", "true");
-            response.sendRedirect("password-creation");
-        } else {
-            request.setAttribute("msg", "OTP wrong, enter again");
-            request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
+        String phone = request.getParameter("phone");
+        if (phone.startsWith(" 84")) {
+            phone = "0" + phone.substring(3);
         }
+        String email = (String) session.getAttribute("email");
+        String accountPassword = request.getParameter("accountPassword");
+        String accountDetailName = request.getParameter("accountDetailName");
+        Account acc = Account.builder()
+                .email(email)
+                .phone(phone)
+                .password(accountPassword)
+                .name(accountDetailName)
+                .build();
+        accountDAO.register(acc);
+
+//        System.out.println(email);
+
+        session.removeAttribute("email");
+        session.removeAttribute("isOtpConfirmSuccess");
+        request.setAttribute("msg", "Register successful");
+        response.sendRedirect("sign-in");
+        System.out.println(phone);
 
     }
 
