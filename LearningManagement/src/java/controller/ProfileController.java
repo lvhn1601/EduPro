@@ -107,8 +107,19 @@ public class ProfileController extends HttpServlet {
             }
 
             case "changeInformation": {
-
+  String accountName = request.getParameter("accountName");
+                Date accountDob = request.getParameter("accountDob").equals("") ? null : Date.valueOf(request.getParameter("accountDob"));
+                account.setName(accountName);
+                account.setDob(accountDob);
+                boolean isChangeInformationSuccess = accountDAO.update(account, account.getId());
+                session.setAttribute("accountCur", account);
+                if (isChangeInformationSuccess) {
+                    session.setAttribute("msgchangeInformation", "Change Information Success");
+                } else {
+                    session.setAttribute("msgchangeInformation", "Change Information Fail");
+                }
                 break;
+
             }
         }
 
