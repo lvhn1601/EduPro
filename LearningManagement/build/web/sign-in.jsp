@@ -110,7 +110,7 @@
             </div>
 
         </form>
-        <script>
+<!--        <script>
             function validateForm() {
                 var username = document.forms["signInForm"]["username"].value;
                 var password = document.forms["signInForm"]["password"].value;
@@ -128,7 +128,7 @@
                 // Add additional validation for the password if needed
                 return true;
             }
-        </script>
+        </script>-->
     </body>
 
 </html>

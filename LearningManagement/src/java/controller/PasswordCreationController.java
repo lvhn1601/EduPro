@@ -79,7 +79,8 @@ public class PasswordCreationController extends HttpServlet {
         AccountDAO accountDAO = new AccountDAO();
 
         String phone = request.getParameter("phone");
-        if (phone.startsWith(" 84")) {
+        
+        if (phone != null) {
             phone = "0" + phone.substring(3);
         }
         String email = (String) session.getAttribute("email");
@@ -93,13 +94,13 @@ public class PasswordCreationController extends HttpServlet {
                 .build();
         accountDAO.register(acc);
 
-//        System.out.println(email);
+        System.out.println(email);
 
         session.removeAttribute("email");
         session.removeAttribute("isOtpConfirmSuccess");
         request.setAttribute("msg", "Register successful");
         response.sendRedirect("sign-in");
-        System.out.println(phone);
+//        System.out.println(phone);
 
     }
 

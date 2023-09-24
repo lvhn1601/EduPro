@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.Setting;
 import utils.Helper;
@@ -83,40 +84,32 @@ public class SignUpController extends HttpServlet {
         SettingDAO settingdao = new SettingDAO();
 
         String email = request.getParameter("email");
-
-        if (email == null) {
-            request.setAttribute("msg", "Email is required.");
-            request.getRequestDispatcher("sign-up-byMail.jsp").forward(request, response);
-            return;
-        }
-
-        int atIndex = email.indexOf('@');
-
-        if (atIndex == -1) {
-            request.setAttribute("msg", "Invalid email format.");
-            request.getRequestDispatcher("sign-up-byMail.jsp").forward(request, response);
-            return;
-        }
-
         if (accountDAO.getOneByEmail(email) != null) {
-            request.setAttribute("msg", "Email already exists! Please input a different email.");
+            request.setAttribute("msg", "Email already exist! Input again");
             request.getRequestDispatcher("sign-up-byMail.jsp").forward(request, response);
-            return;
-        }
-
-        String domain = email.substring(atIndex + 1);
-        List<Setting> list = settingdao.getListDomain();
-
-        if (list.contains(domain)) {
-            session.setAttribute("email", email);
-            String otp = Helper.genRandSixDigit();
-            session.setAttribute("systemOtp", otp);
-            System.out.println(email);
-            Mail.send(email, "OTP to sign up", otp);
-            response.sendRedirect("otp-confirmation");
         } else {
-            request.setAttribute("msg", "Invalid domain!");
-            request.getRequestDispatcher("sign-up-byMail.jsp").forward(request, response);
+            List<Setting> list = settingdao.getListDomain();
+            List<String> domains = new ArrayList<>();
+            int atIndex = email.indexOf('@');
+            
+            String domain = email.substring(atIndex + 1);
+            System.out.println(domain);
+
+            for (Setting s : list) {
+                domains.add(s.getTitle());
+            }
+            System.out.println(domains);
+            if (domains.contains(domain)) {
+                session.setAttribute("email", email);
+                String otp = Helper.genRandSixDigit();
+                session.setAttribute("systemOtp", otp);
+                System.out.println(email);
+                Mail.send(email, "OTP to sign up", otp);
+                response.sendRedirect("otp-confirmation");
+            } else {
+                request.setAttribute("msg", "Invalid domain!");
+                request.getRequestDispatcher("sign-up-byMail.jsp").forward(request, response);
+            }
         }
     }
 
