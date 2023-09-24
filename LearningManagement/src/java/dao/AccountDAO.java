@@ -5,11 +5,14 @@
 package dao;
 
 import connection.DBContext;
+import dto.UserGoogleDto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import model.Account;
 import model.Setting;
 
@@ -20,20 +23,24 @@ import model.Setting;
 public class AccountDAO extends DBContext {
 
     public Account authenticate(String username, String password) {
-        String sql = "select "
+        String sql = "SELECT "
                 + "account_id, "
                 + "account_email, "
+                + "account_phone, "
                 + "account_password, "
                 + "account_active, "
                 + "account_role_id, "
-                + "s.setting_id " // Thay đổi tên cột thành "setting_id"
-                + "from account a\n"
-                + "inner join setting s on a.account_role_id = s.setting_id "
-                + "where account_password = ? and account_email = ? and account_active = 1";
+                + "s.setting_id "
+                + "FROM account a "
+                + "INNER JOIN setting s ON a.account_role_id = s.setting_id "
+                + "WHERE (account_password = ?) "
+                + "AND account_active = 1 "
+                + "AND (account_email = ? OR account_phone = ?)";
 
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, password);
             ps.setObject(2, username);
+            ps.setObject(3, username);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -42,11 +49,11 @@ public class AccountDAO extends DBContext {
                         .email(rs.getString("account_email"))
                         .password(rs.getString("account_password"))
                         .active(rs.getBoolean("account_active"))
+                        .phone(rs.getString("account_phone"))
                         .role(Setting.builder()
-                                .id(rs.getInt("account_role_id")) 
+                                .id(rs.getInt("account_role_id"))
                                 .build())
                         .build();
-
                 return a;
             }
         } catch (SQLException e) {
@@ -56,46 +63,44 @@ public class AccountDAO extends DBContext {
     }
 
     public ArrayList<Account> getAll() {
-    ArrayList<Account> accs = new ArrayList<>();
-    String sql = "select a.account_id, "
-            + "a.account_email, "
-            + "a.account_password, "
-            + "a.account_active, "
-            + "a.account_role_id, "
-            + "s.setting_title, "
-            + "a.account_phone "
-            + "from account a "
-            + "inner join setting s on a.account_role_id = s.setting_id "
-            + "where a.account_active = 1";
-    try (PreparedStatement stm = connection.prepareStatement(sql)) {
+        ArrayList<Account> accs = new ArrayList<>();
+        String sql = "select a.account_id, "
+                + "a.account_email, "
+                + "a.account_password, "
+                + "a.account_active, "
+                + "a.account_role_id, "
+                + "s.setting_title, "
+                + "a.account_phone "
+                + "from account a "
+                + "inner join setting s on a.account_role_id = s.setting_id "
+                + "where a.account_active = 1";
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
 
-        ResultSet rs = stm.executeQuery();
-        while (rs.next()) {
-            Account a = Account.builder()
-                    .id(rs.getInt("account_id"))
-                    .email(rs.getString("account_email"))
-                    .password(rs.getString("account_password"))
-                    .active(rs.getBoolean("account_active"))
-                    .phone(rs.getString("account_phone")) // Lấy giá trị account_phone từ ResultSet
-                    .role(Setting.builder()
-                            .id(rs.getInt("account_role_id")) // Sử dụng tên cột đúng
-                            .build())
-                    .build();
-            accs.add(a);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Account a = Account.builder()
+                        .id(rs.getInt("account_id"))
+                        .email(rs.getString("account_email"))
+                        .password(rs.getString("account_password"))
+                        .active(rs.getBoolean("account_active"))
+                        .phone(rs.getString("account_phone"))
+                        .role(Setting.builder()
+                                .id(rs.getInt("account_role_id"))
+                                .build())
+                        .build();
+                accs.add(a);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
         }
-    } catch (SQLException e) {
-        e.printStackTrace(System.out);
+        return accs;
     }
-    return accs;
-}
-
 
     public boolean updateGoogleAcc(String name, String avatar, String oauth, String gmail) {
         int check = 0;
-        String sql = "select * from account\n"
-                + "update account a\n"
-                + "set account_name = ?, account_avatar = ?, account_oauth = ?\n"
-                + "where a.account_email = ?";
+        String sql = "update account \n"
+                + "  set account_name = ?, account_avatar_url = ?, account_oauth = ?\n"
+                + "  where account_email = ?";
 
         try ( PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setObject(1, name);
@@ -108,14 +113,14 @@ public class AccountDAO extends DBContext {
         }
         return check > 0;
     }
-      
-       public Account getOne(int accountId) {
-              
-    String sql = "select * from Account where account_id = ?";//
-    try (PreparedStatement stm = connection.prepareStatement(sql)) {
+
+    public Account getOneByAccountId(int accountId) {
+
+        String sql = "select * from Account where account_id = ?";//
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setObject(1, accountId);
-        ResultSet rs = stm.executeQuery();
-         while (rs.next()) {
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
                 Account s = Account.builder()
                         .id(rs.getInt("account_id"))
                         .email(rs.getString("account_email"))
@@ -126,8 +131,8 @@ public class AccountDAO extends DBContext {
                         .avatar_url(rs.getString("account_avatar_url"))
                         .dob(rs.getString("account_dob"))
                         .role(Setting.builder()
-                         .id(rs.getInt("account_role_id")) 
-                            .build())
+                                .id(rs.getInt("account_role_id"))
+                                .build())
                         .build();
                 return s;
             }
@@ -136,11 +141,12 @@ public class AccountDAO extends DBContext {
         }
         return null;
     }
-        public boolean changePassword(int account_id, String account_password) {
+
+    public boolean changePassword(int account_id, String account_password) {
         int check = 0;
         String sql = "UPDATE Account SET account_password = ? WHERE account_id = ?";
 
-        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setObject(1, account_id);
             stm.setObject(2, account_password);
             check = stm.executeUpdate();
@@ -150,10 +156,110 @@ public class AccountDAO extends DBContext {
         return check > 0;
     }
 
+    public Account getOneByEmail(String email) {
+
+        String sql = "Select * FROM Account WHERE account_email = ?";
+
+        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setObject(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Account a = Account.builder().email(rs.getString("account_email")).build();
+                return a;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return null;
+    }
+
+    public Account getOneByPhoneNum(String phoneNum) {
+
+        String sql = "Select * FROM Account WHERE account_phone = ?";
+
+        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setObject(1, phoneNum);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Account a = Account.builder().phone(rs.getString("account_phone")).build();
+                return a;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return null;
+    }
+
+    public int register(Account obj) {
+        int check = 0;
+        String sql = "";
+        if (obj.getEmail() != null) {
+            sql = "INSERT INTO Account(account_email, account_password, account_name, account_role_id) VALUES (?, ?, ?, 1)";
+        } else if (obj.getPhone() != null) {
+            sql = "INSERT INTO Account(account_phone, account_password, account_name, account_role_id) VALUES (?, ?, ?, 1)";
+        }
+        if (sql.isEmpty()) {
+            return 0;
+        }
+        try ( PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, obj.getEmail() != null ? obj.getEmail() : obj.getPhone());
+            ps.setString(2, obj.getPassword());
+            ps.setString(3, obj.getName());
+
+            check = ps.executeUpdate();
+            if (check > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return 0;
+    }
+
+    public int registerGoogleAcc(UserGoogleDto obj) {
+        int check = 0;
+        String sql = "INSERT INTO Account(account_email, account_avatar_url, account_name, account_oauth, account_role_id) VALUES (?, ?, ?, ?, 1)";
+
+        if (sql.isEmpty()) {
+            return 0;
+        }
+        try ( PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, obj.getEmail());
+            ps.setString(2, obj.getPicture());
+            ps.setString(3, obj.getName());
+            ps.setString(4, obj.getId());
+            check = ps.executeUpdate();
+            if (check > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return 0;
+    }
+
+    public boolean resetPassword(String username, String newPassword) {
+        int check = 0;
+        String sql = "UPDATE account SET account_password = ? WHERE account_email = ? OR account_phone = ?;";
+
+        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setObject(1, newPassword);
+            ps.setObject(2, username);
+            ps.setObject(3, username);
+            check = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return check > 0;
+    }
 
     public static void main(String[] args) {
-        Account acc = new AccountDAO().getOne(1);
-//        System.out.println(new AccountDAO().authenticate("tungtshe171091@fpt.edu.vn", "123"));
-System.out.println(acc);
+
     }
 }

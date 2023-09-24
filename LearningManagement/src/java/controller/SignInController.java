@@ -62,7 +62,7 @@ public class SignInController extends HttpServlet {
             request.setAttribute("msg", "Sign in fail username or pasword");
             request.getRequestDispatcher("sign-in.jsp").forward(request, response);
         } else {
-            session.setAttribute("accountCur", accountDAO.getOne(account.getId()));
+            session.setAttribute("accountCur", accountDAO.getOneByAccountId(account.getId()));
             response.sendRedirect("/LearningManagement");
         }
     }
