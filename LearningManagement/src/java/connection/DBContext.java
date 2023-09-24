@@ -12,16 +12,16 @@ public class DBContext {
     public DBContext() {
         try {
             // Edit URL , username, password to authenticate with your MS SQL Server
-            String url = "jdbc:mysql://localhost:3306/lmsdb";
+            String url = "jdbc:mysql://localhost:3306/edupro";
             String username = "root";
             String password = "123456";
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
-            if (connection != null) {
-                System.out.println("DONE");
-            } else {
-                System.out.println("FAIL");
-            }
+//            if (connection != null) {
+//                System.out.println("DONE");
+//            } else {
+//                System.out.println("FAIL");
+//            }
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println(ex);
         }

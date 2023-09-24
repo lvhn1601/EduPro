@@ -4,7 +4,6 @@ package controller;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import com.google.gson.JsonObject;
+import dao.AccountDAO;
+import dto.UserGoogleDto;
 
 /**
  *
@@ -75,39 +76,37 @@ public class OTPConfirmationController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        HttpSession session = request.getSession();
-//        
-//        String otp = request.getParameter("otp");
-//        String systemOTP = (String) session.getAttribute("systemOtp");
-//        
-//        if (otp.equals(systemOTP)) {
-//            session.removeAttribute("otp");
-//            session.setAttribute("isOtpConfirmSuccess", "true");
-//            response.sendRedirect("password-creation");
-//        } else {
-//            request.setAttribute("msg", "OTP wrong, enter again");
-//            request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
-//        }
-// Lấy confirmationResult từ localStorage
-        String confirmationResultJson = request.getParameter("confirmationResult");
-        JsonObject confirmationResultObject = new Gson().fromJson(confirmationResultJson, JsonObject.class);
-
-        String otp = request.getParameter("otp"); // Lấy mã OTP từ người dùng
+        HttpSession session = request.getSession();
+        AccountDAO accountDAO = new AccountDAO();
+        UserGoogleDto user = (UserGoogleDto) session.getAttribute("user");
         
-// Xác minh mã OTP bằng Firebase
-//        String verificationId = confirmationResultObject.get("verificationId").getAsString();
-//        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
-//
-//        firebaseAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        // Xác minh thành công, thực hiện các xử lý bổ sung tại đây
-//                        response.sendRedirect("otp-confirmation-success.html"); // Chuyển hướng sau khi xác minh thành công
-//                    } else {
-//                        // Xác minh không thành công
-//                        response.sendRedirect("otp-confirmation-failure.html"); // Chuyển hướng sau khi xác minh thất bại
-//                    }
-//                });
+        if (user != null) {
+            String otp = request.getParameter("otp");
+            String systemOTP = (String) session.getAttribute("systemOtp");
+            if (otp.equals(systemOTP)) {
+                session.removeAttribute("otp");
+                session.setAttribute("isOtpConfirmSuccess", "true");
+                
+                accountDAO.registerGoogleAcc(user);
+                response.sendRedirect("/LearningManagement");
+                return;
+            } else {
+                request.setAttribute("msg", "OTP wrong, enter again");
+                request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
+                return;
+            }
+        }
+        String otp = request.getParameter("otp");
+        String systemOTP = (String) session.getAttribute("systemOtp");
+
+        if (otp.equals(systemOTP)) {
+            session.removeAttribute("otp");
+            session.setAttribute("isOtpConfirmSuccess", "true");
+            response.sendRedirect("password-creation");
+        } else {
+            request.setAttribute("msg", "OTP wrong, enter again");
+            request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
+        }
 
     }
 

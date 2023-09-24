@@ -18,8 +18,8 @@
                             type="text"
                             class="form-control"
                             id="name"
-                            name="accountDetailName"
-                            value="${sessionScope.accountDetail.accountDetailName}"
+                            name="accountName"
+                            value="${sessionScope.accountCur.name}"
                             />
                     </div>
                     <div class="form-group mt-4">
@@ -28,8 +28,8 @@
                             type="date"
                             class="form-control"
                             id="dob"
-                            name="accountDetailDob"
-                            value="${sessionScope.accountDetail.accountDetailDob}"
+                            name="accountDob"
+                            value="${sessionScope.accountCur.dob}"
                             />
                     </div>
 
