@@ -8,7 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="shortcut icon" href="assets/img/logo1.png" type="image/x-icon" />
-        <title>QSneaker</title>
+        <title>My profile</title>
 
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -53,8 +53,8 @@
                     <div class="col-md-3">
                         <a
                             class="profile-edit-btn"
-                            data-toggle="modal"
-                            data-target="#changeInformModal"
+                            data-bs-toggle="modal"
+                            data-bs-target="#changeInformModal"
                             href="javascript:void(0)"
                             >edit profile</a
                         >
@@ -69,11 +69,11 @@
                             <li class="nav-item">
                                 <a
                                     class="nav-link"
-                                    id="home-tab"
-                                    data-toggle="tab"
-                                    href="#home"
+                                    id="about-tab"
+                                    data-bs-toggle="tab"
+                                    href="#about"
                                     role="tab"
-                                    aria-controls="home"
+                                    aria-controls="about"
                                     aria-selected="true"
                                     >About</a
                                 >
@@ -82,7 +82,7 @@
                                 <a
                                     class="nav-link"
                                     id="class-join-tab"
-                                    data-toggle="tab"
+                                    data-bs-toggle="tab"
                                     href="#class-join"
                                     role="tab"
                                     aria-controls="address"
@@ -94,7 +94,7 @@
                                 <a
                                     class="nav-link"
                                     id="my-certificate-tab"
-                                    data-toggle="tab"
+                                    data-bs-toggle="tab"
                                     href="#my-certificate"
                                     role="tab"
                                     aria-controls="delivering"
@@ -113,9 +113,9 @@
                         <!---------------- START TAB ABOUT------------->
                         <div
                             class="tab-pane fade"
-                            id="home"
+                            id="about"
                             role="tabpanel"
-                            aria-labelledby="home-tab"
+                            aria-labelledby="about-tab"
                             >
                             <div class="row">
                                 <div class="col-md-6">
@@ -157,8 +157,8 @@
                                 <div class="col-md-6">
                                     <p>
                                         <a
-                                            data-toggle="modal"
-                                            data-target="#changePasswordModal"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#changePasswordModal"
                                             href="javascript:void(0)"
                                             >Change</a
                                         >
@@ -195,7 +195,7 @@
                                             <td>${o.orderPhoneContact}</td>
                                             <td>${o.orderCreateDate}</td>
                                             <td>${o.orderExpectedDate}</td>
-                                            <td><a data-toggle="modal" data-target="#modal-order-detail" href="javascript:void(0)" onclick="getAllOrderDetail(${o.orderId});"><i class="fa-solid fa-eye"></i></a></td>
+                                            <td><a data-bs-toggle="modal" data-bs-target="#modal-order-detail" href="javascript:void(0)" onclick="getAllOrderDetail(${o.orderId});"><i class="fa-solid fa-eye"></i></a></td>
                                             <td>
                                                 <form action="profile" method="post">
                                                     <input type="hidden" name="orderId" value="${o.orderId}">
@@ -237,7 +237,7 @@
                                             <td>${o.orderPhoneContact}</td>
                                             <td>${o.orderCreateDate}</td>
                                             <td>${o.orderExpectedDate}</td>
-                                            <td><a data-toggle="modal" data-target="#modal-order-detail" href="javascript:void(0)" onclick="getAllOrderDetail(${o.orderId});"><i class="fa-solid fa-eye"></i></a></td>
+                                            <td><a data-bs-toggle="modal" data-bs-target="#modal-order-detail" href="javascript:void(0)" onclick="getAllOrderDetail(${o.orderId});"><i class="fa-solid fa-eye"></i></a></td>
                                             <td>
                                                 <form action="profile" method="post">
                                                     <input type="hidden" name="orderId" value="${o.orderId}">
@@ -263,21 +263,24 @@
 
          <%@include file="components/footer.jsp" %>
     </body>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+   
     <script>
-                                                $("#home-tab").addClass("active");
-                                                $("#home").addClass("show active");
+                                                $("#about-tab").addClass("active");
+                                                $("#about").addClass("show active");
                                                 const msgUpdate = '<%= session.getAttribute("msgUpdate") %>';
                                                 if (msgUpdate === 'addressContact') {
-                                                    $("#home-tab").removeClass("active");
-                                                    $("#home").removeClass("show active");
+                                                    $("#about-tab").removeClass("active");
+                                                    $("#about").removeClass("show active");
                                                     $("#address-tab").addClass("active");
                                                     $("#address").addClass("show active");
                                                 }
                                                 if (msgUpdate === 'deleteNewOrder') {
-                                                    $("#home-tab").removeClass("active");
-                                                    $("#home").removeClass("show active");
+                                                    $("#about-tab").removeClass("active");
+                                                    $("#about").removeClass("show active");
                                                     $("#new-order-tab").addClass("active");
                                                     $("#new-order").addClass("show active");
                                                 }

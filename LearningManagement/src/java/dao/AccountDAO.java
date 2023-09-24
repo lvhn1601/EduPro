@@ -124,7 +124,7 @@ public class AccountDAO extends DBContext {
                         .active(rs.getBoolean("account_active"))
                         .name(rs.getString("account_name"))
                         .avatar_url(rs.getString("account_avatar_url"))
-                        .dob(rs.getString("account_dob"))
+                        .dob(rs.getDate("account_dob"))
                         .role(Setting.builder()
                          .id(rs.getInt("account_role_id")) 
                             .build())
@@ -141,8 +141,8 @@ public class AccountDAO extends DBContext {
         String sql = "UPDATE Account SET account_password = ? WHERE account_id = ?";
 
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
-            stm.setObject(1, account_id);
-            stm.setObject(2, account_password);
+            stm.setObject(2, account_id);
+            stm.setObject(1, account_password);
             check = stm.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
@@ -154,6 +154,7 @@ public class AccountDAO extends DBContext {
     public static void main(String[] args) {
         Account acc = new AccountDAO().getOne(1);
 //        System.out.println(new AccountDAO().authenticate("tungtshe171091@fpt.edu.vn", "123"));
-System.out.println(acc);
+
+System.out.println(new AccountDAO().changePassword(1, "234567"));
     }
 }
