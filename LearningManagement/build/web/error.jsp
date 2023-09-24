@@ -5,12 +5,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>eLEARNING - eLearning HTML Template</title>
+    <title>404 Page</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
   <!-- Favicon -->
-        <link href="assets/img/favicon.ico" rel="icon" />
+            <link rel="shortcut icon" href="assets/img/—Pngtree—blue open book_4426437.png">
 
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -107,7 +107,7 @@ public class ProfileController extends HttpServlet {
             }
 
             case "changeInformation": {
-  String accountName = request.getParameter("accountName");
+                String accountName = request.getParameter("accountName");
                 Date accountDob = request.getParameter("accountDob").equals("") ? null : Date.valueOf(request.getParameter("accountDob"));
                 account.setName(accountName);
                 account.setDob(accountDob);
@@ -120,6 +120,17 @@ public class ProfileController extends HttpServlet {
                 }
                 break;
 
+            }
+            case "changeAvatar": {
+                String accountAvatarurl = request.getParameter("accoutAvatarUrl");
+                account.setAvatar_url(accountAvatarurl);
+                boolean isChangeAvatar = accountDAO.update(account, account.getId());
+                if (isChangeAvatar) {
+                    session.setAttribute("msgchangeAvatar", "Change Avatar Success");
+                } else {
+                    session.setAttribute("msgchangeAvatar", "Change Avatar Fail");
+                }
+                break;
             }
         }
 

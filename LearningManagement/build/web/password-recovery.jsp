@@ -6,6 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>EduPro - Online Learning</title>
+            <link rel="shortcut icon" href="assets/img/?Pngtree?blue open book_4426437.png">
     </head>
     <link href="assets/css/password-creation.css" rel="stylesheet" type="text/css" media="all">
 

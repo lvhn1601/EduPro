@@ -7,7 +7,8 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="shortcut icon" href="assets/img/logo1.png" type="image/x-icon" />
+         <link rel="shortcut icon" href="assets/img/—Pngtree—blue open book_4426437.png">
+       
         <title>My profile</title>
 
         <!-- Google Web Fonts -->
@@ -37,9 +38,15 @@
                 <div class="col-md-3">
                     <div class="profile-img">
                         <img src="${sessionScope.accountCur.avatar_url}" alt="" />
-                        <div class="file btn btn-lg btn-primary">
-                            Change Photo
-                            <input type="file" name="file" />
+                        
+                        
+                        <div class="file btn btn-lg btn-primary">  
+                            <a class="profile-edit-btn"
+                               data-bs-toggle="modal"
+                               data-bs-target="#changeAvatarModal"
+                               href="javascript:void(0)">
+                                Change Photo
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -240,6 +247,8 @@
         <%@include file="modal/modal-change-password.jsp" %>
         <!------------------------MODAL CHANGE INFORMATION-------------------------->
         <%@include file="modal/modal-change-information.jsp" %>
+        <!------------------------MODAL CHANGE AVATAR-------------------------->
+        <%@include file="modal/modal-change-avatar.jsp" %>
 
         <%@include file="components/footer.jsp" %>
     </body>
@@ -249,21 +258,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-                                                $("#about-tab").addClass("active");
-                                                $("#about").addClass("show active");
-                                                const msgUpdate = '<%= session.getAttribute("msgUpdate") %>';
-                                                if (msgUpdate === 'addressContact') {
-                                                    $("#about-tab").removeClass("active");
-                                                    $("#about").removeClass("show active");
-                                                    $("#address-tab").addClass("active");
-                                                    $("#address").addClass("show active");
-                                                }
-                                                if (msgUpdate === 'deleteNewOrder') {
-                                                    $("#about-tab").removeClass("active");
-                                                    $("#about").removeClass("show active");
-                                                    $("#new-order-tab").addClass("active");
-                                                    $("#new-order").addClass("show active");
-                                                }
+        $("#about-tab").addClass("active");
+        $("#about").addClass("show active");
+        const msgUpdate = '<%= session.getAttribute("msgUpdate") %>';
+        if (msgUpdate === 'addressContact') {
+            $("#about-tab").removeClass("active");
+            $("#about").removeClass("show active");
+            $("#address-tab").addClass("active");
+            $("#address").addClass("show active");
+        }
+        if (msgUpdate === 'deleteNewOrder') {
+            $("#about-tab").removeClass("active");
+            $("#about").removeClass("show active");
+            $("#new-order-tab").addClass("active");
+            $("#new-order").addClass("show active");
+        }
     </script>
 
     <script>
@@ -286,49 +295,19 @@
         }
     </script>
     <script>
-        function getAllOrderDetail(orderId) {
-            const request = new XMLHttpRequest();
-            request.open("GET", "api/orderDetail?orderId=" + orderId, true);
-            request.onload = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    let lstOrderDetailHtml = '';
-                    const lstOrderDetail = JSON.parse(this.responseText);
-                    let sum = 0;
-                    for (let orderDetail of lstOrderDetail) {
-                        lstOrderDetailHtml += `
-                            <div class="d-flex flex-row mb-4 pb-2">
-                                <div class="flex-fill">
-                                    <h5 class="bold"><a class="text-danger" href="product-detail?productId=` + orderDetail.productId + `">` + orderDetail.orderDetailProductName + `</a></h5>
-                                    <p class="text-muted"> Qt: ` + orderDetail.orderDetailQuantity + ` item</p> 
-                                    <p class="text-muted"> Color: ` + orderDetail.orderDetailColorValue + `</p> 
-
-                                    <h4 class="mb-3"><span class="small text-muted"> Unit Price: </span> ` + orderDetail.orderDetailPriceProduct + ` VND</h4>
-                                </div>
-                                <div>
-                                    <img class="align-self-center img-fluid"
-                                         src="` + orderDetail.orderDetailProductImg + `" width="250">
-                                </div>
-                            </div>
-                            <hr>
-                        `;
-                        sum = sum + orderDetail.orderDetailPriceProduct * orderDetail.orderDetailQuantity;
-                    }
-                    document.getElementById('modal-order-detail-body').innerHTML = lstOrderDetailHtml;
-                    document.querySelector('#modal-order-detail .modal-footer').innerHTML = '<h3>Total Money: ' + sum + 'VND</h3>';
-                } else {
-                    console.log(2);
-                }
-            };
-            request.send(null);
-            let myModal = new bootstrap.Modal(document.getElementById("modal-order-detail"), {});
+        const msgchangeAvatar = '<%= session.getAttribute("msgchangeAvatar") %>';
+        if (msgchangeAvatar !== 'null') {
+            const myModal = new bootstrap.Modal(document.getElementById("changeAvatarModal"), {});
             document.onreadystatechange = function () {
                 myModal.show();
             };
         }
     </script>
+
+
     <%
         request.getSession().removeAttribute("msgchangePassword");
         request.getSession().removeAttribute("msgchangeInformation");
-        request.getSession().removeAttribute("msgUpdate");
+        request.getSession().removeAttribute("msgchangeAvatar");
     %>
 </html>

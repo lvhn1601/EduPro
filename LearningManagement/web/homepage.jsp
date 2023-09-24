@@ -8,6 +8,8 @@
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <meta content="" name="keywords" />
         <meta content="" name="description" />
+        <link rel="shortcut icon" href="assets/img/—Pngtree—blue open book_4426437.png">
+
     </head>
 
     <body>
