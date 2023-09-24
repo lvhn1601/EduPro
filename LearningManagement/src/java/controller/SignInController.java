@@ -71,7 +71,7 @@ public class SignInController extends HttpServlet {
                     String otp = Helper.genRandSixDigit();
                     session.setAttribute("systemOtp", otp);
                     session.setAttribute("user", user);
-                    Mail.send(user.getEmail(), "OTP to sign up", otp);
+                    Mail.send(user.getEmail(), "Your OTP to sign up", otp);
                     response.sendRedirect("otp-confirmation");
                     return;
                 } else {
