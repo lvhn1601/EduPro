@@ -93,7 +93,7 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Date of Birth</label>
-                                                    <input name="dob" id="dob" type="date" class="form-control">
+                                                    <input name="dob" id="dob" type="date" class="form-control" required>
                                                 </div>                                                                               
                                             </div><!--end col-->
             
@@ -111,7 +111,7 @@
             
                                         <div id="error-mess" style="color: red">${error}</div>
                                         
-                                        <button type="submit" class="btn btn-primary">Add</button>
+                                        <button type="submit" class="btn btn-primary" id="submit-btn" disabled>Add</button>
                                     </form>
                                 </div>
                             </div><!--end col-->
@@ -172,7 +172,7 @@
                 }
                 
                 
-                if (!checkDomain(email.split("@")[1])) {
+                if (email.trim() != '' && !checkDomain(email.split("@")[1])) {
                     error_text.textContent = "This email domain is not valid!";
                     submit_btn.disabled = true;
                     return;
