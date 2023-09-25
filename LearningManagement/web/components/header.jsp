@@ -81,6 +81,9 @@
                 <div class="dropdown-menu dropdown-menu-right">
 
                     <a href="profile" class="dropdown-item" type="button">My profile</a>
+                    <c:if test="${sessionScope.accountCur.role.id == 1}">
+                        <a href="admin/users" class="dropdown-item" type="button">Admin page</a>
+                    </c:if>
                     <a href="log-out" class="dropdown-item" type="button">Log out</a>
 
                 </div>

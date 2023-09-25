@@ -102,7 +102,7 @@ public class EditUserServlet extends HttpServlet {
         }
         else {
             db.updateUserInfo(id, name, email, phone, dob, role_id, acc.getId());
-            response.sendRedirect("users");
+            response.sendRedirect("users?page=" + (int) ((id / 8) + (id % 8 != 0 ? 1 : 0)));
         }
     }
 
