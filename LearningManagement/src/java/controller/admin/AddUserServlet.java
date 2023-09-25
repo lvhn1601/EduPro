@@ -97,7 +97,9 @@ public class AddUserServlet extends HttpServlet {
         }
         else {
             db.addUser(name, email, phone, dob, role_id, acc.getId());
-            response.sendRedirect("users?page=" + db.countUsers("") / 8);
+            int last_page = db.countUsers("") / 8;
+            last_page += last_page % 8 == 0 ? 0 : 1;
+            response.sendRedirect("users?page=" + last_page);
         }
     }
 

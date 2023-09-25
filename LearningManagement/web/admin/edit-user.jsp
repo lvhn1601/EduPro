@@ -72,7 +72,7 @@
                                             <div class="col-md-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Full Name</label>
-                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Full Name :" value="${user.name}">
+                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Full Name :" value="${user.name}" onchange="checkEmpty()">
                                                 </div>
                                             </div><!--end col-->
             
@@ -82,7 +82,7 @@
                                                     <input name="email" id="email" type="email" class="form-control" placeholder="Email :" value="${user.email}" oninput="checkEmpty()">
                                                 </div>
                                             </div><!--end col-->
-            
+                                            
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Phone no.</label>
@@ -93,14 +93,14 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Date of Birth</label>
-                                                    <input name="dob" id="dob" type="date" class="form-control" value="${user.dob}">
+                                                    <input name="dob" id="dob" type="date" class="form-control" value="${user.dob}" onchange="checkEmpty()">
                                                 </div>                                                                               
                                             </div><!--end col-->
             
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Role</label>
-                                                    <select name="role" class="form-control department-name select2input">
+                                                    <select name="role" class="form-control department-name select2input" onchange="checkEmpty()">
                                                         <c:forEach items="${roles}" var="r">
                                                             <option value="${r.id}" ${user.role.id eq r.id ? 'selected' : ''}>${r.title}</option>
                                                         </c:forEach>
