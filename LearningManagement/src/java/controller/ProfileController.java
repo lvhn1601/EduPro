@@ -5,6 +5,7 @@
 package controller;
 
 import dao.AccountDAO;
+import dao.AdminDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.Date;
+import java.util.List;
 import model.Account;
 
 /**
@@ -62,6 +64,10 @@ public class ProfileController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+           AdminDAO adminDAO = new AdminDAO();
+        
+     
+        request.setAttribute("domains", listDomains(adminDAO.getDomains()));
         Account account = (Account) session.getAttribute("accountCur");
         request.getRequestDispatcher("profile.jsp").forward(request, response);
     }
@@ -79,9 +85,10 @@ public class ProfileController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         AccountDAO accountDAO = new AccountDAO();
+        AdminDAO adminDAO = new AdminDAO();
         String type = request.getParameter("type");
         Account account = (Account) session.getAttribute("accountCur");
-
+        
         switch (type) {
             case "changePassword": {
                 String oldPass = request.getParameter("oldPass");
@@ -105,22 +112,39 @@ public class ProfileController extends HttpServlet {
                 }
                 break;
             }
-
+            
             case "changeInformation": {
+                
                 String accountName = request.getParameter("accountName");
                 Date accountDob = request.getParameter("accountDob").equals("") ? null : Date.valueOf(request.getParameter("accountDob"));
-                account.setName(accountName);
-                account.setDob(accountDob);
-                boolean isChangeInformationSuccess = accountDAO.update(account, account.getId());
-                session.setAttribute("accountCur", account);
-                if (isChangeInformationSuccess) {
-                    session.setAttribute("msgchangeInformation", "Change Information Success");
+                String accountEmail = request.getParameter("accountEmail");
+                String accountPhone = request.getParameter("accountPhone");
+                String currentPhone = request.getParameter("currentPhone");
+                String currentEmail = request.getParameter("currentEmail");
+                
+                if (!accountEmail.equals("") && adminDAO.emailExist(accountEmail)&& !currentEmail.equals(accountEmail)) {
+                    session.setAttribute("msgchangeInformation", "Email already exist!");
+                } else if (!accountPhone.equals("")  && adminDAO.phoneExist(accountPhone)&& !currentPhone.equals(accountPhone)) {
+                    session.setAttribute("msgchangeInformation", "Phone number already exist!");
+                    
                 } else {
-                    session.setAttribute("msgchangeInformation", "Change Information Fail");
+                    account.setName(accountName);
+                    account.setDob(accountDob);
+                    account.setEmail(accountEmail);
+                    account.setPhone(accountPhone);
+                    boolean isChangeInformationSuccess = accountDAO.update(account, account.getId());
+                    session.setAttribute("accountCur", account);
+                    if (isChangeInformationSuccess) {
+                        session.setAttribute("msgchangeInformation", "Change Information Success");
+                    } else {
+                        session.setAttribute("msgchangeInformation", "Change Information Fail");
+                    }
                 }
-                break;
-
-            }
+                    break;
+                    
+                }
+            
+            
             case "changeAvatar": {
                 String accountAvatarurl = request.getParameter("accoutAvatarUrl");
                 account.setAvatar_url(accountAvatarurl);
@@ -135,17 +159,15 @@ public class ProfileController extends HttpServlet {
         }
 
         response.sendRedirect("profile");
+            
+        }
 
+        public String listDomains(List<String> list) {
+        String str = "";
+        
+        for (String s : list)
+            str += "'" + s + "',";
+        
+        return "[" + str.substring(0, str.length()-1) + "]";
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
-}
+    }
