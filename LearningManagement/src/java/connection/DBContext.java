@@ -12,7 +12,7 @@ public class DBContext {
     public DBContext() {
         try {
             // Edit URL , username, password to authenticate with your MS SQL Server
-            String url = "jdbc:mysql://localhost:3306/lmsdb";
+            String url = "jdbc:mysql://localhost:3306/eduprodb";
             String username = "root";
             String password = "160103";
             Class.forName("com.mysql.cj.jdbc.Driver");

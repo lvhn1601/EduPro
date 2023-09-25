@@ -213,8 +213,8 @@ public class AdminDAO extends DBContext {
     }
 
     public void addUser(String name, String email, String phone, Date dob, int role_id, int admin_id) {
-        String sql = "insert into `account` (account_email, account_phone, account_name, account_avatar_url, account_dob, account_role_id, created_by, update_by)\n"
-                + "values (?, ?, ?, \"https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg\", ?, ?, ?, ?)";
+        String sql = "insert into `account` (account_email, account_phone, account_password, account_name, account_avatar_url, account_dob, account_role_id, created_by, update_by)\n"
+                + "values (?, ?, '1', ?, \"https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg\", ?, ?, ?, ?)";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
