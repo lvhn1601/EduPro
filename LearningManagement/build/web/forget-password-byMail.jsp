@@ -11,13 +11,14 @@
     <link href="assets/css/sign-up.css?v=3" rel="stylesheet" type="text/css" media="all">
 
     <body>
+        <%@include file="components/header-signIn-signUp.jsp" %>
         <form action="forget-password-byMail" method="post" style="background-color: #f2f2f2">
             <br><br>
             <h2 style="color: #06BBCC">Enter your email</h2>
             <br>
             <p  style="color: #06BBCC">Verify OTP to reset password</p>
             <br>
-            <input style="background: #ffffff" name="email" type="email" placeholder="Enter your email" >
+            <input style="background: #ffffff;color: #000" name="email" type="email" placeholder="Enter your email" >
             <br>
             <div style="color: #b5bccaed">
                 ${requestScope.msg}

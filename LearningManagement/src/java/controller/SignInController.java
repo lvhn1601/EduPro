@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.Account;
 import model.Setting;
 import utils.Helper;
@@ -43,7 +44,7 @@ public class SignInController extends HttpServlet {
             String code = request.getParameter("code");
             String accessToken = getToken(code);
             UserGoogleDto user = getUserInfo(accessToken);
-            System.out.println(user);
+//            System.out.println(user);
             boolean foundMatch = false;
 
             for (Account a : accs) {
@@ -81,6 +82,7 @@ public class SignInController extends HttpServlet {
                 }
 
             }
+            
 
         } else {
             request.setAttribute("GOOGLE_LOGIN_HREF", IConstants.GOOGLE_LOGIN_HREF);
@@ -91,7 +93,7 @@ public class SignInController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         AccountDAO accountDAO = new AccountDAO();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -101,8 +103,14 @@ public class SignInController extends HttpServlet {
             request.getRequestDispatcher("sign-in.jsp").forward(request, response);
         } else {
             session.setAttribute("accountCur", accountDAO.getOneByAccountId(account.getId()));
-            System.out.println(accountDAO.getOneByAccountId(account.getId()));
-            response.sendRedirect("/LearningManagement");
+//            System.out.println(accountDAO.getOneByAccountId(account.getId()));
+//            System.out.println(account.getRole().getId());
+            if (account.getRole().getId() == 1) {
+                response.sendRedirect("/LearningManagement");
+            }
+            if (account.getRole().getId() == 2) {
+                response.sendRedirect("admin/users");
+            }
         }
     }
 

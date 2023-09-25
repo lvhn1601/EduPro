@@ -53,20 +53,27 @@
             border-color: red;
             background-color: rgba(255, 0, 4, 0.5);
         }
+        body {
+            background: url(assets/img/sanhAlpha.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+
+        }
     </style>
 
     <body>
-        <form >
+        <%@include file="components/header-signIn-signUp.jsp" %>
+        <form style="background-color: #f2f2f2">
             <div class="container">
                 <div id="sender">
-                    <h2>Enter your phone number</h2>
-                    <input type="text" name="number" id="number" placeholder="+843...">
+                    <h2 style="color: #06BBCC">Enter your phone number</h2>
+                    <input style="background: #ffffff;color: #000" type="text" name="number" id="number" placeholder="+843...">
                     <div id="recaptcha-container"></div>
-                    <button type="button" id="send" onClick="phoneAuth()">Send</button>
+                    <button style="color: #06BBCC" type="button" id="send" onClick="phoneAuth()">Send</button>
                 </div>
                 <div id="verifier" style="display: none">
-                    <h2>Your OTP has been send</h2>
-                    <input type="text" id="verificationcode" placeholder="OTP Code">
+                    <h2 style="color: #06BBCC">Your OTP has been send</h2>
+                    <input style="background: #ffffff;color: #000" type="text" id="verificationcode" placeholder="OTP Code">
                     <button type="button" id="verify" onClick="codeverify()">Verify</button>
                     <div class="p-conf">Number Verified</div>
                     <div class="n-conf">OTP ERROR</div>
