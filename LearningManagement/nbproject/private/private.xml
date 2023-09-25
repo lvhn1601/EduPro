@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/sign-up-byMail.jsp</file>
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/OTPResetPasswordController.java</file>
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/OTPConfirmationController.java</file>
@@ -14,6 +15,13 @@
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/ErrorController.java</file>
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/ProfileController.java</file>
             <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/SignUpController.java</file>
+=======
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/model/Account.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/SignInController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-up-byMail.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/assets/css/otp-confirmation.css</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/otp-confirmation.jsp</file>
+>>>>>>> 2028ffe5263447c6db5043b271cdf130efd65724
         </group>
     </open-files>
 </project-private>

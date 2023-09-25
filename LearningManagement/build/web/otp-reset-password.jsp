@@ -8,14 +8,23 @@
         <title>EduPro - Online Learning</title>
     </head>
     <link href="assets/css/otp-confirmation.css" rel="stylesheet" type="text/css" media="all">
+    <style>
+        body {
+            background: url(assets/img/sanhAlpha.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+
+        }
+    </style>
     <body>
-        <form action="otp-reset-password" method="post">
+        <%@include file="components/header-signIn-signUp.jsp" %>
+        <form action="otp-reset-password" method="post" style="background-color: #f2f2f2">
             <br><br>
-            <h2>Your OTP has been send</h2>
+            <h2 style="color: #06BBCC">Your OTP has been send</h2>
             <br>
-            <p>Enter your OTP to reset password</p>
+            <p style="color: #06BBCC">Enter your OTP to reset password</p>
             <br>
-            <input type="text" placeholder="OTP" name="otp" required="">
+            <input style="background: #ffffff;color: #000" type="text" placeholder="OTP" name="otp" required="">
             <br>
             <div style="color: #b5bccaed">
                 ${requestScope.msg}

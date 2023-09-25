@@ -63,13 +63,13 @@
                     <h2 style="color: #06BBCC">SIGN UP</h2>
                     <p style="color: #06BBCC">Enter your phone number to get OTP</p>
                     <br>
-                    <input style="background: #ffffff" type="text" name="number" id="number" placeholder="+843...">
+                    <input style="background: #ffffff;color: #000" type="text" name="number" id="number" placeholder="+843...">
                     <div id="recaptcha-container"></div>
                     <button type="button" id="send" onClick="phoneAuth()">Send</button>
                 </div>
                 <div id="verifier" style="display: none">
-                    <h2>Your OTP has been send</h2>
-                    <input type="text" id="verificationcode" placeholder="OTP Code">
+                    <h2 style="color: #06BBCC">Your OTP has been send</h2>
+                    <input style="background: #ffffff;color: #000" type="text" id="verificationcode" placeholder="OTP Code">
                     <button type="button" id="verify" onClick="codeverify()">Verify</button>
                     <div class="p-conf">Number Verified</div>
                     <div class="n-conf">OTP ERROR</div>
