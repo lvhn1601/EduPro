@@ -4,6 +4,7 @@
  */
 package controller;
 
+import consts.IConstants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -36,7 +37,7 @@ public class SignUp extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SignUp</title>");            
+            out.println("<title>Servlet SignUp</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet SignUp at " + request.getContextPath() + "</h1>");
@@ -57,6 +58,8 @@ public class SignUp extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("GOOGLE_LOGIN_HREF", IConstants.GOOGLE_LOGIN_HREF);
+
         request.getRequestDispatcher("sign-up.jsp").forward(request, response);
     }
 

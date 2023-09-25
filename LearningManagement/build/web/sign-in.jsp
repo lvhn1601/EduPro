@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-           <link rel="shortcut icon" href="assets/img/?Pngtree?blue open book_4426437.png">
+        <link rel="shortcut icon" href="assets/img/?Pngtree?blue open book_4426437.png">
         <title>EduPro - Online Learning</title>
     </head>
     <link href="assets/css/sign-in.css" rel="stylesheet" type="text/css" media="all">
@@ -100,35 +100,43 @@
             <label class="switch">
                 <input class=" btn-check" name="isRemeberMe" type="checkbox" id="rememberMe" checked style="transform: scale(0.5);"> 
                 <span class="slider round" ></span>
-                <h4  style="color: #06BBCC; margin-left: 100px; font-size: 80%">Remember me</h4>
+                <h4  style="color: #06BBCC; margin-left: 70px; font-size: 80%">Remember me</h4>
             </label>
+            <a href="${GOOGLE_LOGIN_HREF}" class="google-btn" style="width: 184px; height: 42px; background-color: #4285f4; border-radius: 2px; box-shadow: 0 3px 4px 0 rgba(0,0,0,.25); text-decoration: none; display: inline-block; position: relative; margin-left: 78px">
+                <div class="google-icon-wrapper" style="position: absolute; margin-top: 1px; margin-left: 1px; width: 40px; height: 40px; border-radius: 2px; background-color: #fff; ">
+                    <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" style="position: absolute; margin-top: 11px; margin-left: 11px; width: 18px; height: 18px;">
+                </div>
+                <p class="btn-text" style="float: right; margin: 11px 11px 0 0; color: #fff; font-size: 14px; letter-spacing: 0.2px; font-family: 'Roboto';">Continue with Google</p>
+            </a>
             <button style="color: #06BBCC" type="submit">SIGN IN</button>
             <div class="social" style="margin-top: 20px">
-                <a href="sign-up.jsp" style="margin-left: 50px; text-decoration: none">Sign Up</a>
-                <a href="${GOOGLE_LOGIN_HREF}">Login With Google</a>
-                <a href="forget-password.jsp">Forgot password?</a>
+
+
+                <a href="sign-up" style= "text-decoration: none;white-space: nowrap; margin-left: 40px">Sign Up</a>
+                <a href="forget-password.jsp" style=" margin-left: 50px">Forgot password?</a>
             </div>
+            
 
         </form>
-<!--        <script>
-            function validateForm() {
-                var username = document.forms["signInForm"]["username"].value;
-                var password = document.forms["signInForm"]["password"].value;
-
-                // Regular expression for a valid email address
-                var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-                // Regular expression for a valid phone number (assuming 10 digits)
-                var phoneRegex = /^\d{10}$/;
-
-                if (!emailRegex.test(username) && !phoneRegex.test(username)) {
-                    alert("Please enter a valid email address or phone number.");
-                    return false;
-                }
-                // Add additional validation for the password if needed
-                return true;
-            }
-        </script>-->
+        <!--        <script>
+                    function validateForm() {
+                        var username = document.forms["signInForm"]["username"].value;
+                        var password = document.forms["signInForm"]["password"].value;
+        
+                        // Regular expression for a valid email address
+                        var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        
+                        // Regular expression for a valid phone number (assuming 10 digits)
+                        var phoneRegex = /^\d{10}$/;
+        
+                        if (!emailRegex.test(username) && !phoneRegex.test(username)) {
+                            alert("Please enter a valid email address or phone number.");
+                            return false;
+                        }
+                        // Add additional validation for the password if needed
+                        return true;
+                    }
+                </script>-->
     </body>
 
 </html>

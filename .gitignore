@@ -1,2 +1,4 @@
 /LearningManagement/dist/
 *.jar
+private/properties/
+private/xml/

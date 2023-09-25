@@ -16,10 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
 
-/**
- *
- * @author DELL
- */
+
 @WebServlet(name = "PasswordCreationController", urlPatterns = {"/password-creation"})
 public class PasswordCreationController extends HttpServlet {
 
