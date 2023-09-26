@@ -9,10 +9,23 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ *
+ * @author lvhn1
+ */
+
 @Builder
 @Getter
 @Setter
 @ToString
-public class Student {
-    
+public class Subject {
+    private int id;
+    private String name;
+    private String code;
+    private Account manager;
+    private boolean status;
+    private String created_by;
+    private String created_at;
+    private String update_by;
+    private String update_at;
 }
