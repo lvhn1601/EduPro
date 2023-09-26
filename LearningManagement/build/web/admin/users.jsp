@@ -248,7 +248,7 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
-
+        
         <script>
             
             function jumpTo(page_num) {
@@ -289,6 +289,7 @@
                             console.log(data);
                         });
             }
+            
         </script>
     </body>
 </html>

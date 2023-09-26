@@ -274,13 +274,15 @@ public class AccountDAO extends DBContext {
     }
      public boolean update(Account account, int accountId) {
         int check = 0;
-        String sql = "UPDATE account SET account_name = ?, account_avatar_url = ?, account_dob = ? WHERE account_id = ?";
+        String sql = "UPDATE account SET account_name = ?, account_avatar_url = ?, account_dob = ?, account_email =?, account_phone= ? WHERE account_id = ?";
 
         try (  PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setObject(1, account.getName());
             ps.setObject(2, account.getAvatar_url());
             ps.setObject(3, account.getDob());
-            ps.setObject(4, accountId);
+            ps.setObject(4, account.getEmail());
+            ps.setObject(5, account.getPhone());
+            ps.setObject(6, accountId);
             check = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
