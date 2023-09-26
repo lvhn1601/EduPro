@@ -5,12 +5,12 @@
             <div class="modal-header">
                 <h4 class="modal-title">Change Information</h4>
                 <a  style="cursor: pointer"
-                    data-dismiss="modal"
+                    data-bs-dismiss="modal"
                     ><i class="fa-solid fa-xmark"></i></a>
             </div>
             <div class="modal-body">
-                <p style="color: red">${sessionScope.msgchangeInformation}</p>
-                <form action="profile" method="post" id="reused_form">
+                <p  id="error-mess" style="color: red">${sessionScope.msgchangeInformation}</p>
+                <form action="profile" method="post" id="form-change-nformation">
                     <input type="hidden" name="type" value="changeInformation">
                     <div class="form-group mt-4">
                         <label for="name"> Name:</label>
@@ -20,6 +20,38 @@
                             id="name"
                             name="accountName"
                             value="${sessionScope.accountCur.name}"
+                            />
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="email"> Email:</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            name="accountEmail"
+                            value="${sessionScope.accountCur.email}"
+                            />
+                         <input
+                             type="hidden"
+                            class="form-control"
+                            name="currentEmail"
+                            value="${sessionScope.accountCur.email}"
+                            />
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="phone"> Phone: </label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="phone"
+                            name="accountPhone"
+                            value="${sessionScope.accountCur.phone}"
+                            />
+                         <input
+                             type="hidden"
+                            class="form-control"
+                            name="currentPhone"
+                            value="${sessionScope.accountCur.phone}"
                             />
                     </div>
                     <div class="form-group mt-4">
@@ -34,7 +66,8 @@
                     </div>
 
                     <button
-                        type="submit"
+                        type="button"
+                        onclick="checkEmpty()"
                         class="btn-grad mt-3"
                         id="btnChangeInf"
                         style="width: 100%; border: none"
@@ -46,3 +79,4 @@
         </div>
     </div>
 </div>
+

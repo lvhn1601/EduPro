@@ -7,8 +7,8 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-         <link rel="shortcut icon" href="assets/img/—Pngtree—blue open book_4426437.png">
-       
+        <link rel="shortcut icon" href="assets/img/—Pngtree—blue open book_4426437.png">
+
         <title>My profile</title>
 
         <!-- Google Web Fonts -->
@@ -38,8 +38,8 @@
                 <div class="col-md-3">
                     <div class="profile-img">
                         <img src="${sessionScope.accountCur.avatar_url}" alt="" />
-                        
-                        
+
+
                         <div class="file btn btn-lg btn-primary">  
                             <a class="profile-edit-btn"
                                data-bs-toggle="modal"
@@ -55,6 +55,7 @@
                         <div class="profile-head">
                             <h5>${sessionScope.accountCur.name}</h5>
                             <h6>Email: ${sessionScope.accountCur.email}</h6>
+                            <h6>Phone: ${sessionScope.accountCur.phone}</h6>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -134,6 +135,14 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
+                                    <label><i class="fa-solid fa-phone icon"></i>Phone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>${sessionScope.accountCur.phone}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
                                     <label><i class="fa-solid fa-signature icon"></i> Name</label>
                                 </div>
                                 <div class="col-md-4">
@@ -157,22 +166,22 @@
                                     <p><i class="fa-regular fa-pen-to-square"></i></p>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label><i class="fa-solid fa-lock icon"></i> Pass Word</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label><i class="fa-solid fa-lock icon"></i> Pass Word</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>
+                                            <a
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#changePasswordModal"
+                                                href="javascript:void(0)"
+                                                >Change</a
+                                            >
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <p>
-                                        <a
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#changePasswordModal"
-                                            href="javascript:void(0)"
-                                            >Change</a
-                                        >
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                            </div> 
                         <!---------------- END TAB ABOUT------------->
                         <!----------------START TAB CLASS JOIN------------->
                         <div
@@ -204,6 +213,7 @@
                                 </tbody>
                             </table>
                         </div>
+
                         <!----------------END TAB CLASS JOIN------------->
                         <!------------------START TAB MY CERTIFICATE----------------------->
 
@@ -258,6 +268,44 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        const listDomains = ${domains};
+        const error_text = document.getElementById("error-mess");
+        const submit_btn = document.getElementById("submit_btn");
+        const email_box = document.getElementById("email");
+        const phone_box = document.getElementById("phone");
+
+        function checkDomain(str) {
+            for (let domain of listDomains)
+                if (domain === str)
+                    return true;
+            return false;
+        }
+
+        function checkEmpty() {
+            let email = email_box.value;
+            let phone = phone_box.value;
+
+            error_text.textContent = null;
+
+            if (email.trim() === '' && phone.trim() === '') {
+                error_text.textContent = "You must input email or phone!";
+            }
+
+
+            if (!checkDomain(email.split("@")[1])) {
+                error_text.textContent = "This email domain is not valid!";
+            }
+
+            if (phone.trim() !== '' && (phone.length > 12 || (phone.charAt(0) !== '0' && phone.charAt(0) !== '+') || phone.length < 8)) {
+                error_text.textContent = "This phone number is not valid!";
+            }
+
+            if (!error_text.textContent) {
+                document.getElementById('form-change-nformation').submit();
+            }
+        }
+    </script>
+    <script>
         $("#about-tab").addClass("active");
         $("#about").addClass("show active");
         const msgUpdate = '<%= session.getAttribute("msgUpdate") %>';
@@ -303,6 +351,7 @@
             };
         }
     </script>
+
 
 
     <%
