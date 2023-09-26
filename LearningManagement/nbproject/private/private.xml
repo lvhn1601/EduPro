@@ -3,13 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/modal/modal-change-avatar.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/modal/modal-change-information.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/modal/modal-change-password.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/dao/AccountDAO.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/web/profile.jsp</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/controller/ProfileController.java</file>
-            <file>file:/C:/Users/acer/Downloads/New%20folder%20(2)/g5/LearningManagement/src/java/connection/DBContext.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/password-recovery.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/password-creation.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/ForgetPasswordController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/SignInController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-in.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/otp-reset-password.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/OTPConfirmationController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/forget-password-bySMS.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/PasswordCreationController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/sign-up.jsp</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/ErrorController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/LogOutController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/PasswordRecoveryController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/src/java/controller/OTPResetPasswordController.java</file>
+            <file>file:/D:/SWP_LMS/g5/LearningManagement/web/forget-password-byMail.jsp</file>
         </group>
     </open-files>
 </project-private>

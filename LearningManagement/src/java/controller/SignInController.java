@@ -105,10 +105,10 @@ public class SignInController extends HttpServlet {
             session.setAttribute("accountCur", accountDAO.getOneByAccountId(account.getId()));
 //            System.out.println(accountDAO.getOneByAccountId(account.getId()));
 //            System.out.println(account.getRole().getId());
-            if (account.getRole().getId() == 1) {
+            if (account.getRole().getId() == 4) {
                 response.sendRedirect("/LearningManagement");
             }
-            if (account.getRole().getId() == 2) {
+            if (account.getRole().getId() == 1) {
                 response.sendRedirect("admin/users");
             }
         }
