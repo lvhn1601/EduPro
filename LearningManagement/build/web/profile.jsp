@@ -166,7 +166,6 @@
                                     <p><i class="fa-regular fa-pen-to-square"></i></p>
                                 </div>
                             </div>
-                            <c:if test="${sessionScope.accountCur.password != null}">  
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label><i class="fa-solid fa-lock icon"></i> Pass Word</label>
@@ -182,8 +181,7 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
-                        </c:if>
+                            </div> 
                         <!---------------- END TAB ABOUT------------->
                         <!----------------START TAB CLASS JOIN------------->
                         <div

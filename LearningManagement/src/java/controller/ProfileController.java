@@ -94,12 +94,9 @@ public class ProfileController extends HttpServlet {
                 String oldPass = request.getParameter("oldPass");
                 String newPass = request.getParameter("newPass");
                 String reNewPass = request.getParameter("reNewPass");
-                if (!oldPass.equals(account.getPassword())) {
+              if (account.getPassword()!=null && !oldPass.equals(account.getPassword())) {
                     session.setAttribute("msgchangePassword", "Password is wrong, please again");
-                } else {
-                    if (!newPass.equals(reNewPass)) {
-                        session.setAttribute("msgchangePassword", "Renew Password is not match");
-                    } else {
+                }else if(account.getPassword() == null||oldPass.equals(account.getPassword())) {
                         boolean isChangePasswordSuccess = accountDAO.changePassword(account.getId(), newPass);
                         if (isChangePasswordSuccess) {
                             account.setPassword(newPass);
@@ -109,6 +106,10 @@ public class ProfileController extends HttpServlet {
                             session.setAttribute("msgchangePassword", "Change password Fail");
                         }
                     }
+              else {
+                    if (!newPass.equals(reNewPass)) {
+                        session.setAttribute("msgchangePassword", "Renew Password is not match");
+                    } 
                 }
                 break;
             }
@@ -149,6 +150,7 @@ public class ProfileController extends HttpServlet {
                 String accountAvatarurl = request.getParameter("accoutAvatarUrl");
                 account.setAvatar_url(accountAvatarurl);
                 boolean isChangeAvatar = accountDAO.update(account, account.getId());
+                session.setAttribute("accountCur", account);
                 if (isChangeAvatar) {
                     session.setAttribute("msgchangeAvatar", "Change Avatar Success");
                 } else {
