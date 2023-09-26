@@ -373,17 +373,15 @@ public class AdminDAO extends DBContext {
         return count;
     }
 
-    public List<Account> getManagers(String role) {
+    public List<Account> getManagers() {
         String sql = "select account_id, account_name from account\n"
                 + "left join setting on account_role_id = setting_id\n"
-                + "where setting_key = 1 and account_active = 1 and setting_title = ?";
+                + "where setting_key = 1 and account_active = 1 and setting_id = 2";
 
         List<Account> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, role);
-            System.out.println(ps.toString());
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
