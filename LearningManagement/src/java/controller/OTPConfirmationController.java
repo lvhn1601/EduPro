@@ -89,10 +89,11 @@ public class OTPConfirmationController extends HttpServlet {
             String systemOTP = (String) session.getAttribute("systemOtp");
             if (otp.equals(systemOTP)) {
                 session.removeAttribute("otp");
-                session.setAttribute("isOtpConfirmSuccess", "true");
+//                session.setAttribute("isOtpConfirmSuccess", "true");
                 System.out.println(user);
                 accountDAO.registerGoogleAcc(user);
                 accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
+                
                 session.setAttribute("accountCur", accountDAO.getOneByEmail(user.getEmail()));
                 
                 response.sendRedirect("/LearningManagement");
@@ -108,7 +109,7 @@ public class OTPConfirmationController extends HttpServlet {
 
         if (otp.equals(systemOTP)) {
             session.removeAttribute("otp");
-            session.setAttribute("isOtpConfirmSuccess", "true");
+//            session.setAttribute("isOtpConfirmSuccess", "true");
             response.sendRedirect("password-creation");
         } else {
             request.setAttribute("msg", "OTP wrong, enter again");

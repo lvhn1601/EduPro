@@ -225,13 +225,28 @@ public class AccountDAO extends DBContext {
             check = ps.executeUpdate();
             if (check > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                return rs.getInt(1);
+                if (rs.next()) {
+                    int newAccountId = rs.getInt(1); // Lấy giá trị ID của tài khoản mới
+                    // Cập nhật trường created_by và update_by của tài khoản mới
+                    updateCreatedByAndUpdatedBy(newAccountId, newAccountId);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         }
-        return 0;
+        return check;
+    }
+
+    public void updateCreatedByAndUpdatedBy(int accountId, int userId) {
+        String updateSql = "UPDATE Account SET created_by = ?, update_by = ? WHERE account_id = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(updateSql)) {
+            ps.setInt(1, userId);
+            ps.setInt(2, userId);
+            ps.setInt(3, accountId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
     }
 
     public int registerGoogleAcc(UserGoogleDto obj) {
@@ -249,8 +264,10 @@ public class AccountDAO extends DBContext {
             check = ps.executeUpdate();
             if (check > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                return rs.getInt(1);
+                if (rs.next()) {
+                    int newAccountId = rs.getInt(1); 
+                    updateCreatedByAndUpdatedBy(newAccountId, newAccountId);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace(System.out);
@@ -272,11 +289,12 @@ public class AccountDAO extends DBContext {
         }
         return check > 0;
     }
-     public boolean update(Account account, int accountId) {
+
+    public boolean update(Account account, int accountId) {
         int check = 0;
         String sql = "UPDATE account SET account_name = ?, account_avatar_url = ?, account_dob = ?, account_email =?, account_phone= ? WHERE account_id = ?";
 
-        try (  PreparedStatement ps = connection.prepareStatement(sql);) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setObject(1, account.getName());
             ps.setObject(2, account.getAvatar_url());
             ps.setObject(3, account.getDob());
