@@ -60,7 +60,7 @@ public class LogOutController extends HttpServlet {
             throws ServletException, IOException {
          HttpSession session = request.getSession();
         session.removeAttribute("accountCur");
-        response.sendRedirect("sign-in");
+        response.sendRedirect("/LearningManagement/");
     }
 
     /**
