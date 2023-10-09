@@ -113,9 +113,14 @@
                                                         </select>
                                                     </td>
                                                     <td class="p-3">
-                                                        <form class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" ${u.active ? 'checked' : ''} onchange="updateStatus(this ,${u.id})">
-                                                        </form>
+                                                        <c:if test="${u.active == 0}">
+                                                            <div style="color: red">Unverify</div>
+                                                        </c:if>
+                                                        <c:if test="${u.active != 0}">
+                                                            <form class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" ${u.active == 1 ? 'checked' : ''} onchange="updateStatus(this ,${u.id})">
+                                                            </form>
+                                                        </c:if>
                                                     </td>
                                                     
                                                     <td class="p-3">${u.created_by}</td>

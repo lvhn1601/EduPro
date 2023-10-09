@@ -141,7 +141,7 @@ public class AdminDAO extends DBContext {
                         .id(rs.getInt("account_id"))
                         .email(rs.getString("account_email"))
                         .phone(rs.getString("account_phone"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .name(rs.getString("account_name"))
                         .avatar_url(rs.getString("account_avatar_url"))
                         .dob(rs.getDate("account_dob"))
@@ -191,7 +191,7 @@ public class AdminDAO extends DBContext {
                         .id(rs.getInt("account_id"))
                         .email(rs.getString("account_email"))
                         .phone(rs.getString("account_phone"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .name(rs.getString("account_name"))
                         .avatar_url(rs.getString("account_avatar_url"))
                         .dob(rs.getDate("account_dob"))
@@ -278,8 +278,8 @@ public class AdminDAO extends DBContext {
         return count;
     }
 
-    public void updateStatus(String table, String title, int id, boolean value, int admin_id) {
-        String sql = "update " + table + " set " + title + " = " + (value ? 1 : 0) + ", update_by = ? where " + table + "_id = " + id;
+    public void updateStatus(String table, String title, int id, int value, int admin_id) {
+        String sql = "update " + table + " set " + title + " = " + value + ", update_by = ? where " + table + "_id = " + id;
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);

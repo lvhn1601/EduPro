@@ -63,7 +63,12 @@ public class UpdateStatusServlet extends HttpServlet {
         String table = request.getParameter("table");
         String title = table + "_" + (table.equals("account") ? "active" : "status");
         int id = Integer.parseInt(request.getParameter("id"));
-        boolean status = request.getParameter("isChecked").equals("true");
+        int status = 0;
+        
+        if (table.equals("account"))
+            status = request.getParameter("isChecked").equals("true") ? 1 : 2;
+        else
+            status = request.getParameter("isChecked").equals("true") ? 1 : 0;
         
         AdminDAO db = new AdminDAO();
         db.updateStatus(table, title, id, status, acc.getId());
