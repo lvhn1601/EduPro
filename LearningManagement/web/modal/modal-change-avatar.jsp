@@ -5,7 +5,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Change Avatar</h4>
                 <a  style="cursor: pointer"
-                    data-dismiss="modal"
+                    data-bs-dismiss="modal"
                     ><i class="fa-solid fa-xmark"></i></a>
             </div>
             <div class="modal-body">

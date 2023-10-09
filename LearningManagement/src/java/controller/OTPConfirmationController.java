@@ -14,8 +14,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import com.google.gson.JsonObject;
+import consts.IConstants;
 import dao.AccountDAO;
 import dto.UserGoogleDto;
+import static java.lang.System.out;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -62,6 +65,7 @@ public class OTPConfirmationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("GOOGLE_LOGIN_HREF", IConstants.GOOGLE_LOGIN_HREF);
         request.getRequestDispatcher("otp-confirmation.jsp").forward(request, response);
     }
 
@@ -79,15 +83,19 @@ public class OTPConfirmationController extends HttpServlet {
         HttpSession session = request.getSession();
         AccountDAO accountDAO = new AccountDAO();
         UserGoogleDto user = (UserGoogleDto) session.getAttribute("user");
-        
+
         if (user != null) {
             String otp = request.getParameter("otp");
             String systemOTP = (String) session.getAttribute("systemOtp");
             if (otp.equals(systemOTP)) {
                 session.removeAttribute("otp");
-                session.setAttribute("isOtpConfirmSuccess", "true");
-                
+//                session.setAttribute("isOtpConfirmSuccess", "true");
+                System.out.println(user);
                 accountDAO.registerGoogleAcc(user);
+                accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
+                
+                session.setAttribute("accountCur", accountDAO.getOneByEmail(user.getEmail()));
+                
                 response.sendRedirect("/LearningManagement");
                 return;
             } else {
@@ -101,7 +109,7 @@ public class OTPConfirmationController extends HttpServlet {
 
         if (otp.equals(systemOTP)) {
             session.removeAttribute("otp");
-            session.setAttribute("isOtpConfirmSuccess", "true");
+//            session.setAttribute("isOtpConfirmSuccess", "true");
             response.sendRedirect("password-creation");
         } else {
             request.setAttribute("msg", "OTP wrong, enter again");

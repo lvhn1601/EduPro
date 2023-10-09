@@ -11,25 +11,26 @@
     <link href="assets/css/password-creation.css" rel="stylesheet" type="text/css" media="all">
 
     <body>
-        <form id="myForm" action="password-creation" method="post" onsubmit="return validateForm()">
+        <%@include file="components/header-signIn-signUp.jsp" %>
+        <form id="myForm" action="password-creation" method="post" onsubmit="return validateForm()" style="background-color: #f2f2f2">
             <br>
-            <h2>SIGN UP</h2>
+            <h2 style="color: #06BBCC">SIGN UP</h2>
             <br>
-            <p>Enter your fullname and password to register</p>
+            <p style="color: #06BBCC"> Enter your fullname and password to register</p>
             <br>
-            <input type="text" placeholder="Name" name="accountDetailName" required="">
+            <input style="background: #ffffff;color: #000" type="text" placeholder="Name" name="accountDetailName" required="">
 
-            <input type="password" placeholder="Password" name="accountPassword" id="password" required="">
+            <input style="background: #ffffff;color: #000" type="password" placeholder="Password" name="accountPassword" id="password" required="">
 
-            <input type="password" placeholder="Re-enter Password" id="rePassword" required="">
+            <input style="background: #ffffff;color: #000" type="password" placeholder="Re-enter Password" id="rePassword" required="">
 
             <div id="passwordError" style="color: #b5bccaed; display: none;">Passwords do not match.</div>
-
-            <button type="submit">SIGN UP</button>
+            <br>
+            <button style="color: #06BBCC" type="submit">SIGN UP</button>
 
             <div class="social">
-                <a href="sign-in" style="margin-left: 50px; text-decoration: none">Sign In</a>
-                <a href="/WebLaptop" style="margin-left: 120px; text-decoration: none">Home</a>
+                <a href="sign-in" style="margin-left: 50px; text-decoration: none; color: #06BBCC">Sign In</a>
+                <a href="/LearningManagement" style="margin-left: 120px; text-decoration: none; color: #06BBCC">Home</a>
             </div>
         </form>
 
