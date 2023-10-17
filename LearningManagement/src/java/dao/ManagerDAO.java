@@ -124,7 +124,7 @@ public class ManagerDAO extends DBContext {
 
     public List<Subject> getListSubject(int managerId) {
         List<Subject> subjects = new ArrayList<>();
-        String sql = "select s.subject_id, s.subject_name from subject s where s.subject_manager_id= ?";
+        String sql = "select s.subject_id, s.subject_name, s.subject_code from subject s where s.subject_manager_id= ?";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, managerId);
             ResultSet rs = ps.executeQuery();
@@ -132,6 +132,7 @@ public class ManagerDAO extends DBContext {
                 Subject subject = Subject.builder()
                         .id(rs.getInt("subject_id"))
                         .name(rs.getString("subject_name"))
+                        .code(rs.getString("subject_code"))
                         .build();
                 subjects.add(subject);
             }

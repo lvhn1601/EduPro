@@ -92,7 +92,9 @@ public class SubjectDetailManagementController extends HttpServlet {
             request.getRequestDispatcher("subject-detail-management.jsp").forward(request, response);
         } else {
             request.setAttribute("subjects", subjects);
-            request.getRequestDispatcher("subject-detail-management.jsp").forward(request, response);
+            int firstId = subjects.get(0).getId();
+            response.sendRedirect("subject-detail-management?id=" + firstId);
+//            request.getRequestDispatcher("subject-detail-management.jsp").forward(request, response);
         }
     }
 

@@ -8,20 +8,21 @@ import dao.ManagerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Account;
-import model.Question;
 import model.Subject;
 
 /**
  *
  * @author dell
  */
-public class QuestionDetailManagementController extends HttpServlet {
+@WebServlet(name = "SubjectListController", urlPatterns = {"/manager/subject-list"})
+public class SubjectListController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +41,10 @@ public class QuestionDetailManagementController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet QuestionDetailManagementController</title>");
+            out.println("<title>Servlet SubjectListController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet QuestionDetailManagementController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SubjectListController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,24 +65,9 @@ public class QuestionDetailManagementController extends HttpServlet {
         HttpSession session = request.getSession();
         Account accountCur = (Account) session.getAttribute("accountCur");
         ManagerDAO managerDAO = new ManagerDAO();
-        
-     
         List<Subject> subjects = managerDAO.getListSubject(accountCur.getId());
-        if (request.getParameter("id") != null) {
-            int subjectId = Integer.parseInt(request.getParameter("id"));
-            Subject subject = managerDAO.getSubjectById(subjectId);
-            List<Question> questions = managerDAO.getListQuestion(subjectId);
-            System.out.println(questions);
-            request.setAttribute("questions", questions);
-            request.setAttribute("subjects", subjects);
-            request.setAttribute("subject", subject);
-            request.getRequestDispatcher("question-detail-management.jsp").forward(request, response);
-        } else {
-            request.setAttribute("subjects", subjects);
-            int firstId = subjects.get(0).getId();
-            response.sendRedirect("question-detail-management?id=" + firstId);
-//            request.getRequestDispatcher("question-detail-management.jsp").forward(request, response);
-        }   
+        request.setAttribute("subjects", subjects);
+        request.getRequestDispatcher("subject-list.jsp").forward(request, response);
     }
 
     /**
