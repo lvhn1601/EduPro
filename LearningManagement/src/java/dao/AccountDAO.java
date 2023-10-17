@@ -116,7 +116,9 @@ public class AccountDAO extends DBContext {
 
     public Account getOneByAccountId(int accountId) {
 
-        String sql = "select * from Account where account_id = ?";//
+        String sql = "select * from Account\n"
+                + "join setting on setting.setting_id = account.account_role_id\n"
+                + "where account_id = ?";//
         try ( PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setObject(1, accountId);
             ResultSet rs = stm.executeQuery();
@@ -132,6 +134,8 @@ public class AccountDAO extends DBContext {
                         .dob(rs.getDate("account_dob"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
+                                .title(rs.getString("setting_title"))
+                                .display_order(rs.getInt("setting_display_order"))
                                 .build())
                         .build();
                 return s;
@@ -160,7 +164,9 @@ public class AccountDAO extends DBContext {
 
     public Account getOneByEmail(String email) {
 
-        String sql = "Select * FROM Account WHERE account_email = ?";
+        String sql = "Select * FROM Account \n"
+                + "join setting on setting.setting_id = account.account_role_id\n"
+                + "WHERE account_email = ?";
 
         try ( PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setObject(1, email);
@@ -178,6 +184,8 @@ public class AccountDAO extends DBContext {
                         .dob(rs.getDate("account_dob"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
+                                .title(rs.getString("setting_title"))
+                                .display_order(rs.getInt("setting_display_order"))
                                 .build())
                         .build();
                 return a;
@@ -309,5 +317,7 @@ public class AccountDAO extends DBContext {
     }
 
     public static void main(String[] args) {
+        AccountDAO db = new AccountDAO();
+        System.out.println(db.getOneByAccountId(1));
     }
 }

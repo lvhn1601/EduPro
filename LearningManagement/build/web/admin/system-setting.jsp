@@ -180,6 +180,7 @@
                                             <tr>
                                                 <th class="border-bottom p-3" style="min-width: 30px;">Id</th>
                                                 <th class="border-bottom p-3" style="min-width: 180px;">Role</th>
+                                                <th class="border-bottom p-3">Display Order</th>
                                                 <th class="border-bottom p-3">Status</th>
                                                 <th class="border-bottom p-3">Created by</th>
                                                 <th class="border-bottom p-3" style="min-width: 50px;"></th>
@@ -193,6 +194,9 @@
                                                         <div class="d-flex align-items-center">
                                                             <span class="ms-2">${r.title}</span>
                                                         </div>
+                                                    </td>
+                                                    <td class="p-3">
+                                                        <input type="number" max="4" min="1" value="${r.display_order}" onchange="updateDisplayOrder(this, ${r.id})" style="border: none"/>
                                                     </td>
                                                     <td class="p-3">
                                                         <form class="form-check form-switch">
@@ -329,7 +333,7 @@
         <script src="../assets/js/app.js"></script>
 
         <script>
-            
+            console.log(${sessionScope.accountCur.role.display_order});
             function jumpTo(page_num) {
                 let search = "${param.search eq null ? '' : param.search}";
                 location.href = "./subjects?page=" + Math.floor(page_num) + (search == "" ? "" : "&search=" + search);
@@ -360,6 +364,17 @@
                         .then(data => {
                             console.log(data);
                         });
+            }
+            
+            function updateDisplayOrder(element, id) {
+                var val = element.value;
+                if (val > 0 && val < 5) {
+                    fetch("updateDisOrd?id=" + id + "&value=" + val)
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data);
+                        });
+                }
             }
         </script>
     </body>

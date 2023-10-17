@@ -3,21 +3,46 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/admin/system-setting.jsp</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/SignInController.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/SystemSettingServlet.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/connection/DBContext.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/AddSubjectServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/admin/edit-user.jsp</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Quiz.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Answer.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/manager/lessons.jsp</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/dto/UserGoogleDto.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/dao/AccountDAO.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/UserManagerServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Chapter.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/admin/components/header.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/EditSubjectServlet.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/admin/users.jsp</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/EditSubjectServlet.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/dao/AdminDAO.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/dao/ManagerDAO.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/UpdateStatusServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/manager/questions.jsp</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Account.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/UpdateRoleServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/UpdateDisplayOrderServlet.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Setting.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/admin/components/sidebar.jsp</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/manager/quizzes.jsp</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/manager/GetDatasServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/manager/lesson-details.jsp</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/admin/subjects.jsp</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/AddUserServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/manager/QuizzesServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/EditUserServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/connection/DBContext.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/AddSubjectServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/manager/LessonsServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/core/UserFilter.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/manager/LessonDetailsServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Config.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Question.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/sign-in.jsp</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/manager/QuestionsServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Dimension.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/SubjectManagerServlet.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Subject.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Lesson.java</file>
         </group>
     </open-files>
 </project-private>

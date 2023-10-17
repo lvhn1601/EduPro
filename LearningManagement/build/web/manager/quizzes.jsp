@@ -1,0 +1,745 @@
+<%-- 
+    Document   : users
+    Created on : Sep 18, 2023, 3:11:42 PM
+    Author     : lvhn1
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Questions Manager - Manager</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
+        <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
+        <meta name="author" content="Shreethemes" />
+        <meta name="email" content="support@shreethemes.in" />
+        <meta name="website" content="../../../index.html" />
+        <meta name="Version" content="v1.2.0" />
+        <!-- favicon -->
+        <link rel="shortcut icon" href="../assets/img/logo.png">
+        <!-- Bootstrap -->
+        <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- simplebar -->
+        <link href="../assets/css/simplebar.css" rel="stylesheet" type="text/css" />
+        <!-- Icons -->
+        <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
+        <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
+        <!-- Css -->
+        <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <!-- Icon Font Stylesheet -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <!-- Loader -->
+        <div id="preloader">
+            <div id="status">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Loader -->
+
+        <div class="page-wrapper doctris-theme toggled">
+            <jsp:include page="../admin/components/sidebar.jsp"/>
+
+            <!-- Start Page Content -->
+            <main class="page-content bg-light">
+                <jsp:include page="../admin/components/header.jsp"/>
+
+                <div class="container-fluid">
+                    <div class="layout-specing">
+                        <nav aria-label="breadcrumb" class="d-inline-block mt-2">
+                            <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                <li class="breadcrumb-item"><a href="index.html">${sessionScope.accountCur.role.title}</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Quizzes</li>
+                            </ul>
+                        </nav>
+                        <div class="d-md-flex justify-content-between">
+                            <h5 class="mb-0">Quizzes Manager</h5>
+                        </div>
+                                            
+                        <form action="quizzes" method="get" class="d-md-flex justify-content-between mt-4">
+                            <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNew" onclick="showAddNew()"><i class="uil uil-plus"></i> New Quiz</a>
+
+                            <div class="col-sm-12 col-md-2 d-flex align-items-center">
+                                <h6 class="mb-0" style="padding-right: 5px">Subject: </h6>
+                                <div class="mb-0 position-relative w-100">
+                                    <select class="form-control time-during select2input" name="subject" style="background-color: #fff; border-radius: 10px;" onchange="this.form.submit()">
+                                        <option value="0"}>All</option>
+                                        <c:forEach items="${subjects}" var="s">
+                                            <option value="${s.id}" ${s.id eq param.subject ? 'selected' : ''}>${s.code} - ${s.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div><!--end col-->
+
+                            <div class="search-bar p-0 d-none d-lg-block ms-2">
+                                <div id="search" class="menu-search mb-0">
+                                    <div class="searchform">
+                                        <div>
+                                            <input type="text" class="form-control border rounded-pill" name="search" id="s" placeholder="Search..." value="${param.search}">
+                                            <input type="submit" id="searchsubmit" value="Search">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="row">
+                            <div class="col-12 mt-4">
+                                <div class="table-responsive shadow rounded">
+                                    <table class="table table-center bg-white mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="border-bottom p-3" style="min-width: 50px;">#</th>
+                                                <th class="border-bottom p-3" style="min-width: 300px;">Quiz title</th>
+                                                <th class="border-bottom p-3">Subject</th>
+                                                <th class="border-bottom p-3">Chapter</th>
+                                                <th class="border-bottom p-3">Type</th>
+                                                <th class="border-bottom p-3">Created by</th>
+                                                <th class="border-bottom p-3">Status</th>
+                                                <th class="border-bottom p-3" style="min-width: 50px;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach items="${quizzes}" var="q">
+                                                <tr>
+                                                    <th class="p-3">${q.id}</th>
+                                                    <td class="py-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="ms-2">${q.title}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-3">${q.subject.code}</td>
+                                                    <td class="p-3">${q.chapter.title}</td>
+                                                    <td class="p-3">${q.type ? "Random" : "Fixed"}</td>
+                                                    <td class="p-3">${q.created_by}</td>
+                                                    
+                                                    <td class="p-3">
+                                                        <form class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault ${q.id}" ${q.status ? 'checked' : ''} onchange="updateStatus(this, ${q.id})">
+                                                        </form>
+                                                    </td>
+                                                    
+                                                    <td class="text-end p-3">
+                                                        <a href="#"
+                                                           class="btn btn-icon btn-pills btn-soft-primary"
+                                                           data-bs-toggle="modal" data-bs-target="#cfgdetail"
+                                                           onclick="showInfo(${q.id}, '${q.title}', ${q.subject.id}, ${q.chapter.id}, ${q.type}, ${q.status})"
+                                                        >
+                                                            <i class="uil uil-edit"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!--end row-->
+
+                        <div class="row text-center">
+                            <!-- PAGINATION START -->
+                            <c:set var="cur" value="${param.page eq null ? 1 : param.page}" />
+                            <div class="col-12 mt-4">
+                                <div class="d-md-flex align-items-center text-center justify-content-between">
+                                    <span class="text-muted me-3">Showing ${(cur - 1) * 8 + 1} - ${(cur * 8) > requestScope.count ? requestScope.count : (cur * 8)} out of ${requestScope.count}</span>
+                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(1)" aria-label="Previous">First</a></li>
+                                        <c:forEach begin="${cur > 1 ? (cur + 3 > pages ? (pages - 4 < 1 ? 1 : pages - 4) : cur - 1) : 1}" end="${cur > 1 ? (cur + 3 > pages ? pages : cur + 3) : (5 > pages ? pages : 5)}" var="i">
+                                            <li class="page-item ${(param.page == i || (i==1 && param.page==null)) ? 'active' : ''}">
+                                                <a class="page-link" href="javascript:jumpTo(${i})">${i}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(${pages})" aria-label="Next">Last</a></li>
+
+                                    </ul>
+                                </div>
+                            </div><!--end col-->
+                            <!-- PAGINATION END -->
+                        </div><!--end row-->
+                    </div>
+                </div><!--end container-->
+
+                <!-- Footer Start -->
+                <footer class="bg-white shadow py-3">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-sm-start text-center">
+                                    <p class="mb-0 text-muted"><script>document.write(new Date().getFullYear())</script> © LMS. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html" target="_blank" class="text-reset">Group 5 - SE1741</a>.</p>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end container-->
+                </footer><!--end footer-->
+                <!-- End -->
+            </main>
+            <!--End page-content" -->
+        </div>
+        <!-- page-wrapper -->
+
+        <!-- Modal start -->
+        <!-- Detail Modal Start -->
+        <div class="modal fade" id="cfgdetail" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content" style="height: 80vh">
+                    <div class="modal-header border-bottom p-3">
+                        <h5 class="modal-title" id="exampleModalLabel1">Quiz Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="card border-0 rounded-0 ps-4 pe-4 pt-4 w-50">
+                        <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded shadow overflow-hidden bg-light" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link rounded-0 active" id="general-tab" data-bs-toggle="pill" href="#pills-general" role="tab" aria-controls="pills-general" aria-selected="false">
+                                    <div class="text-center pt-1 pb-1">
+                                        <h4 class="title fw-normal mb-0">General</h4>
+                                    </div>
+                                </a><!--end nav link-->
+                            </li><!--end nav item-->
+
+                            <li class="nav-item">
+                                <a class="nav-link rounded-0" id="questions-tab" data-bs-toggle="pill" href="#pills-questions" role="tab" aria-controls="pills-questions" aria-selected="false" onclick="getListConfig(document.getElementById('id').value)">
+                                    <div class="text-center pt-1 pb-1">
+                                        <h4 class="title fw-normal mb-0">Questions</h4>
+                                    </div>
+                                </a><!--end nav link-->
+                            </li><!--end nav item-->
+                        </ul><!--end nav pills-->
+                    </div>
+                    
+                    <div class="modal-body col-12">
+                        <div class="card border-0 rounded-0 p-4 pt-0">
+                            <div class="tab-content mt-2" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="general-tab">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                            <h4 class="">General Quiz Details</h4>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                    
+                                    <form class="mt-2" action="quizzes?action=updateGeneral" method="post">
+                                        <div class="row">
+                                            <input type="number" id="id" name="id" value="" style="display: none"/>
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Quiz Title</label>
+                                                    <input name="title" id="title" type="text" class="form-control" placeholder="Quiz title...">
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3 w-75">
+                                                    <label class="form-label">Subject</label>
+                                                    <select name="subject" id="subjectSelect" class="form-control form-select department-name select2input bg-white" onchange="updateDatas()">
+                                                        <c:forEach items="${subjects}" var="s">
+                                                            <option value="${s.id}">${s.code} - ${s.name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3 w-75">
+                                                    <label class="form-label">Chapter</label>
+                                                    <select name="chapter" id="chapterSelect" class="form-control form-select department-name select2input bg-white" onchange="">
+                                                        
+                                                    </select>
+                                                </div>
+                                            </div><!--end col-->
+                                            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Quiz type</label>
+                                                    <div class="d-flex ms-4">
+                                                        <div class="form-check pe-4">
+                                                            <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2 quiz-type-random" value="1" checked onchange="switchQuizType(true)">
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                Random
+                                                            </label>
+                                                        </div>
+                                                        
+                                                        <div class="form-check pe-4">
+                                                            <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2 quiz-type-fixed" value="0" onchange="switchQuizType(false)">
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                Fixed
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+                                            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Status</label>
+                                                    <div class="form-check form-switch ms-4">
+                                                        <input class="form-check-input" type="checkbox" name="status" id="flexSwitchCheckChecked quiz-status" checked="" onchange="statusLabel(this)">
+                                                        <label class="form-check-label" id="lblStatus" for="flexSwitchCheckChecked">Active</label>
+                                                    </div>
+                                                </div>
+                                            </div><!--end col-->
+                                        </div><!--end row-->
+            
+                                        <button type="submit" class="btn btn-primary mt-4">Save</button>
+                                    </form>
+                                </div><!--end teb pane-->
+
+                                <div class="tab-pane fade" id="pills-questions" role="tabpanel" aria-labelledby="questions-tab">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                            <h4 class="">Question List:</h4>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                    
+                                    <div class="row" id="config-row" style="display: none">
+                                        <input type="number" name="id" id="config-id" value="0" style="display: none"/>
+                                        <input type="number" name="quiz" id="quiz-id" value="0" style="display: none"/>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Dimension</label>
+                                                <select name="dimension" id="dimensionSelect" class="form-control form-select department-name select2input bg-white">
+                                                </select>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Chapter</label>
+                                                <select name="chapter" id="cfChapterSelect" class="form-control form-select department-name select2input bg-white">
+                                                </select>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-md-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Number of questions</label>
+                                                <input name="numOfQues" id="numOfQues" type="number" class="form-control" placeholder="Number of question..." required>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-md-1 d-flex align-items-center">
+                                            <a href="#" class="btn btn-icon btn-pills btn-soft-danger" onclick="removeConfig(this.parentNode)"><i class="uil uil-trash-alt"></i></a>
+                                            <input type="text" name="remove" value="no" style="display: none"/>
+                                        </div><!--end col-->
+                                    </div>
+                                    
+                                    <div class="tab-content mt-2" id="pills-tabContent">
+                                        <div class="tab-pane fade show active" id="tab-random" role="tabpanel">
+                                            <h6>Configs for random quiz:</h6>
+                                            <form class="mt-2 mx-3" id="configForm" action="quizzes?action=updateConfig" method="post">
+                                                <div id="config-container">
+                                                    
+                                                </div>
+                                                
+                                                <button type="button" class="btn btn-pills btn-light" onclick="addConfig()">+ Add config</button>
+                                            </form>
+                                            <div class="mt-3">
+                                                <button type="button" class="btn btn-primary" onclick="document.getElementById('configForm').submit()">Save</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="tab-pane fade show" id="tab-fixed" role="tabpanel">
+                                            
+                                            <div class="table-responsive shadow rounded">
+                                                <table class="table table-center bg-white mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-bottom p-3" style="width: 10px;">#</th>
+                                                            <th class="border-bottom p-3" style="min-width: 300px;">Question</th>
+                                                            <th class="border-bottom p-3" style="width: 50px;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="p-3">1</th>
+                                                            <td class="py-3">
+                                                                <div class="d-flex align-items-center">
+                                                                    <span class="ms-2">What is Configuration of management? What are Problems resulting from poor configuration management?</span>
+                                                                </div>
+                                                            </td>
+
+                                                            <td class="text-end p-3">
+                                                                <a href="#"
+                                                                   class="btn btn-icon btn-pills btn-soft-danger"
+                                                                   data-bs-toggle="modal" data-bs-target="#cfgdetail"
+                                                                   
+                                                                >
+                                                                    <i class="uil uil-trash-alt"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            
+                                            <div class="p-4">
+                                                <form class="d-flex" action="" method="post">
+                                                    <select class="form-select form-control bg-white" id="inputGroupSelect01">
+                                                        <option selected="">Choose...</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>
+
+                                                    <button type="submit" class="btn btn-icon btn-soft-primary ms-2"><i class="uil uil-plus"></i></button>
+                                                </form>
+                                            </div>
+                                            <button type="button" class="btn btn-pills btn-light mt-3">+ Add question</button>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                </div><!--end teb pane-->
+                            </div><!--end tab content-->
+                        </div>
+                    </div><!--end col-->
+                </div>
+            </div>
+        </div>
+        <!-- Detail Modal End -->
+        
+        <!-- Add New Modal Start -->
+        <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content" style="height: 80vh">
+                    <div class="modal-header border-bottom p-3">
+                        <h5 class="modal-title" id="exampleModalLabel1">Quiz Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="card border-0 rounded-0 ps-4 pe-4 pt-4 w-50">
+                        <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded shadow overflow-hidden bg-light" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link rounded-0 active" id="general-tab" data-bs-toggle="pill" href="#pills-general" role="tab" aria-controls="pills-general" aria-selected="false">
+                                    <div class="text-center pt-1 pb-1">
+                                        <h4 class="title fw-normal mb-0">General</h4>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="modal-body col-12">
+                        <div class="card border-0 rounded-0 p-4 pt-0">
+                            <div class="tab-content mt-2" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="general-tab">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                            <h4 class="">General Quiz Details</h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <form class="mt-2" action="quizzes?action=addNewGeneral" method="post">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Quiz Title</label>
+                                                    <input name="title" id="new-title" type="text" class="form-control" placeholder="Quiz title...">
+                                                </div>
+                                            </div>
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3 w-75">
+                                                    <label class="form-label">Subject</label>
+                                                    <select name="subject" id="new-subjectSelect" class="form-control form-select department-name select2input bg-white" onchange="updateListChapters2(this.value)">
+                                                        <c:forEach items="${subjects}" var="s">
+                                                            <option value="${s.id}">${s.code} - ${s.name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+            
+                                            <div class="col-md-6">
+                                                <div class="mb-3 w-75">
+                                                    <label class="form-label">Chapter</label>
+                                                    <select name="chapter" id="new-chapterSelect" class="form-control form-select department-name select2input bg-white" onchange="">
+                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Quiz type</label>
+                                                    <div class="d-flex ms-4">
+                                                        <div class="form-check pe-4">
+                                                            <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2" value="1" checked>
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                Random
+                                                            </label>
+                                                        </div>
+                                                        
+                                                        <div class="form-check pe-4">
+                                                            <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2" value="0">
+                                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                                Fixed
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Status</label>
+                                                    <div class="form-check form-switch ms-4">
+                                                        <input class="form-check-input" type="checkbox" name="status" id="flexSwitchCheckChecked quiz-status" checked="" onchange="statusLabel(this)">
+                                                        <label class="form-check-label" id="lblStatus" for="flexSwitchCheckChecked">Active</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+            
+                                        <button type="submit" class="btn btn-primary mt-4">Add</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add New Modal End -->
+        <!-- Modal end -->
+
+        <!-- javascript -->
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <!-- simplebar -->
+        <script src="../assets/js/simplebar.min.js"></script>
+        <!-- Icons -->
+        <script src="../assets/js/feather.min.js"></script>
+        <!-- Main Js -->
+        <script src="../assets/js/app.js"></script>
+
+        <script>
+            function removeConfig(config) {
+                config.lastElementChild.value = "yes";
+                let par = config.parentNode;
+                par.style.display = "none";
+            }
+            
+            async function showInfo(id, title, subject, chapter, type, status) {
+                document.getElementById('id').value = id;
+                document.getElementById('title').value = title;
+                document.getElementById('subjectSelect').value = subject;
+                
+                await updateDatas();
+                document.getElementById('chapterSelect').value = chapter;
+                if (type) {
+                    document.getElementById('flexRadioDefault2 quiz-type-random').checked = true;
+                    document.getElementById('flexRadioDefault2 quiz-type-fixed').checked = false;
+                    switchQuizType();
+                } else {
+                    document.getElementById('flexRadioDefault2 quiz-type-random').checked = false;
+                    document.getElementById('flexRadioDefault2 quiz-type-fixed').checked = true;
+                    switchQuizType();
+                }
+                if (status)
+                    document.getElementById('flexSwitchCheckChecked quiz-status').checked = true;
+                else
+                    document.getElementById('flexSwitchCheckChecked quiz-status').checked = false;
+                
+                
+                document.getElementById('quiz-id').value = id;
+//                console.log(id);
+                getListConfig(id);
+            }
+            
+            async function updateDatas() {
+                let sid = document.getElementById('subjectSelect').value;
+                let qid = document.getElementById('quiz-id').value;
+                
+                getListConfig(qid);
+                await updateListChapters(sid);
+                updateListDimensions(sid);
+            }
+            
+            async function updateListChapters(sid) {
+                let chapterSelect = document.getElementById('chapterSelect');
+                let cfChapterSelects = document.querySelectorAll('#cfChapterSelect');
+                
+                chapterSelect.innerHTML = "";
+                cfChapterSelects.forEach(sel => {
+                    sel.innerHTML = "";
+                });
+                
+                await fetch('getDatas?table=chapter&subject=' + sid)
+                    .then(response => {
+                        if (response.ok)
+                            return response.json();
+                })
+                    .then(data => {
+                        data.forEach(item => {
+                            var option = document.createElement("option");
+                            option.value = item.id;
+                            option.text = item.title;
+                            chapterSelect.appendChild(option);
+                            cfChapterSelects.forEach(sel => {
+                                var option = document.createElement("option");
+                                option.value = item.id;
+                                option.text = item.title;
+                                sel.appendChild(option);
+                            });
+                    });
+                })
+                    .catch(error => {
+                        console.log('Error: ' + error);
+                });
+            }
+            
+            function updateListDimensions(sid) {
+                let ds = document.querySelectorAll('#dimensionSelect');
+                
+                ds.forEach(sel => {
+                    sel.innerHTML = "";
+                });
+                
+                fetch('getDatas?table=dimension&subject=' + sid)
+                    .then(response => {
+                        if (response.ok)
+                            return response.json();
+                })
+                    .then(data => {
+                        listDimension = data;
+                        data.forEach(item => {
+                            ds.forEach(sel => {
+                                var option = document.createElement("option");
+                                option.value = item.id;
+                                option.text = item.name;
+                                sel.appendChild(option);
+                            });
+                        });
+                })
+                    .catch(error => {
+                        console.log('Error: ' + error);
+                });
+            }
+            
+            function getListConfig(quiz_id) {
+                document.getElementById('config-container').innerHTML = "";
+                fetch('getDatas?table=config&quiz=' + quiz_id)
+                    .then(response => {
+                        if (response.ok)
+                            return response.json();
+                })
+                    .then(data => {
+                        data.forEach(item => {
+                            setConfig(item.id, item.dimension.id, item.chapter.id, item.num_of_question);
+                    });
+                })
+                    .catch(error => {
+                        console.log('Error: ' + error);
+                });
+            }
+            
+            function addConfig() {
+                let cfgRow = document.getElementById('config-row');
+                let newRow = cfgRow.cloneNode(true);
+                newRow.style.display = 'flex';
+        
+                const container = document.getElementById('config-container');
+                container.appendChild(newRow);
+            }
+            
+            function setConfig(id, dimension, chapter, num_of_ques) {
+                addConfig();
+                let listID = document.querySelectorAll('#config-id');
+                let idbox = listID[listID.length-1];
+                idbox.value = id;
+                
+                let listDS = document.querySelectorAll('#dimensionSelect');
+                let dise = listDS[listDS.length-1];
+                dise.value = dimension;
+                
+                let listCh = document.querySelectorAll('#cfChapterSelect');
+                let chse = listCh[listCh.length-1];
+                chse.value = chapter;
+                
+                let listNOQ = document.querySelectorAll('#numOfQues');
+                let noq = listNOQ[listNOQ.length-1];
+                noq.value = num_of_ques;
+            }
+            
+            function statusLabel(checkbox) {
+                let label = document.getElementById("lblStatus");
+                if (checkbox.checked)
+                    label.innerHTML = "Active";
+                else
+                    label.innerHTML = "Inactive";
+            }
+            
+            function switchQuizType() {
+                let type = document.getElementById('flexRadioDefault2 quiz-type-random').checked;
+                
+                const tabRandom = document.getElementById('tab-random');
+                const tabFixed = document.getElementById('tab-fixed');
+                
+                if (type) {
+                    tabRandom.classList.add("active");
+                    tabFixed.classList.remove("active");
+                } else {
+                    tabFixed.classList.add("active");
+                    tabRandom.classList.remove("active");
+                }
+            }
+            
+            // Javascript for modal addNew start
+            // show Modal Add new
+            function showAddNew() {
+                let sid = document.getElementById('new-subjectSelect').value;
+                updateListChapters2(sid);
+            }
+            
+            // updateListChapters for Add New Modal
+            function updateListChapters2(sid) {
+                let chapterSelect = document.getElementById('new-chapterSelect');
+                
+                chapterSelect.innerHTML = "";
+                
+                fetch('getDatas?table=chapter&subject=' + sid)
+                    .then(response => {
+                        if (response.ok)
+                            return response.json();
+                })
+                    .then(data => {
+                        data.forEach(item => {
+                            var option = document.createElement("option");
+                            option.value = item.id;
+                            option.text = item.title;
+                            chapterSelect.appendChild(option);
+                    });
+                })
+                    .catch(error => {
+                        console.log('Error: ' + error);
+                });
+            }
+            // Javascript for modal addNew end
+            
+            function jumpTo(page_num) {
+                let search = "${param.search eq null ? '' : param.search}";
+                let subject = ${param.subject eq null ? 0 : param.subject};
+                location.href = "./quizzes?page=" + Math.floor(page_num) + (search == "" ? "" : "&search=" + search) + (subject == 0 ? "" : "&subject=" + subject);
+            }
+            
+            function updateStatus(element, id) {
+                var isChecked = element.checked;
+                
+                fetch("../admin/updateStatus?table=quiz&id=" + id + "&isChecked=" + isChecked)
+                        .then(response => response.text())
+                        .then(data => {
+                            console.log(data);
+                        });
+            }
+            
+            updateDatas();
+            switchQuizType();
+        </script>
+    </body>
+</html>

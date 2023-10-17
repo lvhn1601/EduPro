@@ -12,6 +12,7 @@ public class Setting {
     private int id;
     private String title;
     private boolean status;
+    private int display_order;
     private String created_by;
     private String created_at;
     private String update_by;

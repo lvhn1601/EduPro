@@ -306,6 +306,21 @@ public class AdminDAO extends DBContext {
             System.out.println(e);
         }
     }
+    
+    public void updateDisplayOrder(int id, int value, int admin_id) {
+        String sql = "update setting set setting_display_order = ?, update_by = ? where setting_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, value);
+            ps.setInt(2, admin_id);
+            ps.setInt(3, id);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
     public List<Subject> getSubjectInPage(String search, int page_num) {
         String sql = "SELECT s.subject_id, s.subject_name, s.subject_code, manager.account_id as manager_id, manager.account_name as manager_name, s.subject_status, creator.account_name as created_by, s.created_at, updater.account_name as update_by, s.update_at \n"
@@ -485,7 +500,7 @@ public class AdminDAO extends DBContext {
     }
 
     public List<Setting> getSettings(int key) {
-        String sql = "select s.setting_id, s.setting_title, s.setting_status, creator.account_name as created_by, s.created_at, updater.account_name as update_by, s.update_at\n"
+        String sql = "select s.setting_id, s.setting_title, s.setting_display_order, s.setting_status, creator.account_name as created_by, s.created_at, updater.account_name as update_by, s.update_at\n"
                 + "from \n"
                 + "	setting as s\n"
                 + "left join\n"
@@ -507,6 +522,7 @@ public class AdminDAO extends DBContext {
                 list.add(Setting.builder()
                         .id(rs.getInt("setting_id"))
                         .title(rs.getString("setting_title"))
+                        .display_order(rs.getInt("setting_display_order"))
                         .status(rs.getBoolean("setting_status"))
                         .created_by(rs.getString("created_by") == null ? "System" : rs.getString("created_by"))
                         .created_at(rs.getString("created_at"))
