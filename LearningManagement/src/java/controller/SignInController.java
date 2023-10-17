@@ -59,7 +59,7 @@ public class SignInController extends HttpServlet {
                         response.sendRedirect("admin/users");
                     }
                     if (account.getRole().getId() == 2) {
-                        response.sendRedirect("manager/subject-detail-management");
+                        response.sendRedirect("manager/subject-list");
                     }
                     foundMatch = true;
                     return;
