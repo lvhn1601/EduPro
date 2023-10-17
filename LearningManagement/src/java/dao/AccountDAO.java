@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 import model.Setting;
 
@@ -265,7 +267,7 @@ public class AccountDAO extends DBContext {
             if (check > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    int newAccountId = rs.getInt(1); 
+                    int newAccountId = rs.getInt(1);
                     updateCreatedByAndUpdatedBy(newAccountId, newAccountId);
                 }
             }
@@ -308,6 +310,26 @@ public class AccountDAO extends DBContext {
         return check > 0;
     }
 
+    public List<String> getAllPhoneNumbers() {
+        List<String> phoneNumbers = new ArrayList<>();
+        String sql = "select account_phone from account";
+        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String phoneNumber = rs.getString("account_phone");
+                if (phoneNumber != null && phoneNumber.startsWith("0")) {
+                    phoneNumbers.add("+84" + phoneNumber.substring(1));
+                } else {
+                    phoneNumbers.add(phoneNumber);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return phoneNumbers;
+    }
+
     public static void main(String[] args) {
+        System.out.println(new AccountDAO().getAllPhoneNumbers());
     }
 }

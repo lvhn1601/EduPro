@@ -5,7 +5,6 @@
 package controller;
 
 import consts.IConstants;
-import static consts.IConstants.GOOGLE_LOGIN_HREF;
 import dao.AccountDAO;
 import dao.SettingDAO;
 import dto.UserGoogleDto;
@@ -17,13 +16,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import model.Account;
 import model.Setting;
-import utils.Helper;
 import static utils.Helper.getToken;
 import static utils.Helper.getUserInfo;
-import utils.Mail;
 
 public class SignInController extends HttpServlet {
 
@@ -42,17 +38,29 @@ public class SignInController extends HttpServlet {
 
         if (request.getParameter("code") != null) {
             String code = request.getParameter("code");
+
             String accessToken = getToken(code);
+            // Tiếp tục xử lý với access token
+
             UserGoogleDto user = getUserInfo(accessToken);
 //            System.out.println(user);
             boolean foundMatch = false;
 
             for (Account a : accs) {
                 if (user.getEmail().equals(a.getEmail())) {
+                    Account account = accountDAO.getOneByEmail(user.getEmail());
 
 //                    accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
                     session.setAttribute("accountCur", accountDAO.getOneByEmail(user.getEmail()));
-                    response.sendRedirect("/LearningManagement");
+                    if (account.getRole().getId() == 4) {
+                        response.sendRedirect("/LearningManagement");
+                    }
+                    if (account.getRole().getId() == 1) {
+                        response.sendRedirect("admin/users");
+                    }
+                    if (account.getRole().getId() == 2) {
+                        response.sendRedirect("manager/subject-list");
+                    }
                     foundMatch = true;
                     return;
                 }
@@ -69,20 +77,19 @@ public class SignInController extends HttpServlet {
                 String domain = email.substring(atIndex + 1);
 
                 if (domains.contains(domain)) {
-                    String otp = Helper.genRandSixDigit();
-                    session.setAttribute("systemOtp", otp);
-                    session.setAttribute("user", user);
-                    Mail.send(user.getEmail(), "Your OTP to sign up", otp);
-                    response.sendRedirect("otp-confirmation");
+                    accountDAO.registerGoogleAcc(user);
+                    accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
+                    session.setAttribute("accountCur", accountDAO.getOneByEmail(user.getEmail()));
+                    response.sendRedirect("/LearningManagement");
                     return;
                 } else {
                     request.setAttribute("msg", "Invalid domain!");
+                    request.getSession().setAttribute("msg", "Invalid domain!");
                     response.sendRedirect("sign-in");
                     return;
                 }
 
             }
-            
 
         } else {
             request.setAttribute("GOOGLE_LOGIN_HREF", IConstants.GOOGLE_LOGIN_HREF);
@@ -99,7 +106,7 @@ public class SignInController extends HttpServlet {
         String password = request.getParameter("password");
         Account account = accountDAO.authenticate(username, password);
         if (account == null) {
-            request.setAttribute("msg", "Sign in fail username or pasword");
+            request.setAttribute("msg", "Sign in fail username or password");
             request.getRequestDispatcher("sign-in.jsp").forward(request, response);
         } else {
             session.setAttribute("accountCur", accountDAO.getOneByAccountId(account.getId()));
@@ -112,7 +119,7 @@ public class SignInController extends HttpServlet {
                 response.sendRedirect("admin/users");
             }
             if (account.getRole().getId() == 2) {
-                response.sendRedirect("manager/quizzes");
+                response.sendRedirect("manager/subject-detail-management");
             }
         }
     }
