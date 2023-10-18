@@ -13,13 +13,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-
 public class Dimension {
-
     private int id;
     private String type;
     private String name;
     private boolean status;
+    private Subject subject;
     private String created_by;
     private String created_at;
     private String update_by;

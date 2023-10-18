@@ -201,7 +201,7 @@
 <body>
 
     <div class="page-wrapper doctris-theme toggled">
-        <jsp:include page="components/sidebar.jsp"/>
+        <jsp:include page="../components/sidebar.jsp"/>
         <main class="page-content bg-light "style="width: 100%;
               height: 100%;">                
             <h1 style="margin: 100px 0px 0px 30px">Subject detail</h1>
@@ -213,7 +213,7 @@
                     <!-- Thêm các môn học khác nếu cần -->
                 </select>
             </div>
-            <jsp:include page="components/header.jsp"/>
+            <jsp:include page="../components/header.jsp"/>
             <div class="container">
                 <div class="tabs">
                     <div class="tab" onclick="openTab('generalTab')">General</div>

@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Account;
 
 /**
  *
@@ -75,6 +76,7 @@ public class SubjectManagerServlet extends HttpServlet {
         request.setAttribute("count", num_of_subjects);
         request.setAttribute("pages", Math.round(num_of_subjects / 8) + (num_of_subjects % 8 == 0 ? 0 : 1));
         request.setAttribute("data", db.getSubjectInPage(search, page_num));
+        
         request.getRequestDispatcher("subjects.jsp").forward(request, response);
     } 
 

@@ -6,15 +6,12 @@ package dao;
 
 import connection.DBContext;
 import dto.UserGoogleDto;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Account;
 import model.Setting;
 
@@ -50,7 +47,7 @@ public class AccountDAO extends DBContext {
                         .id(rs.getInt("account_id"))
                         .email(rs.getString("account_email"))
                         .password(rs.getString("account_password"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .phone(rs.getString("account_phone"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
@@ -84,7 +81,7 @@ public class AccountDAO extends DBContext {
                         .id(rs.getInt("account_id"))
                         .email(rs.getString("account_email"))
                         .password(rs.getString("account_password"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .phone(rs.getString("account_phone"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
@@ -118,7 +115,9 @@ public class AccountDAO extends DBContext {
 
     public Account getOneByAccountId(int accountId) {
 
-        String sql = "select * from Account where account_id = ?";//
+        String sql = "select * from Account\n"
+                + "join setting on setting.setting_id = account.account_role_id\n"
+                + "where account_id = ?";//
         try ( PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setObject(1, accountId);
             ResultSet rs = stm.executeQuery();
@@ -128,12 +127,14 @@ public class AccountDAO extends DBContext {
                         .email(rs.getString("account_email"))
                         .phone(rs.getString("account_phone"))
                         .password(rs.getString("account_password"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .name(rs.getString("account_name"))
                         .avatar_url(rs.getString("account_avatar_url"))
                         .dob(rs.getDate("account_dob"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
+                                .title(rs.getString("setting_title"))
+                                .display_order(rs.getInt("setting_display_order"))
                                 .build())
                         .build();
                 return s;
@@ -162,7 +163,9 @@ public class AccountDAO extends DBContext {
 
     public Account getOneByEmail(String email) {
 
-        String sql = "Select * FROM Account WHERE account_email = ?";
+        String sql = "Select * FROM Account \n"
+                + "join setting on setting.setting_id = account.account_role_id\n"
+                + "WHERE account_email = ?";
 
         try ( PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setObject(1, email);
@@ -174,12 +177,14 @@ public class AccountDAO extends DBContext {
                         .email(rs.getString("account_email"))
                         .phone(rs.getString("account_phone"))
                         .password(rs.getString("account_password"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .name(rs.getString("account_name"))
                         .avatar_url(rs.getString("account_avatar_url"))
                         .dob(rs.getDate("account_dob"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
+                                .title(rs.getString("setting_title"))
+                                .display_order(rs.getInt("setting_display_order"))
                                 .build())
                         .build();
                 return a;

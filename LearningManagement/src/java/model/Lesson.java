@@ -14,13 +14,19 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Lesson {
-
     private int id;
     private String type;
     private String title;
     private String description;
     private String video_link;
+    private int display_order;
     private boolean status;
+    private Subject subject;
+    private Chapter chapter;
+    private Quiz quiz;
+    private int duration;
+    private int passValue;
+    private int maxAttempt;
     private String created_by;
     private String created_at;
     private String update_by;
