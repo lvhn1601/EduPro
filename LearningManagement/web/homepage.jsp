@@ -28,17 +28,12 @@
 
     <body>
         <div id="preloader">
-            <div id="status">
-                <div class="spinner">
-                    <div class="double-bounce1"></div>
-                    <div class="double-bounce2"></div>
-                </div>
-            </div>
+            
         </div>
         
         <div class="page-wrapper doctris-theme">
             <main class="page-content bg-light">
-                <%@include file="admin/components/header.jsp" %>
+                <%@include file="components/header.jsp" %>
                 <!-- Carousel Start -->
                 <div class="container-fluid p-0 mb-5">
                     <div class="owl-carousel header-carousel position-relative">
@@ -369,17 +364,6 @@
             </main>
         </div>
 
-        <!-- JavaScript Libraries -->
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/lib/wow/wow.min.js"></script>
-        <script src="assets/lib/easing/easing.min.js"></script>
-        <script src="assets/lib/waypoints/waypoints.min.js"></script>
-        <script src="assets/lib/owlcarousel/owl.carousel.min.js"></script>
-
-        <!-- Template Javascript -->
-        <script src="assets/js/main.js"></script>
-
         <!-- javascript -->
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <!-- simplebar -->
@@ -388,5 +372,17 @@
         <script src="assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="assets/js/app.js"></script>
+                
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="assets/lib/wow/wow.min.js"></script>
+        <script src="assets/lib/easing/easing.min.js"></script>
+        <script src="assets/lib/waypoints/waypoints.min.js"></script>
+        <script src="assets/lib/owlcarousel/owl.carousel.min.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="assets/js/main.js"></script>
+
+        
     </body>
 </html>

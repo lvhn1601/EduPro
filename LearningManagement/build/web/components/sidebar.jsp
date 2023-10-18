@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav id="sidebar" class="sidebar-wrapper">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
-        <div class="sidebar-brand">
-            <h3 class="m-0 text-primary"><a href="../"><i class="fa fa-book me-3"></i>EduPro</a></h3>
+        <div class="sidebar-brand d-flex align-items-center">
+            <img src="/LearningManagement/assets/img/LogoFPT.png" class="h-100"/>
         </div>
 
         <ul class="sidebar-menu pt-3">

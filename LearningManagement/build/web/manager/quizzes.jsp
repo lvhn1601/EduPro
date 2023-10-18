@@ -47,11 +47,11 @@
         <!-- Loader -->
 
         <div class="page-wrapper doctris-theme toggled">
-            <jsp:include page="../admin/components/sidebar.jsp"/>
+            <jsp:include page="../components/sidebar.jsp"/>
 
             <!-- Start Page Content -->
             <main class="page-content bg-light">
-                <jsp:include page="../admin/components/header.jsp"/>
+                <jsp:include page="../components/header.jsp"/>
 
                 <div class="container-fluid">
                     <div class="layout-specing">
