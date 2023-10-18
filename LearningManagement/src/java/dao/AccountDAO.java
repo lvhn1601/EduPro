@@ -6,7 +6,6 @@ package dao;
 
 import connection.DBContext;
 import dto.UserGoogleDto;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -273,7 +272,7 @@ public class AccountDAO extends DBContext {
             if (check > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    int newAccountId = rs.getInt(1); 
+                    int newAccountId = rs.getInt(1);
                     updateCreatedByAndUpdatedBy(newAccountId, newAccountId);
                 }
             }
@@ -316,8 +315,26 @@ public class AccountDAO extends DBContext {
         return check > 0;
     }
 
+    public List<String> getAllPhoneNumbers() {
+        List<String> phoneNumbers = new ArrayList<>();
+        String sql = "select account_phone from account";
+        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String phoneNumber = rs.getString("account_phone");
+                if (phoneNumber != null && phoneNumber.startsWith("0")) {
+                    phoneNumbers.add("+84" + phoneNumber.substring(1));
+                } else {
+                    phoneNumbers.add(phoneNumber);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return phoneNumbers;
+    }
+
     public static void main(String[] args) {
-        AccountDAO db = new AccountDAO();
-        System.out.println(db.getOneByAccountId(1));
+        System.out.println(new AccountDAO().getAllPhoneNumbers());
     }
 }
