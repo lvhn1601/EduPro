@@ -23,6 +23,23 @@
                             />
                     </div>
                     <div class="form-group mt-4">
+                        <label for="email"> Email:</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            name="accountEmail"
+                            value="${sessionScope.accountCur.email}"
+                            />
+                         <input
+                             type="hidden"
+                            class="form-control"
+                            name="currentEmail"
+                            value="${sessionScope.accountCur.email}"
+                            />
+                    </div>
+                    
+                    <div class="form-group mt-4">
                         <label for="dob"> Date of Birth:</label>
                         <input
                             type="date"

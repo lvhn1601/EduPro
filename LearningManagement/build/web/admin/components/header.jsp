@@ -6,10 +6,24 @@
                 <i class="uil uil-bars"></i>
             </a>
         </div>
-
+        <button
+            type="button"
+            class="navbar-toggler me-4"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarCollapse"
+            >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <c:if test="${sessionScope.accountCur == null}">           
+                <a href="sign-in" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block"
+                   >Join Now<i class="fa fa-arrow-right ms-3"></i
+                    ></a>
+            </c:if>
+        </div>
         <ul class="list-unstyled mb-0">
-
             <li class="list-inline-item mb-0 ms-1">
+            <c:if test="${sessionScope.accountCur != null}"> 
                 <div class="dropdown dropdown-primary">
                     <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="${sessionScope.accountCur.avatar_url}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
@@ -25,7 +39,9 @@
                         <a class="dropdown-item text-dark" href="lock-screen.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
                     </div>
                 </div>
+            </c:if>
             </li>
         </ul>
+        </c:if>
     </div>
 </div>
