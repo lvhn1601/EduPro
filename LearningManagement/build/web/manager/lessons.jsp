@@ -66,7 +66,7 @@
                         </div>
                                             
                         <form action="lessons" method="get" class="d-md-flex justify-content-between mt-4">
-                            <a href="lesson-details?action=new" class="btn btn-primary"><i class="uil uil-plus"></i> New Lesson</a>
+                            <a href="lesson-details?action=add" class="btn btn-primary"><i class="uil uil-plus"></i> New Lesson</a>
 
                             <div class="col-sm-12 col-md-2 d-flex align-items-center">
                                 <h6 class="mb-0" style="padding-right: 5px">Subject: </h6>
@@ -263,7 +263,7 @@
             function updateStatus(element, id) {
                 var isChecked = element.checked;
                 
-                fetch("updateStatus?table=subject&id=" + id + "&isChecked=" + isChecked)
+                fetch("../admin/updateStatus?table=lesson&id=" + id + "&isChecked=" + isChecked)
                         .then(response => response.text())
                         .then(data => {
                             console.log(data);

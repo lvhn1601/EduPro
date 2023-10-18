@@ -104,7 +104,7 @@ public class QuizzesServlet extends HttpServlet {
         ManagerDAO db = new ManagerDAO();
         
         String action = request.getParameter("action");
-        int id, subject, chapter;
+        int id, subject, chapter, quiz;
         String title;
         boolean type, status;
         
@@ -114,19 +114,18 @@ public class QuizzesServlet extends HttpServlet {
                 subject = Integer.parseInt(request.getParameter("subject"));
                 chapter = Integer.parseInt(request.getParameter("chapter"));
                 type = request.getParameter("type").equals("1");
-                status = request.getParameter("status").equals("on");
+                status = request.getParameter("status") != null;
                 
                 db.addQuiz(title, subject, chapter, type, status, acc.getId());
                 break;
             case "updateGeneral":
                 id = Integer.parseInt(request.getParameter("id"));
                 title = request.getParameter("title");
-                subject = Integer.parseInt(request.getParameter("subject"));
                 chapter = Integer.parseInt(request.getParameter("chapter"));
                 type = request.getParameter("type").equals("1");
-                status = request.getParameter("status").equals("on");
+                status = request.getParameter("status") != null;
 
-                db.updateQuiz(id, title, subject, chapter, type, status, acc.getId());
+                db.updateQuiz(id, title, chapter, type, status, acc.getId());
                 break;
             case "updateConfig":
                 String[] ids = request.getParameterValues("id");
@@ -134,7 +133,7 @@ public class QuizzesServlet extends HttpServlet {
                 String[] chapters = request.getParameterValues("chapter");
                 String[] numOfQues = request.getParameterValues("numOfQues");
                 String[] removes = request.getParameterValues("remove");
-                int quiz = Integer.parseInt(request.getParameter("quiz"));
+                quiz = Integer.parseInt(request.getParameter("quiz"));
                 
                 for (int i=0; i<ids.length; i++) {
                     if (ids[i].equals("0") && !removes[i].equals("yes")) {
@@ -153,6 +152,22 @@ public class QuizzesServlet extends HttpServlet {
                             db.updateConfig(Integer.parseInt(ids[i]), dim, chap, num);
                         }
                     }
+                }
+                break;
+            case "updateQuestions":
+                String[] quesID = request.getParameterValues("question-id");
+                String[] quesStatus = request.getParameterValues("status");
+                String[] quesRemove = request.getParameterValues("remove");
+                quiz = Integer.parseInt(request.getParameter("quiz"));
+                
+                for (int i=0; i<quesID.length; i++) {
+                    int ques = Integer.parseInt(quesID[i]);
+                    
+                    if (quesStatus[i].equals("new") && !quesRemove[i].equals("yes"))
+                        db.addQuizQuestion(quiz, ques);
+                    else
+                        if (quesStatus[i].equals("old") && quesRemove[i].equals("yes"))
+                            db.deleteQuizQuestion(quiz, ques);
                 }
                 break;
         }

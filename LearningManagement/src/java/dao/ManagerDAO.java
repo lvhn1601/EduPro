@@ -110,6 +110,29 @@ public class ManagerDAO extends DBContext {
 
         return list;
     }
+    
+    public List<Question> getListQuestions(int subject_id) {
+        String sql = "SELECT * FROM question WHERE question_subject_id = ?";
+        
+        List<Question> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, subject_id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Question.builder()
+                        .id(rs.getInt("question_id"))
+                        .detail(rs.getString("question_detail"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+        
+        return list;
+    }
 
     public List<Config> getListConfig(int quiz_id) {
         String sql = "SELECT * FROM quiz_config where config_quiz_id = ?";
@@ -139,6 +162,31 @@ public class ManagerDAO extends DBContext {
         } catch (SQLException e) {
         }
 
+        return list;
+    }
+
+    public List<Question> getListQuizQuestions(int quiz_id) {
+        String sql = "SELECT quiz_question.question_id, question_detail FROM quiz_question\n"
+                + "JOIN question on quiz_question.question_id = question.question_id\n"
+                + "WHERE quiz_question.quiz_id = ?";
+
+        List<Question> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, quiz_id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Question.builder()
+                        .id(rs.getInt("question_id"))
+                        .detail(rs.getString("question_detail"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+        
         return list;
     }
 
@@ -252,19 +300,18 @@ public class ManagerDAO extends DBContext {
         }
     }
 
-    public boolean updateQuiz(int id, String title, int subject, int chapter, boolean type, boolean status, int manager_id) {
-        String sql = "UPDATE quiz SET quiz_title = ?, quiz_subject_id = ?, quiz_chapter_id = ?, quiz_type = ?, quiz_status = ?, update_by = ?\n"
+    public boolean updateQuiz(int id, String title, int chapter, boolean type, boolean status, int manager_id) {
+        String sql = "UPDATE quiz SET quiz_title = ?, quiz_chapter_id = ?, quiz_type = ?, quiz_status = ?, update_by = ?\n"
                 + "WHERE quiz_id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, title);
-            ps.setInt(2, subject);
-            ps.setInt(3, chapter);
-            ps.setBoolean(4, type);
-            ps.setBoolean(5, status);
-            ps.setInt(6, manager_id);
-            ps.setInt(7, id);
+            ps.setInt(2, chapter);
+            ps.setBoolean(3, type);
+            ps.setBoolean(4, status);
+            ps.setInt(5, manager_id);
+            ps.setInt(6, id);
 
             return ps.execute();
         } catch (SQLException e) {
@@ -313,6 +360,34 @@ public class ManagerDAO extends DBContext {
 
             ps.execute();
         } catch (SQLException e) {
+        }
+    }
+    
+    public boolean addQuizQuestion(int quiz, int question) {
+        String sql = "INSERT INTO quiz_question(quiz_id, question_id) VALUES (?, ?)";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, quiz);
+            ps.setInt(2, question);
+
+            return ps.execute();
+        } catch (SQLException e) {
+            return true;
+        }
+    }
+    
+    public boolean deleteQuizQuestion(int quiz, int question) {
+        String sql = "DELETE from quiz_question where quiz_id = ? and question_id = ?";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, quiz);
+            ps.setInt(2, question);
+            
+            return ps.execute();
+        } catch (SQLException e) {
+            return true;
         }
     }
 
@@ -509,7 +584,7 @@ public class ManagerDAO extends DBContext {
     public void updateQuizLesson(int id, int quiz, int duration, int passVal, int maxAttempt) {
         String sql = "update quiz_lesson set quiz_id = ?, quizlesson_duration = ?, quizlesson_pass_value = ?, quizlesson_max_attempt = ?\n"
                 + "where quiz_id = ?";
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, quiz);
@@ -517,7 +592,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(3, passVal);
             ps.setInt(4, maxAttempt);
             ps.setInt(5, id);
-            
+
             ps.execute();
         } catch (SQLException e) {
         }

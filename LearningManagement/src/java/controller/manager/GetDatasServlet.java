@@ -64,7 +64,7 @@ public class GetDatasServlet extends HttpServlet {
         ManagerDAO db = new ManagerDAO();
         
         String table = request.getParameter("table");
-        int subject_id;
+        int subject_id, quiz_id;
         try {
             subject_id = Integer.parseInt(request.getParameter("subject"));
         } catch (NumberFormatException | NullPointerException e) {
@@ -81,9 +81,16 @@ public class GetDatasServlet extends HttpServlet {
             case "dimension":
                 jsonData = gson.toJson(db.getListDimensions(acc.getId(), subject_id));
                 break;
+            case "question":
+                jsonData = gson.toJson(db.getListQuestions(subject_id));
+                break;
             case "config":
-                int quiz_id = Integer.parseInt(request.getParameter("quiz"));
+                quiz_id = Integer.parseInt(request.getParameter("quiz"));
                 jsonData = gson.toJson(db.getListConfig(quiz_id));
+                break;
+            case "quiz-question":
+                quiz_id = Integer.parseInt(request.getParameter("quiz"));
+                jsonData = gson.toJson(db.getListQuizQuestions(quiz_id));
                 break;
             case "quiz":
                 jsonData = gson.toJson(db.getListQuizzes(subject_id));

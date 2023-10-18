@@ -28,7 +28,7 @@
                 <li><a href="subject-detail-management"><i class="uil uil-file me-2 d-inline-block"></i>Subjects Setting</a></li>
                 <li><a href="question-detail-management"><i class="uil uil-file-question me-2 d-inline-block"></i>Questions</a></li>
                 <li><a href="quizzes"><i class="uil uil-lightbulb-alt me-2 d-inline-block"></i>Quizzes</a></li>
-                <li><a href="Lessons"><i class="uil uil-file-landscape-alt me-2 d-inline-block"></i>Lessons</a></li>
+                <li><a href="lessons"><i class="uil uil-file-landscape-alt me-2 d-inline-block"></i>Lessons</a></li>
             </c:if>
             
         </ul>

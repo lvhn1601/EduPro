@@ -207,7 +207,7 @@
                             </li><!--end nav item-->
 
                             <li class="nav-item">
-                                <a class="nav-link rounded-0" id="questions-tab" data-bs-toggle="pill" href="#pills-questions" role="tab" aria-controls="pills-questions" aria-selected="false" onclick="getListConfig(document.getElementById('id').value)">
+                                <a class="nav-link rounded-0" id="questions-tab" data-bs-toggle="pill" href="#pills-questions" role="tab" aria-controls="pills-questions" aria-selected="false">
                                     <div class="text-center pt-1 pb-1">
                                         <h4 class="title fw-normal mb-0">Questions</h4>
                                     </div>
@@ -228,7 +228,7 @@
                                     
                                     <form class="mt-2" action="quizzes?action=updateGeneral" method="post">
                                         <div class="row">
-                                            <input type="number" id="id" name="id" value="" style="display: none"/>
+                                            <input type="number" id="quiz-id" name="id" value="" style="display: none"/>
                                             <div class="col-md-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Quiz Title</label>
@@ -239,7 +239,7 @@
                                             <div class="col-md-6">
                                                 <div class="mb-3 w-75">
                                                     <label class="form-label">Subject</label>
-                                                    <select name="subject" id="subjectSelect" class="form-control form-select department-name select2input bg-white" onchange="updateDatas()">
+                                                    <select name="subject" id="subjectSelect" class="form-control form-select department-name select2input bg-white" disabled="">
                                                         <c:forEach items="${subjects}" var="s">
                                                             <option value="${s.id}">${s.code} - ${s.name}</option>
                                                         </c:forEach>
@@ -281,7 +281,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Status</label>
                                                     <div class="form-check form-switch ms-4">
-                                                        <input class="form-check-input" type="checkbox" name="status" id="flexSwitchCheckChecked quiz-status" checked="" onchange="statusLabel(this)">
+                                                        <input class="form-check-input" type="checkbox" name="status" id="flexSwitchCheckChecked quiz-status" value="active" checked="" onchange="statusLabel(this)">
                                                         <label class="form-check-label" id="lblStatus" for="flexSwitchCheckChecked">Active</label>
                                                     </div>
                                                 </div>
@@ -299,9 +299,10 @@
                                         </div><!--end col-->
                                     </div><!--end row-->
                                     
+                                    <!--hidden config row to clone-->
                                     <div class="row" id="config-row" style="display: none">
                                         <input type="number" name="id" id="config-id" value="0" style="display: none"/>
-                                        <input type="number" name="quiz" id="quiz-id" value="0" style="display: none"/>
+                                        <input type="number" name="quiz" id="quiz-id-c" value="0" style="display: none"/>
                                         <div class="col-md-4">
                                             <div class="mb-3">
                                                 <label class="form-label">Dimension</label>
@@ -325,10 +326,11 @@
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-md-1 d-flex align-items-center">
-                                            <a href="#" class="btn btn-icon btn-pills btn-soft-danger" onclick="removeConfig(this.parentNode)"><i class="uil uil-trash-alt"></i></a>
+                                            <a href="#" class="btn btn-icon btn-pills btn-soft-danger" onclick="removeThis(this.parentNode)"><i class="uil uil-trash-alt"></i></a>
                                             <input type="text" name="remove" value="no" style="display: none"/>
                                         </div><!--end col-->
                                     </div>
+                                    <!--hidden config row end-->
                                     
                                     <div class="tab-content mt-2" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="tab-random" role="tabpanel">
@@ -348,51 +350,36 @@
                                         <div class="tab-pane fade show" id="tab-fixed" role="tabpanel">
                                             
                                             <div class="table-responsive shadow rounded">
-                                                <table class="table table-center bg-white mb-0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="border-bottom p-3" style="width: 10px;">#</th>
-                                                            <th class="border-bottom p-3" style="min-width: 300px;">Question</th>
-                                                            <th class="border-bottom p-3" style="width: 50px;"></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <th class="p-3">1</th>
-                                                            <td class="py-3">
-                                                                <div class="d-flex align-items-center">
-                                                                    <span class="ms-2">What is Configuration of management? What are Problems resulting from poor configuration management?</span>
-                                                                </div>
-                                                            </td>
-
-                                                            <td class="text-end p-3">
-                                                                <a href="#"
-                                                                   class="btn btn-icon btn-pills btn-soft-danger"
-                                                                   data-bs-toggle="modal" data-bs-target="#cfgdetail"
-                                                                   
-                                                                >
-                                                                    <i class="uil uil-trash-alt"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                <form id="questionForm" action="quizzes?action=updateQuestions" method="post">
+                                                    <input type="number" name="quiz" id="quiz-id-q" value="0" style="display: none"/>
+                                                    <table class="table table-center bg-white mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="border-bottom p-3" style="width: 10px;">#</th>
+                                                                <th class="border-bottom p-3" style="min-width: 300px;">Question</th>
+                                                                <th class="border-bottom p-3" style="width: 50px;"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="quiz-question-container">
+                                                            
+                                                        </tbody>
+                                                    </table>
+                                                </form>
                                             </div>
                                             
                                             <div class="p-4">
-                                                <form class="d-flex" action="" method="post">
-                                                    <select class="form-select form-control bg-white" id="inputGroupSelect01">
-                                                        <option selected="">Choose...</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
+                                                <div class="d-flex">
+                                                    <select class="form-select form-control bg-white" id="inputGroupSelect01 questionSelect">
+                                                        
                                                     </select>
 
-                                                    <button type="submit" class="btn btn-icon btn-soft-primary ms-2"><i class="uil uil-plus"></i></button>
-                                                </form>
+                                                    <button class="btn btn-pills btn-soft-primary ms-2" onclick="checkAddQues(this.parentNode)"><i class="uil uil-plus"></i></button>
+                                                </div>
                                             </div>
-                                            <button type="button" class="btn btn-pills btn-light mt-3">+ Add question</button>
                                             
+                                            <div class="mt-3">
+                                                <button type="button" class="btn btn-primary" onclick="document.getElementById('questionForm').submit()">Save</button>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -415,21 +402,29 @@
                     </div>
                     
                     <div class="card border-0 rounded-0 ps-4 pe-4 pt-4 w-50">
-                        <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded shadow overflow-hidden bg-light" id="pills-tab" role="tablist">
+                        <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded shadow overflow-hidden bg-light">
                             <li class="nav-item">
-                                <a class="nav-link rounded-0 active" id="general-tab" data-bs-toggle="pill" href="#pills-general" role="tab" aria-controls="pills-general" aria-selected="false">
+                                <a class="nav-link rounded-0 active" id="general-tab">
                                     <div class="text-center pt-1 pb-1">
                                         <h4 class="title fw-normal mb-0">General</h4>
                                     </div>
                                 </a>
                             </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link rounded-0 disabled" id="questions-tab">
+                                    <div class="text-center pt-1 pb-1">
+                                        <h4 class="title fw-normal mb-0">Questions</h4>
+                                    </div>
+                                </a><!--end nav link-->
+                            </li><!--end nav item-->
                         </ul>
                     </div>
                     
                     <div class="modal-body col-12">
                         <div class="card border-0 rounded-0 p-4 pt-0">
                             <div class="tab-content mt-2" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="general-tab">
+                                <div class="tab-pane fade show active" id="pills-general">
                                     <div class="row align-items-center">
                                         <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
                                             <h4 class="">General Quiz Details</h4>
@@ -490,7 +485,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Status</label>
                                                     <div class="form-check form-switch ms-4">
-                                                        <input class="form-check-input" type="checkbox" name="status" id="flexSwitchCheckChecked quiz-status" checked="" onchange="statusLabel(this)">
+                                                        <input class="form-check-input" type="checkbox" name="status" id="flexSwitchCheckChecked" checked="" onchange="statusLabel(this)">
                                                         <label class="form-check-label" id="lblStatus" for="flexSwitchCheckChecked">Active</label>
                                                     </div>
                                                 </div>
@@ -519,14 +514,24 @@
         <script src="../assets/js/app.js"></script>
 
         <script>
-            function removeConfig(config) {
+            function removeThis(config) {
                 config.lastElementChild.value = "yes";
                 let par = config.parentNode;
                 par.style.display = "none";
             }
             
+            function checkAddQues(par) {
+                let sel = par.firstElementChild;
+                const id = sel.value;
+                const detail = sel.options[sel.selectedIndex].text;
+                
+                if (id != 0) {
+                    addQuizQuestion(id, detail, 'new');
+                }
+            }
+            
             async function showInfo(id, title, subject, chapter, type, status) {
-                document.getElementById('id').value = id;
+                document.getElementById('quiz-id').value = id;
                 document.getElementById('title').value = title;
                 document.getElementById('subjectSelect').value = subject;
                 
@@ -546,19 +551,22 @@
                 else
                     document.getElementById('flexSwitchCheckChecked quiz-status').checked = false;
                 
-                
-                document.getElementById('quiz-id').value = id;
+                document.getElementById('quiz-id-c').value = id;
+                document.getElementById('quiz-id-q').value = id;
 //                console.log(id);
                 getListConfig(id);
+                getListQuizQuestion(id);
             }
             
             async function updateDatas() {
                 let sid = document.getElementById('subjectSelect').value;
-                let qid = document.getElementById('quiz-id').value;
+                //let qid = document.getElementById('quiz-id').value;
                 
-                getListConfig(qid);
+                //getListConfig(qid);
+                //getListQuizQuestion(qid);
                 await updateListChapters(sid);
-                updateListDimensions(sid);
+                await updateListDimensions(sid);
+                await updateListQuestions(sid);
             }
             
             async function updateListChapters(sid) {
@@ -594,14 +602,14 @@
                 });
             }
             
-            function updateListDimensions(sid) {
+            async function updateListDimensions(sid) {
                 let ds = document.querySelectorAll('#dimensionSelect');
                 
                 ds.forEach(sel => {
                     sel.innerHTML = "";
                 });
                 
-                fetch('getDatas?table=dimension&subject=' + sid)
+                await fetch('getDatas?table=dimension&subject=' + sid)
                     .then(response => {
                         if (response.ok)
                             return response.json();
@@ -616,6 +624,34 @@
                                 sel.appendChild(option);
                             });
                         });
+                })
+                    .catch(error => {
+                        console.log('Error: ' + error);
+                });
+            }
+            
+            async function updateListQuestions(sid) {
+                let quesSel = document.getElementById('inputGroupSelect01 questionSelect');
+                
+                quesSel.innerHTML = "";
+                
+                var option = document.createElement("option");
+                option.value = 0;
+                option.text = "Choose question...";
+                quesSel.appendChild(option);
+                
+                await fetch('getDatas?table=question&subject=' + sid)
+                    .then(response => {
+                        if (response.ok)
+                            return response.json();
+                })
+                    .then(data => {
+                        data.forEach(item => {
+                            var option = document.createElement("option");
+                            option.value = item.id;
+                            option.text = item.detail;
+                            quesSel.appendChild(option);
+                    });
                 })
                     .catch(error => {
                         console.log('Error: ' + error);
@@ -665,6 +701,45 @@
                 let listNOQ = document.querySelectorAll('#numOfQues');
                 let noq = listNOQ[listNOQ.length-1];
                 noq.value = num_of_ques;
+            }
+            
+            function getListQuizQuestion(quiz_id) {
+                document.getElementById('quiz-question-container').innerHTML = "";
+                fetch('getDatas?table=quiz-question&quiz=' + quiz_id)
+                    .then(response => {
+                        if (response.ok)
+                            return response.json();
+                })
+                    .then(data => {
+                        data.forEach(item => {
+                            addQuizQuestion(item.id, item.detail, 'old');
+                    });
+                })
+                    .catch(error => {
+                        console.log('Error: ' + error);
+                });
+            }
+            
+            function addQuizQuestion(id, detail, status) {
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <th class="p-3">` + id + `</th>
+                    <td class="py-3">
+                        <div class="d-flex align-items-center">
+                            <input type="hidden" name="question-id" value="` + id + `"/>
+                            <input type="hidden" name="status" value="` + status + `"/>
+                            <span class="ms-2">` + detail + `</span>
+                        </div>
+                    </td>
+
+                    <td class="text-end p-3">
+                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger" onclick="removeThis(this.parentNode)"><i class="uil uil-trash-alt"></i></a>
+                        <input type="hidden" name="remove" value="no"/>
+                    </td>
+                `;
+        
+                const container = document.getElementById("quiz-question-container");
+                container.appendChild(newRow);
             }
             
             function statusLabel(checkbox) {

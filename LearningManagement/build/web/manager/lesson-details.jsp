@@ -57,13 +57,14 @@
                     <div class="layout-specing">
                         <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                             <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                <li class="breadcrumb-item"><a href="index.html">${sessionScope.accountCur.role.title}</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Lessons</li>
+                                <li class="breadcrumb-item">${sessionScope.accountCur.role.title}</li>
+                                <li class="breadcrumb-item"><a href="lessons">Lesson</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">${param.action eq 'new' ? 'Add New' : 'Details'}</li>
                             </ul>
                         </nav>
                         
                         <div class="d-md-flex justify-content-between">
-                            <h5 class="mb-0">Lesson Details</h5>
+                            <h5 class="mb-0">${param.action eq 'new' ? 'Add New Lesson' : 'Lesson Details'}</h5>
                         </div>
                         
                         <div class="row">

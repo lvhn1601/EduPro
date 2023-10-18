@@ -111,6 +111,9 @@ public class SignInController extends HttpServlet {
             if (account.getRole().getId() == 1) {
                 response.sendRedirect("admin/users");
             }
+            if (account.getRole().getId() == 2) {
+                response.sendRedirect("manager/quizzes");
+            }
         }
     }
 

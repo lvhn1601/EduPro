@@ -87,7 +87,7 @@ public class LessonDetailsServlet extends HttpServlet {
         
         String title = request.getParameter("title");
         String type = request.getParameter("type");
-        boolean status = request.getParameter("status").equals("true");
+        boolean status = request.getParameter("status") != null;
         String video = request.getParameter("video");
         String description = request.getParameter("description");
         
