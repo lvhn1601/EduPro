@@ -87,11 +87,23 @@
     </style>
     <body>
         <%@include file="components/header-signIn-signUp.jsp" %>
-        <form action="sign-in" method="post" style="background-color: #f2f2f2" onsubmit="return validateForm()">
+        <form action="sign-in" method="post" style="background-color: #f2f2f2; padding: 30 30 30 30" onsubmit="return validateForm()">
             <h3 style="color: #06BBCC">Sign in</h3>
-            <div style="color: #b5bccaed">
+            <div style="color: #06BBCC">
                 ${requestScope.msg}
             </div>
+            <%
+            String errorMsg = (String) session.getAttribute("msg");
+                if (errorMsg != null && !errorMsg.isEmpty()) {
+            %>
+            <div style="color: #06BBCC">
+                <%= errorMsg %>
+            </div>
+            <%
+                // Xóa thông báo sau khi hi?n th?
+                session.removeAttribute("msg");
+                }
+            %>
             <label style="color: #06BBCC" for="username">Username</label>
             <input style="color: #000" type="text" placeholder="Email or phone number" name="username" required="">
 
@@ -113,9 +125,9 @@
 
 
                 <a href="sign-up" style= "text-decoration: none;white-space: nowrap; margin-left: 40px">Sign Up</a>
-                <a href="forget-password.jsp" style=" margin-left: 50px">Forgot password?</a>
+                <a href="reset-password.jsp" style=" margin-left: 50px">Forgot password?</a>
             </div>
-            
+
 
         </form>
         <!--        <script>

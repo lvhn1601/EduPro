@@ -4,13 +4,37 @@
         <servlet-name>SignInController</servlet-name>
         <servlet-class>controller.SignInController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>QuestionDetailManagementController</servlet-name>
+        <servlet-class>controller.manager.QuestionDetailManagementController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SignInController</servlet-name>
         <url-pattern>/sign-in</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>PhoneNumberCheckServlet</servlet-name>
+        <servlet-class>controller.PhoneNumberCheckServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PhoneNumberCheckServlet</servlet-name>
+        <url-pattern>/checkPhoneNumber</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SubjectDetailManagementController</servlet-name>
+        <servlet-class>controller.manager.SubjectDetailManagementController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SubjectDetailManagementController</servlet-name>
+        <url-pattern>/manager/subject-detail-management</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>homepage.jsp</welcome-file>
     </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>QuestionDetailManagementController</servlet-name>
+        <url-pattern>/manager/question-detail-management</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

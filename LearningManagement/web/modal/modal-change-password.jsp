@@ -5,7 +5,7 @@
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Change PassWord</h4>
+                    <h4 class="modal-title">Change Password</h4>
                     <a  style="cursor: pointer"
                         data-bs-dismiss="modal"
                         ><i class="fa-solid fa-xmark"></i></a>
@@ -15,6 +15,7 @@
                     <p style="color: red">${sessionScope.msgchangePassword}</p>
                     <form action="profile" method="post" id="reused_form">
                         <input type="hidden" name="type" value="changePassword">
+                            <c:if test="${sessionScope.accountCur.password != null}"> 
                         <div class="form-group mt-4">
                             <label for="oldPass"> Old Password:</label>
                             <input
@@ -25,7 +26,8 @@
 
                                 maxlength="50"
                                 />
-                        </div>                  
+                        </div>
+                            </c:if>
                         <div class="form-group mt-4">
                             <label for="newPass"> New password:</label>
                             <input

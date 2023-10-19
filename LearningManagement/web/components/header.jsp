@@ -1,94 +1,37 @@
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%> 
-<head>
-    <!-- Favicon -->
-    <link href="assets/img/favicon.ico" rel="icon" />
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
-        rel="stylesheet"
-        />
-
-    <!-- Icon Font Stylesheet -->
-    <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
-        rel="stylesheet"
-        />
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
-        rel="stylesheet"
-        />
-
-    <!-- Libraries Stylesheet -->
-    <link href="assets/lib/animate/animate.min.css" rel="stylesheet" />
-    <link
-        href="assets/lib/owlcarousel/assets/owl.carousel.min.css"
-        rel="stylesheet"
-        />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- Template Stylesheet -->
-    <link href="assets/css/style.css" rel="stylesheet" />
-</head>
-<body>
-    <!-- Navbar Start -->
-    <nav
-        class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0"
-        >
-        <a
-            href="/LearningManagement/"
-            class="navbar-brand d-flex align-items-center px-4 px-lg-5"
-            >
-            <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>EduPro</h2>
-        </a>
-        <button
-            type="button"
-            class="navbar-toggler me-4"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarCollapse"
-            >
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="/LearningManagement/" class="nav-item nav-link active">Home</a>
-                <a href="/LearningManagement/" class="nav-item nav-link">Lesson</a>
-                <div class="nav-item dropdown">
-                    <a
-                        href="#"
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        >Class</a
-                    >
-                    <div class="dropdown-menu fade-down m-0"></div>
-                </div>
-                <a href="#service" class="nav-item nav-link">service</a>
-            </div>
-            <c:if test="${sessionScope.accountCur == null}">           
-                <a href="sign-in" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block"
-                   >Join Now<i class="fa fa-arrow-right ms-3"></i
-                    ></a>
-                </c:if>
-        </div>
-        <c:if test="${sessionScope.accountCur != null}">  
-            <div class="btn-group">
-                <button style="background-color: #06BBCC; color: white" type="button" class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-user p-2"></i>${sessionScope.accountCur.name}</button>
-                <div class="dropdown-menu dropdown-menu-right">
-
-                    <a href="profile" class="dropdown-item" type="button">My profile</a>
-                    <c:if test="${sessionScope.accountCur.role.id == 1}">
-                        <a href="admin/users" class="dropdown-item" type="button">Admin page</a>
-                    </c:if>
-                    <a href="log-out" class="dropdown-item" type="button">Log out</a>
-
-                </div>
-            </div>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<div class="top-header">
+    <div class="header-bar d-flex justify-content-between border-bottom">
+        <c:if test="${sessionScope.accountCur == null}">
+            <h4 class="m-0 text-primary"><a href="/LearningManagement/"><img src="/LearningManagement/assets/img/logo.png" class="img-fluid avatar avatar-md-sm rounded"> EduPro</a></h4>
+            <a href="sign-in" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
         </c:if>
-    </nav>
-</body>
-<!-- Navbar End -->
+        
+        <c:if test="${sessionScope.accountCur != null}">
+            <div class="d-flex align-items-center">
+                <h4 class="m-0 text-primary"><a href="/LearningManagement/"><img src="/LearningManagement/assets/img/logo.png" class="img-fluid avatar avatar-md-sm rounded"> EduPro</a></h4>
+                <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
+                    <i class="uil uil-bars"></i>
+                </a>
+            </div>
+            
+            <ul class="list-unstyled mb-0">
+                <li class="list-inline-item mb-0 ms-1">
+                    <div class="dropdown dropdown-primary">
+                        <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="${sessionScope.accountCur.avatar_url}" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                        <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
+                            <a class="dropdown-item d-flex align-items-center text-dark" href="/LearningManagement/profile">
+                                <img src="${sessionScope.accountCur.avatar_url}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                <div class="flex-1 ms-2">
+                                    <span class="d-block mb-1">${sessionScope.accountCur.name}</span>
+                                    <small class="text-muted">${sessionScope.accountCur.role.title}</small>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider border-top"></div>
+                            <a class="dropdown-item text-dark" href="/LearningManagement/log-out"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </c:if>
+    </div>
+</div>

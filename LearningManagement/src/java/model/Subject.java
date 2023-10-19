@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,8 @@ public class Subject {
     private String code;
     private Account manager;
     private boolean status;
+    private List<Dimension> dimension;
+    private List<Chapter> chapter;
     private String created_by;
     private String created_at;
     private String update_by;
