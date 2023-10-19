@@ -16,4 +16,5 @@ import lombok.ToString;
 public class Answer {
     private int id;
     private String detail;
+    private boolean correct;
 }

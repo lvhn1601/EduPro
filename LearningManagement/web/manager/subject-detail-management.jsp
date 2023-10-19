@@ -202,8 +202,7 @@
 
     <div class="page-wrapper doctris-theme toggled">
         <jsp:include page="../components/sidebar.jsp"/>
-        <main class="page-content bg-light "style="width: 100%;
-              height: 100%;">                
+        <main class="page-content bg-light ">                
             <h1 style="margin: 100px 0px 0px 30px">Subject detail</h1>
             <div id="subjectDropdownContainer" onchange="changeSubject()">
                 <select id="subjectDropdown" >
@@ -389,12 +388,17 @@
     </div>
 
     <!-- Add these links in the <head> section of your HTML -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-
+    <!-- javascript -->
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <!-- simplebar -->
+    <script src="../assets/js/simplebar.min.js"></script>
+    <!-- Icons -->
+    <script src="../assets/js/feather.min.js"></script>
+    <!-- Main Js -->
+    <script src="../assets/js/app.js"></script>
 
 </body>
 <script>

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Account;
+import model.Answer;
 import model.Chapter;
 import model.Config;
 import model.Dimension;
@@ -24,6 +25,7 @@ import model.Subject;
  * @author lvhn1
  */
 public class ManagerDAO extends DBContext {
+
     public Subject getSubjectById(int subjectId) {
         Subject subject = null;
         String sql = "SELECT\n"
@@ -289,7 +291,6 @@ public class ManagerDAO extends DBContext {
         return questions;
     }
 
-
     public List<Subject> getListSubjects(int manager_id) {
         String sql = "SELECT * FROM subject where subject_manager_id = ? and subject_status = 1";
 
@@ -305,6 +306,39 @@ public class ManagerDAO extends DBContext {
                         .id(rs.getInt("subject_id"))
                         .code(rs.getString("subject_code"))
                         .name(rs.getString("subject_name"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public List<Chapter> getListChapters(int manager_id) {
+        String sql = "SELECT * FROM chapter\n"
+                + "JOIN subject on chapter.chapter_subject_id = subject.subject_id\n"
+                + "WHERE subject_manager_id = ? and chapter_status = 1\n"
+                + "ORDER BY chapter_display_order";
+
+        List<Chapter> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, manager_id);
+            System.out.println(ps.toString());
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Chapter.builder()
+                        .id(rs.getInt("chapter_id"))
+                        .title(rs.getString("chapter_title"))
+                        .subject(Subject.builder()
+                                .id(rs.getInt("subject_id"))
+                                .code(rs.getString("subject_code"))
+                                .build()
+                        )
+                        .display_order(rs.getInt("chapter_display_order"))
                         .build()
                 );
             }
@@ -373,10 +407,10 @@ public class ManagerDAO extends DBContext {
 
         return list;
     }
-    
+
     public List<Question> getListQuestions(int subject_id) {
         String sql = "SELECT * FROM question WHERE question_subject_id = ?";
-        
+
         List<Question> list = new ArrayList<>();
 
         try {
@@ -393,7 +427,7 @@ public class ManagerDAO extends DBContext {
             }
         } catch (SQLException e) {
         }
-        
+
         return list;
     }
 
@@ -449,7 +483,7 @@ public class ManagerDAO extends DBContext {
             }
         } catch (SQLException e) {
         }
-        
+
         return list;
     }
 
@@ -625,10 +659,10 @@ public class ManagerDAO extends DBContext {
         } catch (SQLException e) {
         }
     }
-    
+
     public boolean addQuizQuestion(int quiz, int question) {
         String sql = "INSERT INTO quiz_question(quiz_id, question_id) VALUES (?, ?)";
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, quiz);
@@ -639,15 +673,15 @@ public class ManagerDAO extends DBContext {
             return true;
         }
     }
-    
+
     public boolean deleteQuizQuestion(int quiz, int question) {
         String sql = "DELETE from quiz_question where quiz_id = ? and question_id = ?";
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, quiz);
             ps.setInt(2, question);
-            
+
             return ps.execute();
         } catch (SQLException e) {
             return true;
@@ -790,15 +824,11 @@ public class ManagerDAO extends DBContext {
         }
     }
 
-    public int getLessonId(String database) {
-        String sql = "SELECT `AUTO_INCREMENT` as num\n"
-                + "FROM  INFORMATION_SCHEMA.TABLES\n"
-                + "WHERE TABLE_SCHEMA = ?\n"
-                + "AND   TABLE_NAME   = 'lesson';";
+    public int getId(String table) {
+        String sql = "SELECT max(" + table + "_id) as num from " + table;
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, database);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -859,5 +889,200 @@ public class ManagerDAO extends DBContext {
             ps.execute();
         } catch (SQLException e) {
         }
+    }
+
+    public List<Lesson> getListLessons(int chapter_id) {
+        String sql = "select * from lesson where lesson_chapter_id = ?";
+
+        List<Lesson> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, chapter_id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Lesson.builder()
+                        .id(rs.getInt("lesson_id"))
+                        .title(rs.getString("lesson_title"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public void addQuestion(int subject, int chapter, int lesson, String detail, boolean status, int manager_id) {
+        String sql = "insert into question(question_subject_id, question_chapter_id, question_lesson_id, question_detail, question_status, created_by, update_by)\n"
+                + "values (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, subject);
+            ps.setInt(2, chapter);
+            ps.setInt(3, lesson);
+            ps.setString(4, detail);
+            ps.setBoolean(5, status);
+            ps.setInt(6, manager_id);
+            ps.setInt(7, manager_id);
+
+            ps.execute();
+        } catch (SQLException e) {
+        }
+    }
+
+    public void addQuestionDimension(int question, int dimension) {
+        String sql = "insert into question_dimension(question_id, dimension_id)\n"
+                + "values (?, ?)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, question);
+            ps.setInt(2, dimension);
+
+            ps.execute();
+        } catch (SQLException e) {
+        }
+    }
+
+    public void updateQuestion(int id, String detail, boolean status, int manager_id) {
+        String sql = "update question set question_detail = ?, question_status = ?, update_by = ?\n"
+                + "where question_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, detail);
+            ps.setBoolean(2, status);
+            ps.setInt(3, manager_id);
+            ps.setInt(4, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+        }
+    }
+
+    public void updateQuestionDimension(int question, int dimension) {
+        String sql = "update question_dimension set dimension_id = ? where question_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, dimension);
+            ps.setInt(2, question);
+
+            ps.execute();
+        } catch (SQLException e) {
+        }
+    }
+
+    public void addAnswer(String detail, boolean correct, int question) {
+        String sql = "insert into answer(answer_detail, answer_correct, answer_question_id)\n"
+                + "values (?, ?, ?)";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, detail);
+            ps.setBoolean(2, correct);
+            ps.setInt(3, question);
+
+            ps.execute();
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void deleteAnswer(int id) {
+        String sql = "delete from answer where answer_id = ?";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+        }
+    }
+    
+    public void updateAnswer(int id, String detail, boolean correct) {
+        String sql = "update answer set answer_detail = ?, answer_correct = ? where answer_id = ?";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, detail);
+            ps.setBoolean(2, correct);
+            ps.setInt(3, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+        }
+    }
+    
+    public Question getQuestionWithId(int id) {
+        String sql = "select * from question where question_id = ?";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                return Question.builder()
+                        .id(rs.getInt("question_id"))
+                        .detail(rs.getString("question_detail"))
+                        .status(rs.getBoolean("question_status"))
+                        .subject(Subject.builder().id(rs.getInt("question_subject_id")).build())
+                        .chapter(Chapter.builder().id(rs.getInt("question_chapter_id")).build())
+                        .lesson(Lesson.builder().id(rs.getInt("question_lesson_id")).build())
+                        .dimensions(getQuestionDimensions(id))
+                        .answers(getAnswers(id))
+                        .build();
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+    
+    public List<Answer> getAnswers(int question) {
+        String sql = "select * from answer where answer_question_id = ?";
+        
+        List<Answer> list = new ArrayList<>();
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, question);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                list.add(Answer.builder()
+                        .id(rs.getInt("answer_id"))
+                        .detail(rs.getString("answer_detail"))
+                        .correct(rs.getBoolean("answer_correct"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+        return list;
+    }
+    
+    public List<Dimension> getQuestionDimensions(int question) {
+        String sql = "SELECT * FROM question_dimension where question_id = ?";
+        
+        List<Dimension> list = new ArrayList<>();
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, question);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                list.add(Dimension.builder()
+                        .id(rs.getInt("dimension_id"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+        return list;
     }
 }

@@ -64,7 +64,7 @@ public class GetDatasServlet extends HttpServlet {
         ManagerDAO db = new ManagerDAO();
         
         String table = request.getParameter("table");
-        int subject_id, quiz_id;
+        int subject_id, quiz_id, chapter_id;
         try {
             subject_id = Integer.parseInt(request.getParameter("subject"));
         } catch (NumberFormatException | NullPointerException e) {
@@ -94,6 +94,10 @@ public class GetDatasServlet extends HttpServlet {
                 break;
             case "quiz":
                 jsonData = gson.toJson(db.getListQuizzes(subject_id));
+                break;
+            case "lesson":
+                chapter_id = Integer.parseInt(request.getParameter("chapter"));
+                jsonData = gson.toJson(db.getListLessons(chapter_id));
                 break;
             default:
                 return;
