@@ -294,9 +294,9 @@
                                                         onclick="openModal('${subject.id}', '${c.id}', '${c.status}', '${c.title}', '${c.description}'); event.preventDefault();">
                                                     <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                 </button>
-                                                <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
+<!--                                                <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
-                                                </a>
+                                                </a>-->
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -346,9 +346,9 @@
                                                         onclick="openModalx('${subject.id}', '${d.id}', '${d.status}', '${d.type}', '${d.name}'); event.preventDefault();">
                                                     <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                 </button>
-                                                <a href="#" onclick="confirmDeleteDimension('${subject.id}', '${d.id}')">
+<!--                                                <a href="#" onclick="confirmDeleteDimension('${subject.id}', '${d.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
-                                                </a>
+                                                </a>-->
                                             </td>
                                         </tr>
                                     </c:forEach>

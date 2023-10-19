@@ -217,21 +217,15 @@ public class ManagerDAO extends DBContext {
     }
 
     public int addChapter(Chapter obj, int accId, int subjectId) {
-        int check = 0;
-        String sql = "INSERT INTO `edupro2`.`chapter` (`chapter_title`, `chapter_description`, `chapter_subject_id`, `created_by`, `update_by`) "
+        String sql = "INSERT INTO  `chapter` (`chapter_title`, `chapter_description`, `chapter_subject_id`, `created_by`, `update_by`) "
                 + "VALUES (?, ?, ?, ?, ?);";
-        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, obj.getTitle());
             ps.setObject(2, obj.getDescription());
             ps.setObject(3, subjectId);
             ps.setObject(4, accId);
             ps.setObject(5, accId);
-            check = ps.executeUpdate();
-            if (check > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                return rs.getInt(1);
-            }
+            return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         }
@@ -239,21 +233,15 @@ public class ManagerDAO extends DBContext {
     }
 
     public int addDimension(Dimension obj, int accId, int subjectId) {
-        int check = 0;
-        String sql = "INSERT INTO `edupro2`.`dimension` (`dimension_type`, `dimension_name`, `dimension_subject_id`, `created_by`, `update_by`) "
+        String sql = "INSERT INTO  `dimension` (`dimension_type`, `dimension_name`, `dimension_subject_id`, `created_by`, `update_by`) "
                 + "VALUES (?, ?, ?, ?, ?);";
-        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, obj.getType());
             ps.setObject(2, obj.getName());
             ps.setObject(3, subjectId);
             ps.setObject(4, accId);
             ps.setObject(5, accId);
-            check = ps.executeUpdate();
-            if (check > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                return rs.getInt(1);
-            }
+            return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         }
