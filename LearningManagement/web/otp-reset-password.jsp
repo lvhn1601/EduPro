@@ -18,8 +18,9 @@
     </style>
     <body>
         <%@include file="components/header-signIn-signUp.jsp" %>
-        <form action="otp-reset-password" method="post" style="background-color: #f2f2f2">
+        <form action="otp-confirmation" method="post" style="background-color: #f2f2f2">
             <br><br>
+            <input type="hidden" name="action" value="reset">
             <h2 style="color: #06BBCC">Your OTP has been send</h2>
             <br>
             <p style="color: #06BBCC">Enter your OTP to reset password</p>
