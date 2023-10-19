@@ -3,22 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/manager/components/header.jsp</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/homepage.jsp</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/src/java/dao/ManagerDAO.java</file>
             <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/modal/modal-change-information.jsp</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/src/java/model/ClassTrainee.java</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/manager/modal/update-class-information.jsp</file>
+            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/src/java/connection/DBContext.java</file>
+            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/src/java/dao/AccountDAO.java</file>
+            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/admin/add-subject.jsp</file>
+            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/otp-reset-password.jsp</file>
+            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/admin/edit-user.jsp</file>
+            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/src/java/model/Subject.java</file>
             <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/modal/modal-change-avatar.jsp</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/modal/modal-change-email.jsp</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/manager/components/sidebar.jsp</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/assets/css/bootstrap.min.css</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/src/java/controller/manager/ClassController.java</file>
+            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/src/java/controller/admin/AddSubjectServlet.java</file>
             <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/profile.jsp</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/manager/modal/modal-add-class.jsp</file>
+            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/admin/add-setting.jsp</file>
             <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/manager/list-class.jsp</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/web/components/header.jsp</file>
-            <file>file:/C:/Users/acer/OneDrive/Máy%20tính/swp301/g5/LearningManagement/src/java/controller/ProfileController.java</file>
         </group>
     </open-files>
 </project-private>

@@ -33,7 +33,7 @@
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <!-- Icon Font Stylesheet -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
-        
+
     </head>
     <body>
         <!-- Loader -->
@@ -48,11 +48,11 @@
         <!-- Loader -->
 
         <div class="page-wrapper doctris-theme toggled">
-            <jsp:include page="components/sidebar.jsp"/>
+
 
             <!-- Start Page Content -->
             <main class="page-content bg-light">
-                <jsp:include page="components/header.jsp"/>
+
 
                 <div class="container-fluid">
                     <div class="layout-specing">
@@ -65,17 +65,17 @@
                         <div class="d-md-flex justify-content-between">
                             <h5 class="mb-0">Class Manager</h5>
 
-                            <div class="search-bar p-0 d-none d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                </div>
-                            </div>
+                            <form class="d-flex search" method="get" action="<%= request.getContextPath() %>/manager/class">
+                                <input type="text" name="search" class="form-control border rounded-pill" id="searchInput" placeholder="Search...">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </form>
 
                             <a data-bs-toggle="modal"
                                data-bs-target="#addClassModal"
-                               href="javascript:void(0)"
+                               href="javascript:void(0"
                                class="btn btn-primary">Add New Class</a>
-
                         </div>
+
 
                         <div class="row">
                             <div class="col-12 mt-4">
@@ -105,20 +105,29 @@
                                                     <td class="p-3">${c.class_semester_name}</td>
                                                     <td class="p-3">
                                                         <form class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault ${c.class_id}" ${c.class_status ? 'checked' : ''} onchange="updateStatus(this, ${s.id})">
+                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault ${c.class_id}" ${c.class_status ? 'checked' : ''} onchange="updateStatus(this, ${c.class_id})">
                                                         </form>
                                                     </td>
 
                                                     <td class="p-3">${c.created_by}</td>
 
-
                                                     <td class="text-end p-3">
-
-
-                                                        <a class="btn btn-icon btn-pills btn-soft-success" data-bs-toggle="modal"
-                                                           data-bs-target="#addClassModal"
-                                                           href="javascript:void(0)"><i class="uil uil-pen"></i></a>
+                                                        <a href="#"
+                                                           class="btn btn-icon btn-pills btn-soft-primary"
+                                                           data-bs-toggle="modal" data-bs-target="#classDetailModal"
+                                                           data-classId="${c.class_id}"
+                                                           data-className="${c.class_name}"
+                                                           data-classSubject="${c.class_subject_name}"
+                                                           data-classTrainer="${c.class_trainer_name}"
+                                                           data-classSemester="${c.class_semester_name}"
+                                                           data-classStatus="${c.class_status}"
+                                                           data-classStart="${c.class_start}"
+                                                           data-classEnd="${c.class_end}"
+                                                           >
+                                                            <i class="uil uil-edit"></i>
+                                                        </a>
                                                     </td>
+
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
@@ -134,88 +143,109 @@
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <span class="text-muted me-3">Showing ${(cur - 1) * 8 + 1} - ${(cur * 8) > requestScope.count ? requestScope.count : (cur * 8)} out of ${requestScope.count}</span>
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(1)" aria-label="Previous">First</a></li>
-                                            <c:forEach begin="${cur > 1 ? (cur + 3 > pages ? (pages - 4 < 1 ? 1 : pages - 4) : cur - 1) : 1}" end="${cur > 1 ? (cur + 3 > pages ? pages : cur + 3) : (5 > pages ? pages : 5)}" var="i">
+                                        <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/manager/class?page=1" aria-label="Previous">First</a></li>
+                                            <c:forEach begin="${cur > 1 ? (cur + 3 > totalPages ? (totalPages - 4 < 1 ? 1 : totalPages - 4) : cur - 1) : 1}"
+                                                       end="${cur > 1 ? (cur + 3 > totalPages ? totalPages : cur + 3) : (5 > totalPages ? totalPages : 5)}" var="i">
                                             <li class="page-item ${(param.page == i || (i==1 && param.page==null)) ? 'active' : ''}">
-                                                <a class="page-link" href="javascript:jumpTo(${i})">${i}</a>
+                                                <a class="page-link" href="<%= request.getContextPath() %>/manager/class?page=${i}">${i}</a>
                                             </li>
                                         </c:forEach>
-                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(${pages})" aria-label="Next">Last</a></li>
+                                        <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/manager/class?page=${totalPages}" aria-label="Next">Last</a></li>
                                     </ul>
                                 </div>
                             </div><!--end col-->
-                            
-            </main>
-            <!--End page-content" -->
-        </div>
-        <!-- page-wrapper -->
-        <!-- Modal start -->
-        <!-- Profile Start -->
-        <div class="modal fade" id="viewprofile" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header border-bottom p-3">
-                        <h5 class="modal-title" id="exampleModalLabel1">Detail</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-3 pt-4">
-                        <div class="d-flex align-items-center">
-                            <h5 class="mb-0 ms-3" id="info-name"></h5>
                         </div>
-                        <ul class="list-unstyled mb-0 d-md-flex justify-content-between mt-4">
-                            <li style="width: 50%">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="d-flex">
-                                        <h6>Subject code:</h6>
-                                        <p class="text-dark ms-2" id="info-code"></p>
-                                    </li>
-
-                                    
-                                </ul>
-                            </li>
-                        </ul>
+                        </main>
+                        <!--End page-content" -->
                     </div>
-                </div>
-            </div>
-        </div>
-        <!-- Profile End -->
-                <!------------------------MODAL CHANGE PASSWORD-------------------------->   
-        <%@include file="modal/modal-add-class.jsp"%>
+                    <!-- page-wrapper -->
+                    <!-- Modal start -->
 
-        <!-- javascript -->
-        <script src="../assets/js/bootstrap.bundle.min.js"></script>
-        <!-- simplebar -->
-        <script src="../assets/js/simplebar.min.js"></script>
-        <!-- Icons -->
-        <script src="../assets/js/feather.min.js"></script>
-        <!-- Main Js -->
-        <script src="../assets/js/app.js"></script>
+                    <!------------------------MODAL ADD CLASS-------------------------->   
+                    <%@include file="modal/modal-add-class.jsp"%>
+                    <!------------------------MODAL UPDATE CLASS DETAIL-------------------------->   
+                    <%@include file="modal/modal-update-class-information.jsp"%>
 
-        <script>
+                    <!-- javascript -->
+                    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+                    <!-- simplebar -->
+                    <script src="../assets/js/simplebar.min.js"></script>
+                    <!-- Icons -->
+                    <script src="../assets/js/feather.min.js"></script>
+                    <!-- Main Js -->
+                    <script src="../assets/js/app.js"></script>
 
-                                        function updateStatus(element, id) {
-                                            var isChecked = element.checked;
+                    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                    <script>
+                                                                document.addEventListener('click', function (e) {
+                                                                    if (e.target && e.target.dataset.bsToggle === 'modal' && e.target.dataset.bsTarget === '#classDetailModal') {
+                                                                        const classId = e.target.dataset.classId;
+                                                                        const className = e.target.dataset.className;
+                                                                        const classSubject = e.target.dataset.classSubject;
+                                                                        const classSemester = e.target.dataset.classSemester;
+                                                                        const classTrainer = e.target.dataset.classTrainer;
+                                                                        const classStart = e.target.dataset.classStart;
+                                                                        const classEnd = e.target.dataset.classEnd;
+                                                                        const classStatus = e.target.dataset.classStatus;
 
-                                            fetch("updateStatus?table=subject&id=" + id + "&isChecked=" + isChecked)
-                                                    .then(response => response.text())
-                                                    .then(data => {
-                                                        console.log(data);
-                                                    });
-                                        }
-        </script>
-        <script>
-            const msgAddClass = '<%= session.getAttribute("msgAddClass") %>';
-            if (msgAddClass !== 'null') {
-                const myModal = new bootstrap.Modal(document.getElementById("addClassModal"), {});
-                document.onreadystatechange = function () {
-                    myModal.show();
-                };
-            }
-        </script>
+                                                                        // Kiểm tra giá trị trước khi gán
+                                                                        if (classStart && classEnd) {
+                                                                            // Điền thông tin vào các trường input và select
+                                                                            document.getElementById('className').value = className;
+                                                                            document.getElementById('classSubject').value = classSubject;
+                                                                            document.getElementById('classSemester').value = classSemester;
+                                                                            document.getElementById('classTrainer').value = classTrainer;
+                                                                            document.getElementById('classStart').value = classStart;
+                                                                            document.getElementById('classEnd').value = classEnd;
+
+                                                                            if (classStatus === 'active') {
+                                                                                document.getElementById('active').checked = true;
+                                                                                document.getElementById('inactive').checked = false;
+                                                                            } else {
+                                                                                document.getElementById('active').checked = false;
+                                                                                document.getElementById('inactive').checked = true;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                });
+
+                    </script>
+                    <script>
+                        const msgAddClass = '<%= session.getAttribute("msgAddClass") %>';
+                        if (msgAddClass !== 'null') {
+                            const myModal = new bootstrap.Modal(document.getElementById("addClassModal"), {});
+                            document.onreadystatechange = function () {
+                                myModal.show();
+                            };
+                        }
+                    </script>
+                    <script>
+                        const msgUpdateClass = '<%= session.getAttribute("msgUpdateClass") %>';
+                        if (msgUpdateClass !== 'null') {
+                            const myModal = new bootstrap.Modal(document.getElementById("classDetailModal"), {});
+                            document.onreadystatechange = function () {
+                                myModal.show();
+                            };
+                        }
+                    </script>
+                    <script>
+                        function jumpTo(page) {
+                            let search = "${param.search eq null ? '' : param.search}";
+                            location.href = "./manager/class?page=" + page + (search == "" ? "" : "&search=" + search);
+                        }
+
+                        function search() {
+                            let searchKeyword = document.getElementById("searchInput").value;
+                            location.href = "./manager/class?search=" + searchKeyword;
+                        }
+                    </script>
 
 
-        <%
-            request.getSession().removeAttribute("msgAddClass");
-        %>
-    </body>
-</html>
+                    <%
+                        request.getSession().removeAttribute("msgAddClass");
+                        request.getSession().removeAttribute("msgUpdateClass");
+                    %>
+                    </body>
+                    </html>
