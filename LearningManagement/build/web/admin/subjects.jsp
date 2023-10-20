@@ -47,17 +47,17 @@
         <!-- Loader -->
 
         <div class="page-wrapper doctris-theme toggled">
-            <jsp:include page="components/sidebar.jsp"/>
+            <jsp:include page="../components/sidebar.jsp"/>
 
             <!-- Start Page Content -->
             <main class="page-content bg-light">
-                <jsp:include page="components/header.jsp"/>
+                <jsp:include page="../components/header.jsp"/>
 
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                             <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                <li class="breadcrumb-item"><a href="index.html">Admin</a></li>
+                                <li class="breadcrumb-item"><a href="index.html">${sessionScope.accountCur.role.title}</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Subjects</li>
                             </ul>
                         </nav>

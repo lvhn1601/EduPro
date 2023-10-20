@@ -22,17 +22,23 @@ public class Mail {
             Properties properties = Helper.getPropertiesByFileName("consts/const.properties");
             final String fromEmail = properties.getProperty("admin.email");
             final String password = properties.getProperty("admin.password");
-
+            String usname = "4a0ce5f6a4dab8";
+            String pass = "99622436b0e79b";
+            
             Properties props = new Properties();
-            props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+//            props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+//            props.put("mail.smtp.port", "587"); //TLS Port
+//            props.put("mail.smtp.auth", "true"); //enable authentication
+//            props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+
+            props.put("mail.smtp.host", "sandbox.smtp.mailtrap.io"); //SMTP Host
             props.put("mail.smtp.port", "587"); //TLS Port
             props.put("mail.smtp.auth", "true"); //enable authentication
             props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
-
             Authenticator auth = new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(fromEmail, password);
+                    return new PasswordAuthentication(usname, pass);
                 }
             };
             Session session = Session.getInstance(props, auth);

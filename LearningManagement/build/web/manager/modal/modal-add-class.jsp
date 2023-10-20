@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group mt-4">
                         <label for="subject"> Subject: </label>
-                        <select class="form-control" id="subject" name="subject">
+                        <select class="form-control" id="classSubject" name="classSubject">
                             <c:forEach items="${listSubject}" var="ls">
                                 <option value="${ls.id}">${ls.name}</option>
                             </c:forEach> 
@@ -33,7 +33,7 @@
                     </div>
                     <div class="form-group mt-4">
                         <label for="semester"> Semester: </label>
-                        <select class="form-control" id="semester" name="semester">
+                        <select class="form-control" id="classSemester" name="classSemester">
                             <c:forEach items="${listSemester}" var="l">
                                 <option value="${l.id}">${l.title}</option>
                             </c:forEach> 
@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group mt-4">
                         <label for="trainer"> Trainer: </label>
-                        <select class="form-control" id="trainer" name="trainer">
+                        <select class="form-control" id="classTrainer" name="classTrainer">
                             <c:forEach items="${listTrainer}" var="t">
                                 <option value="${t.id}">${t.email} - ${t.name}</option>
                             </c:forEach> 
@@ -55,7 +55,7 @@
                             id="dateStart"
                             name="dateStart"
                             value=""
-                           required=""
+                            required=""
                             />
                     </div>
                     <div class="form-group mt-4">
@@ -73,16 +73,16 @@
                     <div class="form-group mt-4">
 
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="status" id="status" value="active" checked="">
+                            <input class="form-check-input" type="radio" name="classStatus" id="classStatus" value="active" checked="">
                             <label class="form-check-label" for="active">Active</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="status" id="status" value="inactive" >
+                            <input class="form-check-input" type="radio" name="classStatus" id="classStatus" value="inactive" >
                             <label class="form-check-label" for="inactive">Inactive</label>
                         </div>
                     </div>
                     <br>
-                 
+
                     <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; border: none; height: 45px">Submit</button>
                 </form>
             </div>

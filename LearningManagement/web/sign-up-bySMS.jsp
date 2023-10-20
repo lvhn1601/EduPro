@@ -3,7 +3,7 @@
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="shortcut icon" href="assets/img/?Pngtree?blue open book_4426437.png">
+        <link rel="shortcut icon" href="assets/img/?Pngtree?blue open book_4426437.png">
         <link href="assets/css/sign-up.css?v=3" rel="stylesheet" type="text/css" media="all">
     </head>
     <style>
@@ -63,7 +63,7 @@
                     <h2 style="color: #06BBCC">SIGN UP</h2>
                     <p style="color: #06BBCC">Enter your phone number to get OTP</p>
                     <br>
-                    <input style="background: #ffffff;color: #000" type="text" name="number" id="number" placeholder="+843...">
+                    <input style="background: #ffffff;color: #000" type="text" name="number" id="number" placeholder="Your number">
                     <div id="recaptcha-container"></div>
                     <button type="button" id="send" onClick="phoneAuth()">Send</button>
                 </div>
@@ -80,7 +80,8 @@
         <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
         <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
 
-
+        <%@ page import="java.util.List" %>
+        <%@ page import="com.google.gson.Gson" %>
         <script>
                         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
                         const firebaseConfig = {
@@ -104,17 +105,28 @@
                             if (number.charAt(0) === '0') {
                                 number = '+84' + number.substr(1);
                             }
-                            firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
-                                window.confirmationResult = confirmationResult;
-                                coderesult = confirmationResult;
-                                document.getElementById('sender').style.display = 'none';
-                                document.getElementById('verifier').style.display = 'block';
+                            var phoneList = <%= request.getAttribute("jsonList") %>; 
+                            console.log(phoneList)
+                            console.log(number)
+                            var isPhoneNumberValid = checkPhoneNumberInList(number, phoneList);
+                            if (!isPhoneNumberValid) {
+                                firebase.auth().signInWithPhoneNumber(number, window.recaptchaVerifier).then(function (confirmationResult) {
+                                    window.confirmationResult = confirmationResult;
+                                    coderesult = confirmationResult;
+                                    document.getElementById('sender').style.display = 'none';
+                                    document.getElementById('verifier').style.display = 'block';
 
-                                sessionStorage.setItem('phoneNumber', number);
-                            }).catch(function (error) {
-                                alert(error.message);
-                            });
+                                    sessionStorage.setItem('phoneNumber', number);
+                                }).catch(function (error) {
+                                    alert(error.message);
+                                });
+                            } else {
+                                alert("This phone number is registered");
+                            }
 
+                        }
+                        function checkPhoneNumberInList(phoneNumber, phoneList) {
+                            return phoneList.includes(phoneNumber);
                         }
                         // function for code verify
                         function codeverify() {
@@ -122,7 +134,7 @@
                             coderesult.confirm(code).then(function () {
                                 document.getElementsByClassName('p-conf')[0].style.display = 'block';
                                 document.getElementsByClassName('n-conf')[0].style.display = 'none';
-                                window.location.href = 'password-creation';
+                                window.location.href = 'password?action=register';
                             }).catch(function () {
                                 document.getElementsByClassName('p-conf')[0].style.display = 'none';
                                 document.getElementsByClassName('n-conf')[0].style.display = 'block';
