@@ -61,7 +61,7 @@ public class EditSubjectServlet extends HttpServlet {
         
         AdminDAO db = new AdminDAO();
         
-        request.setAttribute("managers", db.getManagers());
+        request.setAttribute("managers", db.getManagers("Manager"));
         request.setAttribute("subject", db.getSubjectByID(id));
         
         request.getRequestDispatcher("edit-subject.jsp").forward(request, response);

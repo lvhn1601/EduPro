@@ -59,7 +59,7 @@ public class AddSubjectServlet extends HttpServlet {
     throws ServletException, IOException {
         AdminDAO db = new AdminDAO();
         
-        request.setAttribute("managers", db.getManagers());
+        request.setAttribute("managers", db.getManagers("Manager"));
         
         request.getRequestDispatcher("add-subject.jsp").forward(request, response);
     } 

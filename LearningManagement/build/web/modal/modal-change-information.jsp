@@ -23,38 +23,6 @@
                             />
                     </div>
                     <div class="form-group mt-4">
-                        <label for="email"> Email:</label>
-                        <input
-                            type="email"
-                            class="form-control"
-                            id="email"
-                            name="accountEmail"
-                            value="${sessionScope.accountCur.email}"
-                            />
-                         <input
-                             type="hidden"
-                            class="form-control"
-                            name="currentEmail"
-                            value="${sessionScope.accountCur.email}"
-                            />
-                    </div>
-                    <div class="form-group mt-4">
-                        <label for="phone"> Phone: </label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="phone"
-                            name="accountPhone"
-                            value="${sessionScope.accountCur.phone}"
-                            />
-                         <input
-                             type="hidden"
-                            class="form-control"
-                            name="currentPhone"
-                            value="${sessionScope.accountCur.phone}"
-                            />
-                    </div>
-                    <div class="form-group mt-4">
                         <label for="dob"> Date of Birth:</label>
                         <input
                             type="date"
