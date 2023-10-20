@@ -6,7 +6,6 @@ package dao;
 
 import connection.DBContext;
 import dto.UserGoogleDto;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,7 +47,7 @@ public class AccountDAO extends DBContext {
                         .id(rs.getInt("account_id"))
                         .email(rs.getString("account_email"))
                         .password(rs.getString("account_password"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .phone(rs.getString("account_phone"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
@@ -82,7 +81,7 @@ public class AccountDAO extends DBContext {
                         .id(rs.getInt("account_id"))
                         .email(rs.getString("account_email"))
                         .password(rs.getString("account_password"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .phone(rs.getString("account_phone"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
@@ -116,7 +115,9 @@ public class AccountDAO extends DBContext {
 
     public Account getOneByAccountId(int accountId) {
 
-        String sql = "select * from Account where account_id = ?";//
+        String sql = "select * from Account\n"
+                + "join setting on setting.setting_id = account.account_role_id\n"
+                + "where account_id = ?";//
         try ( PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setObject(1, accountId);
             ResultSet rs = stm.executeQuery();
@@ -126,12 +127,14 @@ public class AccountDAO extends DBContext {
                         .email(rs.getString("account_email"))
                         .phone(rs.getString("account_phone"))
                         .password(rs.getString("account_password"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .name(rs.getString("account_name"))
                         .avatar_url(rs.getString("account_avatar_url"))
                         .dob(rs.getDate("account_dob"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
+                                .title(rs.getString("setting_title"))
+                                .display_order(rs.getInt("setting_display_order"))
                                 .build())
                         .build();
                 return s;
@@ -160,7 +163,9 @@ public class AccountDAO extends DBContext {
 
     public Account getOneByEmail(String email) {
 
-        String sql = "Select * FROM Account WHERE account_email = ?";
+        String sql = "Select * FROM Account \n"
+                + "join setting on setting.setting_id = account.account_role_id\n"
+                + "WHERE account_email = ?";
 
         try ( PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setObject(1, email);
@@ -172,12 +177,14 @@ public class AccountDAO extends DBContext {
                         .email(rs.getString("account_email"))
                         .phone(rs.getString("account_phone"))
                         .password(rs.getString("account_password"))
-                        .active(rs.getBoolean("account_active"))
+                        .active(rs.getInt("account_active"))
                         .name(rs.getString("account_name"))
                         .avatar_url(rs.getString("account_avatar_url"))
                         .dob(rs.getDate("account_dob"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
+                                .title(rs.getString("setting_title"))
+                                .display_order(rs.getInt("setting_display_order"))
                                 .build())
                         .build();
                 return a;
@@ -265,7 +272,7 @@ public class AccountDAO extends DBContext {
             if (check > 0) {
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
-                    int newAccountId = rs.getInt(1); 
+                    int newAccountId = rs.getInt(1);
                     updateCreatedByAndUpdatedBy(newAccountId, newAccountId);
                 }
             }
@@ -308,6 +315,26 @@ public class AccountDAO extends DBContext {
         return check > 0;
     }
 
+    public List<String> getAllPhoneNumbers() {
+        List<String> phoneNumbers = new ArrayList<>();
+        String sql = "select account_phone from account";
+        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String phoneNumber = rs.getString("account_phone");
+                if (phoneNumber != null && phoneNumber.startsWith("0")) {
+                    phoneNumbers.add("+84" + phoneNumber.substring(1));
+                } else {
+                    phoneNumbers.add(phoneNumber);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return phoneNumbers;
+    }
+
     public static void main(String[] args) {
+        System.out.println(new AccountDAO().getAllPhoneNumbers());
     }
 }
