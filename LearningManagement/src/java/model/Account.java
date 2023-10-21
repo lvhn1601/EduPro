@@ -16,7 +16,7 @@ public class Account {
     private String email;
     private String phone;
     private String password;
-    private Boolean active;
+    private int active;
     private String name;
     private String avatar_url;
     private Date dob;

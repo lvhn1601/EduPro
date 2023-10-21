@@ -29,6 +29,7 @@
                 <li><a href="/LearningManagement/manager/question-detail-management"><i class="uil uil-file-question me-2 d-inline-block"></i>Questions</a></li>
                 <li><a href="/LearningManagement/manager/quizzes"><i class="uil uil-lightbulb-alt me-2 d-inline-block"></i>Quizzes</a></li>
                 <li><a href="/LearningManagement/manager/lessons"><i class="uil uil-file-landscape-alt me-2 d-inline-block"></i>Lessons</a></li>
+                <li><a href="/LearningManagement/manager/class"><i class="uil uil-users-alt me-2 d-inline-block"></i>Classes</a></li>
             </c:if>
             
         </ul>
