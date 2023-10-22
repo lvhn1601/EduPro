@@ -335,6 +335,23 @@ public class ManagerDAO extends DBContext {
         }
         return answers;
     }
+    
+    public int getTopQuestionId() {
+        int n = 0;
+        String sql = "SELECT question_id \n" +
+                        "FROM question \n" +
+                        "ORDER BY question_id DESC\n" +
+                        "LIMIT 1";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                n = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return n;
+    }
 
     public List<Subject> getListSubjects(int manager_id) {
         String sql = "SELECT * FROM subject where subject_manager_id = ? and subject_status = 1";
@@ -1402,10 +1419,6 @@ public class ManagerDAO extends DBContext {
         return listClass;
     }
     public static void main(String[] args) {
-        ManagerDAO dao = new ManagerDAO();
-        List<Answer> list = dao.getAnswerByQuestion(44);
-        for(Answer a:list) {
-            System.out.println(a.getDetail());
-        }
+        
     }
 }

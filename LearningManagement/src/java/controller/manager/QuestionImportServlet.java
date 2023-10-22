@@ -109,7 +109,7 @@ public class QuestionImportServlet extends HttpServlet {
         //Get first sheet from the workbook
         XSSFSheet sheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = sheet.iterator();
-        
+   
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
             String detail = row.getCell(0).getStringCellValue();
@@ -117,6 +117,7 @@ public class QuestionImportServlet extends HttpServlet {
                                 row.getCell(2).getStringCellValue(), 
                                 row.getCell(3).getStringCellValue(), 
                                 row.getCell(4).getStringCellValue()};
+            
             int correct = 0;
             switch(row.getCell(5).getStringCellValue()) {
                 case "A": {
@@ -136,13 +137,13 @@ public class QuestionImportServlet extends HttpServlet {
                     break;
                 }
             } 
-                                
+            db.addQuestion(subject, chapter, lesson, detail, status, acc.getId());
+            int questionId = db.getTopQuestionId();
             for(int i=0; i<adetails.length; i++) {
                 if(i == correct) {
-                    db.addAnswer(adetails[i], true, id);
-                } else db.addAnswer(adetails[i], false, id);
+                    db.addAnswer(adetails[i], true, questionId);
+                } else db.addAnswer(adetails[i], false, questionId);
             }
-            db.addQuestion(subject, chapter, lesson, detail, status, acc.getId());
         }
         request.setAttribute("message", "Import question successfully");
         request.setAttribute("subjectId", subject);

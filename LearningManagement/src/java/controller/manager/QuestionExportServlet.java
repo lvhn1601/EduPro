@@ -82,7 +82,7 @@ public class QuestionExportServlet extends HttpServlet {
         headerRow.createCell(2).setCellValue("B");
         headerRow.createCell(3).setCellValue("C");
         headerRow.createCell(4).setCellValue("D");
-        
+        headerRow.createCell(5).setCellValue("Answer");
         // Populate the worksheet with data
         int rowNum = 1;
         for(Question q:list) {
@@ -90,10 +90,30 @@ public class QuestionExportServlet extends HttpServlet {
             row.createCell(0).setCellValue(q.getDetail());
             List<Answer> answers = dao.getAnswerByQuestion(q.getId());
             int cellNum = 1;
-            for(Answer a:answers) {  
-                row.createCell(cellNum).setCellValue(a.getDetail());     
+            for(int i=0; i<answers.size(); i++) { 
+                row.createCell(cellNum).setCellValue(answers.get(i).getDetail());
+                if(answers.get(i).isCorrect()) {
+                    switch(i) {
+                        case 0: {
+                            row.createCell(5).setCellValue("A");
+                            break;
+                        }
+                        case 1: {
+                            row.createCell(5).setCellValue("B");
+                            break;
+                        }
+                        case 2: {
+                            row.createCell(5).setCellValue("C");
+                            break;
+                        }
+                        case 3: {
+                            row.createCell(5).setCellValue("D");
+                            break;
+                        }
+                    }     
+                }  
                 cellNum++;
-            }
+            }   
         }
         // Write the Excel workbook to a file 
         response.setContentType("application/vnd.ms-excel");
@@ -121,6 +141,6 @@ public class QuestionExportServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }// </editor-fold> 
 
 }
