@@ -72,7 +72,7 @@
                                         </div><!--end col-->
                                     </div><!--end row-->
                                     
-                                    <form class="mt-4" id="questionForm" action="question-details?action=${param.action}" method="post" onsubmit="">
+                                    <form class="mt-4" id="questionForm" action="question-import" method="post" onsubmit="">
                                         <input type="hidden" name="id" value="${question.id}"/>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -113,60 +113,12 @@
                                                         
                                                     </select>
                                                 </div>
-                                            </div><!--end col-->
-                                            
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Question:</label>
-                                                    <textarea name="detail" id="detail" class="form-control" placeholder="Enter your question..." rows="3" required="true">${question.detail}</textarea >
-                                                </div>
-                                            </div><!--end col-->
-                                            
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Status:</label>
-                                                    <div class="d-flex ms-4">
-                                                        <div class="form-check pe-4">
-                                                            <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" value="true" ${question.status ? 'checked' : ''} checked>
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Active
-                                                            </label>
-                                                        </div>
-                                                        
-                                                        <div class="form-check pe-4">
-                                                            <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" ${question.status ? '' : 'checked'} value="false"} >
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Inactive
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div><!--end col-->
-                                            
-                                            <div class="col-md-8">
-                                                <div class="mb-3" id="answer-container">
-                                                    <label class="form-label">List Answers:</label>
-                                                    <c:forEach items="${question.answers}" var="a">
-                                                        <div>
-                                                            <div class="d-flex align-items-center mx-4 mb-3">
-                                                                <input type="hidden" name="answer-id" value="${a.id}"/>
-                                                                <input name="answer-correct" class="answer-hidden" type="hidden" value="${a.correct ? 'true' : 'false'}">
-                                                                <input onclick="setcorrectVal(this, this.parentNode)" type="checkbox" class="form-check-input mt-0" ${a.correct ? 'checked' : ''}>
-                                                                <input name="answer-detail" id="answer" type="text" class="form-control mx-4" placeholder="Answer..." value="${a.detail}">
-                                                                <a href="#" class="btn btn-icon btn-pills btn-soft-danger" onclick="removeAnswer(this.parentNode);"><i class="uil uil-trash-alt"></i></a>
-                                                                <input type="hidden" name="answer-remove" value="no"/>
-                                                            </div>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                                
-                                                <button type="button" class="btn btn-pills btn-light" onclick="addAnswer()">+ Add Answer</button>
-                                            </div><!--end col-->
+                                            </div><!--end col-->                    
                                         </div><!--end row-->
                                         
                                         <div id="error-mess" style="color: red">${error}</div>
             
-                                        <button type="submit" id="submit-btn" class="btn btn-primary mt-4">${param.action eq 'add' ? 'Add' : 'Save'}</button>
+                                        <button type="submit" id="submit-btn" class="btn btn-primary mt-4">Import</button>
                                         
                                     </form>
                                         

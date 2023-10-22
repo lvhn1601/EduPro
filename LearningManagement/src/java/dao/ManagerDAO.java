@@ -294,6 +294,47 @@ public class ManagerDAO extends DBContext {
         }
         return questions;
     }
+    
+    public List<Question> GetListQuestionExport(int subjectId) {
+        List<Question> questions = new ArrayList<>();
+        String sql = "select question_id, question_detail from question \n" +
+                      "where question_subject_id = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, subjectId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Question question = Question.builder()
+                        .id(rs.getInt("question_id"))                        
+                        .detail(rs.getString("question_detail"))
+                        .answers(getAnswerByQuestion(rs.getInt("question_id")))
+                        .build();
+                questions.add(question);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return questions;
+    }
+    
+    public List<Answer> getAnswerByQuestion(int questionId) {
+        List<Answer> answers = new ArrayList();
+        String sql = "select * from answer where answer_question_id = ?";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, questionId);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Answer answer = Answer.builder()
+                                .id(rs.getInt("answer_id"))
+                                .detail(rs.getString("answer_detail"))
+                                .correct(rs.getBoolean("answer_correct"))
+                                .build();
+                answers.add(answer);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return answers;
+    }
 
     public List<Subject> getListSubjects(int manager_id) {
         String sql = "SELECT * FROM subject where subject_manager_id = ? and subject_status = 1";
@@ -1360,5 +1401,11 @@ public class ManagerDAO extends DBContext {
         }
         return listClass;
     }
-
+    public static void main(String[] args) {
+        ManagerDAO dao = new ManagerDAO();
+        List<Answer> list = dao.getAnswerByQuestion(44);
+        for(Answer a:list) {
+            System.out.println(a.getDetail());
+        }
+    }
 }
