@@ -212,10 +212,16 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <h3>Question of ${subject.name}</h3>
                                     </div>
-                                    <div class="col-md-4 d-flex justify-content-end" style="height: 40px">
+                                    <div class="col-md-2 d-flex justify-content-end" style="height: 40px">
+                                        <a href="question-export?id=${subject.id}" class="btn btn-primary">Export</a>
+                                    </div>
+                                    <div class="col-md-2 d-flex justify-content-center" style="height: 40px">
+                                        <a href="question-import?id=${subject.id}" class="btn btn-primary">Import</a>
+                                    </div>
+                                    <div class="col-md-1 d-flex justify-content-end" style="height: 40px">
                                         <a href="question-details?action=add" class="btn btn-primary">Add</a>
                                     </div>
                                 </div>
