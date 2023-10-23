@@ -30,6 +30,7 @@
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/manager/lesson-details.jsp</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/manager/GetDatasServlet.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/admin/subjects.jsp</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/manager/list-class.jsp</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/EditUserServlet.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/SystemSettingServlet.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/connection/DBContext.java</file>
@@ -58,6 +59,7 @@
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/admin/add-user.jsp</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/admin/add-subject.jsp</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Account.java</file>
+            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/manager/ClassController.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Setting.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/AddSettingServlet.java</file>
             <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/admin/AddUserServlet.java</file>

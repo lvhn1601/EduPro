@@ -85,7 +85,7 @@ public class QuestionDetailsServlet extends HttpServlet {
         
         String action = request.getParameter("action");
         
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id;
         int dimension = Integer.parseInt(request.getParameter("dimension"));
         String detail = request.getParameter("detail");
         boolean status = request.getParameter("status") != null;
@@ -99,6 +99,7 @@ public class QuestionDetailsServlet extends HttpServlet {
             response.getWriter().println(id);
             db.addQuestionDimension(id, dimension);
         } else {
+            id = Integer.parseInt(request.getParameter("id"));
             db.updateQuestion(id, detail, status, acc.getId());
             db.updateQuestionDimension(id, dimension);
         }
