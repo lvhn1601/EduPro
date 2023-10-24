@@ -36,14 +36,14 @@
     </head>
     <body>
         <!-- Loader -->
-        <div id="preloader">
+<!--        <div id="preloader">
             <div id="status">
                 <div class="spinner">
                     <div class="double-bounce1"></div>
                     <div class="double-bounce2"></div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- Loader -->
 
         <div class="page-wrapper doctris-theme toggled">
@@ -338,6 +338,18 @@
                     
                     if (video_link.trim() == '') {
                         error_text.textContent = "You must input video link for lesson!";
+                        return false;
+                    }
+                } else {
+                    var passVal = document.getElementById("pass-val").value;
+                    if (passVal.trim() == '') {
+                        error_text.textContent = "You must input Value to Pass!";
+                        return false;
+                    }
+                    
+                    var maxAttempt = document.getElementById("max-attempt").value;
+                    if (maxAttempt.trim() == '') {
+                        error_text.textContent = "You must input Max. Attempt!";
                         return false;
                     }
                 }

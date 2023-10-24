@@ -595,7 +595,8 @@ public class ManagerDAO extends DBContext {
             ps.setInt(6, manager_id);
             ps.setInt(7, manager_id);
 
-            return ps.execute();
+            ps.execute();
+            return true;
         } catch (SQLException e) {
             return false;
         }
@@ -614,13 +615,15 @@ public class ManagerDAO extends DBContext {
             ps.setInt(5, manager_id);
             ps.setInt(6, id);
 
-            return ps.execute();
+            ps.execute();
+            
+            return true;
         } catch (SQLException e) {
             return false;
         }
     }
 
-    public void addConfig(int dimension, int chapter, int num_of_question, int quiz) {
+    public boolean addConfig(int dimension, int chapter, int num_of_question, int quiz) {
         String sql = "insert into quiz_config(config_dimension_id, config_chapter_id, config_num_of_question, config_quiz_id)\n"
                 + "values (?, ?, ?, ?)";
 
@@ -632,11 +635,14 @@ public class ManagerDAO extends DBContext {
             ps.setInt(4, quiz);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void deleteConfig(int id) {
+    public boolean deleteConfig(int id) {
         String sql = "DELETE from quiz_config where config_id = ?";
 
         try {
@@ -644,11 +650,14 @@ public class ManagerDAO extends DBContext {
             ps.setInt(1, id);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void updateConfig(int id, int dimension, int chapter, int num_of_question) {
+    public boolean updateConfig(int id, int dimension, int chapter, int num_of_question) {
         String sql = "UPDATE quiz_config SET config_dimension_id = ?, config_chapter_id = ?, config_num_of_question = ?\n"
                 + "WHERE config_id = ?";
 
@@ -660,7 +669,10 @@ public class ManagerDAO extends DBContext {
             ps.setInt(4, id);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
@@ -672,9 +684,10 @@ public class ManagerDAO extends DBContext {
             ps.setInt(1, quiz);
             ps.setInt(2, question);
 
-            return ps.execute();
-        } catch (SQLException e) {
+            ps.execute();
             return true;
+        } catch (SQLException e) {
+            return false;
         }
     }
 
@@ -686,9 +699,10 @@ public class ManagerDAO extends DBContext {
             ps.setInt(1, quiz);
             ps.setInt(2, question);
 
-            return ps.execute();
-        } catch (SQLException e) {
+            ps.execute();
             return true;
+        } catch (SQLException e) {
+            return false;
         }
     }
 
@@ -808,7 +822,7 @@ public class ManagerDAO extends DBContext {
         return null;
     }
 
-    public void addLesson(String title, int chapter, String type, boolean status, String video, String description, int manager_id) {
+    public boolean addLesson(String title, int chapter, String type, boolean status, String video, String description, int manager_id) {
         String sql = "insert into lesson(lesson_title, lesson_chapter_id, lesson_type, lesson_status, lesson_video_link, lesson_description, created_by, update_by)\n"
                 + "values (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -824,7 +838,10 @@ public class ManagerDAO extends DBContext {
             ps.setInt(8, manager_id);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
@@ -843,7 +860,7 @@ public class ManagerDAO extends DBContext {
         return 0;
     }
 
-    public void addQuizLesson(int lesson, int quiz, int duration, int passVal, int maxAttempt) {
+    public boolean addQuizLesson(int lesson, int quiz, int duration, int passVal, int maxAttempt) {
         String sql = "insert into quiz_lesson(lesson_id, quiz_id, quizlesson_duration, quizlesson_pass_value, quizlesson_max_attempt)\n"
                 + "values (?, ?, ?, ?, ?)";
 
@@ -856,11 +873,14 @@ public class ManagerDAO extends DBContext {
             ps.setInt(5, maxAttempt);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void updateLesson(int id, String title, String type, boolean status, String video, String description) {
+    public boolean updateLesson(int id, String title, String type, boolean status, String video, String description) {
         String sql = "update lesson set lesson_title = ?, lesson_type = ?, lesson_status = ?, lesson_video_link = ?, lesson_description = ?\n"
                 + "where lesson_id = ?";
 
@@ -874,11 +894,13 @@ public class ManagerDAO extends DBContext {
             ps.setInt(6, id);
 
             ps.execute();
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void updateQuizLesson(int id, int quiz, int duration, int passVal, int maxAttempt) {
+    public boolean updateQuizLesson(int id, int quiz, int duration, int passVal, int maxAttempt) {
         String sql = "update quiz_lesson set quiz_id = ?, quizlesson_duration = ?, quizlesson_pass_value = ?, quizlesson_max_attempt = ?\n"
                 + "where quiz_id = ?";
 
@@ -891,7 +913,9 @@ public class ManagerDAO extends DBContext {
             ps.setInt(5, id);
 
             ps.execute();
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
@@ -918,7 +942,7 @@ public class ManagerDAO extends DBContext {
         return list;
     }
 
-    public void addQuestion(int subject, int chapter, int lesson, String detail, boolean status, int manager_id) {
+    public boolean addQuestion(int subject, int chapter, int lesson, String detail, boolean status, int manager_id) {
         String sql = "insert into question(question_subject_id, question_chapter_id, question_lesson_id, question_detail, question_status, created_by, update_by)\n"
                 + "values (?, ?, ?, ?, ?, ?, ?)";
 
@@ -933,11 +957,13 @@ public class ManagerDAO extends DBContext {
             ps.setInt(7, manager_id);
 
             ps.execute();
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void addQuestionDimension(int question, int dimension) {
+    public boolean addQuestionDimension(int question, int dimension) {
         String sql = "insert into question_dimension(question_id, dimension_id)\n"
                 + "values (?, ?)";
 
@@ -947,11 +973,14 @@ public class ManagerDAO extends DBContext {
             ps.setInt(2, dimension);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void updateQuestion(int id, String detail, boolean status, int manager_id) {
+    public boolean updateQuestion(int id, String detail, boolean status, int manager_id) {
         String sql = "update question set question_detail = ?, question_status = ?, update_by = ?\n"
                 + "where question_id = ?";
 
@@ -963,11 +992,14 @@ public class ManagerDAO extends DBContext {
             ps.setInt(4, id);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void updateQuestionDimension(int question, int dimension) {
+    public boolean updateQuestionDimension(int question, int dimension) {
         String sql = "update question_dimension set dimension_id = ? where question_id = ?";
 
         try {
@@ -976,11 +1008,14 @@ public class ManagerDAO extends DBContext {
             ps.setInt(2, question);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void addAnswer(String detail, boolean correct, int question) {
+    public boolean addAnswer(String detail, boolean correct, int question) {
         String sql = "insert into answer(answer_detail, answer_correct, answer_question_id)\n"
                 + "values (?, ?, ?)";
 
@@ -991,11 +1026,14 @@ public class ManagerDAO extends DBContext {
             ps.setInt(3, question);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void deleteAnswer(int id) {
+    public boolean deleteAnswer(int id) {
         String sql = "delete from answer where answer_id = ?";
 
         try {
@@ -1003,11 +1041,14 @@ public class ManagerDAO extends DBContext {
             ps.setInt(1, id);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
-    public void updateAnswer(int id, String detail, boolean correct) {
+    public boolean updateAnswer(int id, String detail, boolean correct) {
         String sql = "update answer set answer_detail = ?, answer_correct = ? where answer_id = ?";
 
         try {
@@ -1017,7 +1058,10 @@ public class ManagerDAO extends DBContext {
             ps.setInt(3, id);
 
             ps.execute();
+            
+            return true;
         } catch (SQLException e) {
+            return false;
         }
     }
 
@@ -1360,5 +1404,10 @@ public class ManagerDAO extends DBContext {
         }
         return listClass;
     }
-
+    
+    
+    public static void main(String[] args) {
+        ManagerDAO db = new ManagerDAO();
+        System.out.println(db.updateLesson(1, "Test Lesson 001", "Video", true, "youtube.com/martin-garrix", "This is the first test lesson"));
+    }
 }

@@ -13,7 +13,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Account;
+import model.Alert;
 
 /**
  *
@@ -82,6 +84,7 @@ public class LessonDetailsServlet extends HttpServlet {
     throws ServletException, IOException {
         Account acc = (Account) request.getSession().getAttribute("accountCur");
         ManagerDAO db = new ManagerDAO();
+        HttpSession session = request.getSession();
         
         String action = request.getParameter("action");
         
@@ -93,7 +96,19 @@ public class LessonDetailsServlet extends HttpServlet {
         
         if (action.equals("add")) {
             int chapter = Integer.parseInt(request.getParameter("chapter"));
-            db.addLesson(title, chapter, type, status, video, description, acc.getId());
+            if (db.addLesson(title, chapter, type, status, video, description, acc.getId()))
+                session.setAttribute("alert", Alert.builder()
+                        .type(true)
+                        .message("You have added new lesson succesfully!")
+                        .build()
+                );
+            else
+                session.setAttribute("alert", Alert.builder()
+                        .type(false)
+                        .message("Add new lesson failed! Please try again...")
+                        .build()
+                );
+            
             if (type.equals("Quiz")) {
                 int lesson = db.getId("lesson");
                 int quiz = Integer.parseInt(request.getParameter("quiz"));
@@ -105,7 +120,20 @@ public class LessonDetailsServlet extends HttpServlet {
             }
         } else {
             int id = Integer.parseInt(request.getParameter("lesson-id"));
-            db.updateLesson(id, title, type, status, video, description);
+            
+            if (db.updateLesson(id, title, type, status, video, description))
+                session.setAttribute("alert", Alert.builder()
+                        .type(true)
+                        .message("You have updated lesson " + id + " succesfully!")
+                        .build()
+                );
+            else
+                session.setAttribute("alert", Alert.builder()
+                        .type(false)
+                        .message("Update lesson " + id + " failed! Please try again...")
+                        .build()
+                );
+            
             if (type.equals("Quiz")) {
                 int quiz = Integer.parseInt(request.getParameter("quiz"));
                 int duration = Integer.parseInt(request.getParameter("duration"));
