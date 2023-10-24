@@ -231,14 +231,14 @@
                                             <input type="number" id="quiz-id" name="id" value="" style="display: none"/>
                                             <div class="col-md-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Quiz Title</label>
-                                                    <input name="title" id="title" type="text" class="form-control" placeholder="Quiz title...">
+                                                    <label class="form-label d-flex">Quiz Title <p style="color: red">*</p></label>
+                                                    <input name="title" id="title" type="text" class="form-control" placeholder="Quiz title..." required="">
                                                 </div>
                                             </div><!--end col-->
             
                                             <div class="col-md-6">
                                                 <div class="mb-3 w-75">
-                                                    <label class="form-label">Subject</label>
+                                                    <label class="form-label d-flex">Subject <p style="color: red">*</p></label>
                                                     <select name="subject" id="subjectSelect" class="form-control form-select department-name select2input bg-white" disabled="">
                                                         <c:forEach items="${subjects}" var="s">
                                                             <option value="${s.id}">${s.code} - ${s.name}</option>
@@ -249,7 +249,7 @@
             
                                             <div class="col-md-6">
                                                 <div class="mb-3 w-75">
-                                                    <label class="form-label">Chapter</label>
+                                                    <label class="form-label d-flex">Chapter <p style="color: red">*</p></label>
                                                     <select name="chapter" id="chapterSelect" class="form-control form-select department-name select2input bg-white" onchange="">
                                                         
                                                     </select>
@@ -258,7 +258,7 @@
                                             
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Quiz type</label>
+                                                    <label class="form-label d-flex">Quiz type <p style="color: red">*</p></label>
                                                     <div class="d-flex ms-4">
                                                         <div class="form-check pe-4">
                                                             <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2 quiz-type-random" value="1" checked onchange="switchQuizType(true)">
@@ -279,7 +279,7 @@
                                             
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Status</label>
+                                                    <label class="form-label d-flex">Status <p style="color: red">*</p></label>
                                                     <div class="form-check form-switch ms-4">
                                                         <input class="form-check-input" type="checkbox" name="status" id="flexSwitchCheckChecked quiz-status" value="active" checked="" onchange="statusLabel(this)">
                                                         <label class="form-check-label" id="lblStatus" for="flexSwitchCheckChecked">Active</label>
@@ -322,7 +322,7 @@
                                         <div class="col-md-3">
                                             <div class="mb-3">
                                                 <label class="form-label">Number of questions</label>
-                                                <input name="numOfQues" id="numOfQues" type="number" class="form-control" placeholder="Number of question..." required>
+                                                <input name="numOfQues" id="numOfQues" type="number" class="form-control" placeholder="Number of question..." required="">
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-md-1 d-flex align-items-center">
@@ -435,14 +435,14 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Quiz Title</label>
-                                                    <input name="title" id="new-title" type="text" class="form-control" placeholder="Quiz title...">
+                                                    <label class="form-label d-flex">Quiz Title <p style="color: red">*</p></label>
+                                                    <input name="title" id="new-title" type="text" class="form-control" placeholder="Quiz title..." required="">
                                                 </div>
                                             </div>
             
                                             <div class="col-md-6">
                                                 <div class="mb-3 w-75">
-                                                    <label class="form-label">Subject</label>
+                                                    <label class="form-label d-flex">Subject <p style="color: red">*</p></label>
                                                     <select name="subject" id="new-subjectSelect" class="form-control form-select department-name select2input bg-white" onchange="updateListChapters2(this.value)">
                                                         <c:forEach items="${subjects}" var="s">
                                                             <option value="${s.id}">${s.code} - ${s.name}</option>
@@ -453,7 +453,7 @@
             
                                             <div class="col-md-6">
                                                 <div class="mb-3 w-75">
-                                                    <label class="form-label">Chapter</label>
+                                                    <label class="form-label d-flex">Chapter <p style="color: red">*</p></label>
                                                     <select name="chapter" id="new-chapterSelect" class="form-control form-select department-name select2input bg-white" onchange="">
                                                         
                                                     </select>
@@ -462,7 +462,7 @@
                                             
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Quiz type</label>
+                                                    <label class="form-label d-flex">Quiz type <p style="color: red">*</p></label>
                                                     <div class="d-flex ms-4">
                                                         <div class="form-check pe-4">
                                                             <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2" value="1" checked>
@@ -483,7 +483,7 @@
                                             
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Status</label>
+                                                    <label class="form-label d-flex">Status <p style="color: red">*</p></label>
                                                     <div class="form-check form-switch ms-4">
                                                         <input class="form-check-input" type="checkbox" name="status" id="flexSwitchCheckChecked" checked="" onchange="statusLabel(this)">
                                                         <label class="form-check-label" id="lblStatus" for="flexSwitchCheckChecked">Active</label>
