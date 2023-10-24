@@ -95,8 +95,6 @@ public class QuestionImportServlet extends HttpServlet {
         int subject = Integer.parseInt(request.getParameter("subject"));
         int chapter = Integer.parseInt(request.getParameter("chapter"));
         int lesson = Integer.parseInt(request.getParameter("lesson"));
-        id = db.getId("question");
-        db.addQuestionDimension(id, dimension);
 
         // Parse the multipart/form-data request
         
@@ -139,6 +137,7 @@ public class QuestionImportServlet extends HttpServlet {
             } 
             db.addQuestion(subject, chapter, lesson, detail, status, acc.getId());
             int questionId = db.getTopQuestionId();
+            db.addQuestionDimension(questionId, dimension);
             for(int i=0; i<adetails.length; i++) {
                 if(i == correct) {
                     db.addAnswer(adetails[i], true, questionId);
