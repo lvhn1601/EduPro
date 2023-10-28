@@ -199,7 +199,7 @@
             <div id="subjectDropdownContainer" onchange="changeSubject()">
                 <select id="subjectDropdown" >
                     <c:forEach items="${requestScope.subjects}" var="s">
-                        <option value="${s.id}">${s.name}</option>
+                        <option value="${s.id}">${s.code}</option>
                     </c:forEach>
                     <!-- Thêm các môn học khác nếu cần -->
                 </select>
@@ -217,7 +217,7 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <h3>Question of ${subject.name}</h3>
+                                        <h3>Questions of ${subject.name}</h3>
                                     </div>
                                     <div class="col-md-4 d-flex justify-content-end" style="height: 40px">
                                         <button type="button" class="btn btn-primary" onclick="openAddModal(${subject.id}); event.preventDefault();">Add</button>

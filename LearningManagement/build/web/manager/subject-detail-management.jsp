@@ -208,7 +208,7 @@
             <div id="subjectDropdownContainer" onchange="changeSubject()">
                 <select id="subjectDropdown" >
                     <c:forEach items="${requestScope.subjects}" var="s">
-                        <option value="${s.id}">${s.name}</option>
+                        <option value="${s.id}">${s.code}</option>
                     </c:forEach>
                     <!-- Thêm các môn học khác nếu cần -->
                 </select>
@@ -321,9 +321,10 @@
 
                                 <tr>
                                     <th style="width: 3%; text-align: center;">ID</th>
-                                    <th style="width: 20%;text-align: center;">Type</th>
+                                    <th style="width: 10%;text-align: center;">Type</th>
                                     <th style="width: 25%;text-align: center;">Name</th>
-                                    <th style="width: 10%;text-align: center;">Status</th>
+                                    <th style="width: 25%;text-align: center;">Description</th>
+                                    <th style="width: 15%;text-align: center;">Status</th>
                                     <th style="width: 5%;text-align: center;">Action</th>
                                 </tr>
 
@@ -333,6 +334,7 @@
                                             <td>${loop.index + 1}</td>
                                             <td>${d.type}</td>
                                             <td>${d.name}</td>
+                                            <td>${d.description}</td>
                                             <td>
                                             <label for="active">
                                                     <input type="radio"  disabled ${d.status eq true ? "checked" : ""}>Active

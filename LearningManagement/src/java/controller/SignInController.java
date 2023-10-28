@@ -10,6 +10,7 @@ import dao.SettingDAO;
 import dto.UserGoogleDto;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +24,10 @@ import static utils.Helper.getUserInfo;
 
 public class SignInController extends HttpServlet {
 
+    private static final String REMEMBER_ME_COOKIE_USERNAME = "rememberMeUsername";
+    private static final String REMEMBER_ME_COOKIE_PASSWORD = "rememberMePasword";
+    private static final int REMEMBER_ME_COOKIE_MAX_AGE = 3600 * 24 * 30;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -31,10 +36,39 @@ public class SignInController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Cookie[] cookies = request.getCookies();
+        String username = null;
+        String password = null;
+
         HttpSession session = request.getSession();
         AccountDAO accountDAO = new AccountDAO();
         ArrayList<Account> accs = accountDAO.getAll();
         SettingDAO settingdao = new SettingDAO();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(REMEMBER_ME_COOKIE_USERNAME)) {
+                    username = cookie.getValue();
+                }
+                if (cookie.getName().equals(REMEMBER_ME_COOKIE_PASSWORD)) {
+                    password = cookie.getValue();
+                }
+            }
+            Account account = accountDAO.authenticate(username, password);
+            if (account != null) {
+                session.setAttribute("accountCur", account);
+                if (account.getRole().getId() == 4) {
+                    response.sendRedirect("/LearningManagement");
+                }
+                if (account.getRole().getId() == 1) {
+                    response.sendRedirect("admin/users");
+                }
+                if (account.getRole().getId() == 2) {
+                    response.sendRedirect("manager/subject-list");
+                }
+                return;
+            }
+        }
 
         if (request.getParameter("code") != null) {
             String code = request.getParameter("code");
@@ -104,6 +138,8 @@ public class SignInController extends HttpServlet {
         AccountDAO accountDAO = new AccountDAO();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        boolean isRemeberMe = request.getParameter("isRemeberMe") != null;
+
         Account account = accountDAO.authenticate(username, password);
         if (account == null) {
             request.setAttribute("msg", "Sign in fail username or password");
@@ -112,6 +148,14 @@ public class SignInController extends HttpServlet {
             session.setAttribute("accountCur", accountDAO.getOneByAccountId(account.getId()));
 //            System.out.println(accountDAO.getOneByAccountId(account.getId()));
 //            System.out.println(account.getRole().getId());
+            if (isRemeberMe) {
+                Cookie cookieUsername = new Cookie(REMEMBER_ME_COOKIE_USERNAME, username);
+                cookieUsername.setMaxAge(REMEMBER_ME_COOKIE_MAX_AGE);
+                Cookie cookiePassword = new Cookie(REMEMBER_ME_COOKIE_PASSWORD, password);
+                cookiePassword.setMaxAge(REMEMBER_ME_COOKIE_MAX_AGE);
+                response.addCookie(cookieUsername);
+                response.addCookie(cookiePassword);
+            }
             if (account.getRole().getId() == 4) {
                 response.sendRedirect("/LearningManagement");
             }

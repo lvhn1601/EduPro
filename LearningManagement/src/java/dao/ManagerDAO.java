@@ -36,6 +36,7 @@ public class ManagerDAO extends DBContext {
                 + "    a.account_name,\n"
                 + "    d.dimension_id,\n"
                 + "    d.dimension_type,\n"
+                + "    d.dimension_description,\n"
                 + "    d.dimension_name\n"
                 + "FROM\n"
                 + "    subject s\n"
@@ -53,6 +54,7 @@ public class ManagerDAO extends DBContext {
                         .id(rs.getInt("dimension_id"))
                         .type(rs.getString("dimension_type"))
                         .name(rs.getString("dimension_name"))
+                        .description(rs.getString("dimension_description"))
                         .build();
 
                 List<Dimension> dimensions = new ArrayList<>();
@@ -112,6 +114,7 @@ public class ManagerDAO extends DBContext {
                         .type(rs.getString("dimension_type"))
                         .status(rs.getBoolean("dimension_status"))
                         .name(rs.getString("dimension_name"))
+                        .description(rs.getString("dimension_description"))
                         .build();
                 dimensions.add(dimension);
             }
