@@ -95,7 +95,7 @@ public class LessonDetailsServlet extends HttpServlet {
             int chapter = Integer.parseInt(request.getParameter("chapter"));
             db.addLesson(title, chapter, type, status, video, description, acc.getId());
             if (type.equals("Quiz")) {
-                int lesson = db.getLessonId("testiter2");
+                int lesson = db.getId("lesson");
                 int quiz = Integer.parseInt(request.getParameter("quiz"));
                 int duration = Integer.parseInt(request.getParameter("duration"));
                 int passVal = Integer.parseInt(request.getParameter("pass-val"));
