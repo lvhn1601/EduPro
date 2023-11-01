@@ -54,39 +54,14 @@
                         <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                             <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                 <li class="breadcrumb-item"><a href="index.html">${sessionScope.accountCur.role.title}</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Lessons</li>
+                                <li class="breadcrumb-item active" aria-current="page">Subjects</li>
                             </ul>
                         </nav>
                         <div class="d-md-flex justify-content-between">
-                            <h5 class="mb-0">Lessons Manager</h5>
+                            <h5 class="mb-0">Subject List</h5>
                         </div>
 
-                        <form action="lessons" method="get" class="d-md-flex justify-content-between mt-4">
-                            <a href="lesson-details?action=add" class="btn btn-primary"><i class="uil uil-plus"></i> New Lesson</a>
-
-                            <div class="col-sm-12 col-md-2 d-flex align-items-center">
-                                <h6 class="mb-0" style="padding-right: 5px">Subject: </h6>
-                                <div class="mb-0 position-relative w-100">
-                                    <select class="form-control time-during select2input" name="subject" style="background-color: #fff; border-radius: 10px;" >
-                                        <option value="0"}>All</option>
-                                        <c:forEach items="${subjects}" var="s">
-                                            <option value="${s.id}" ${s.id eq param.subject ? 'selected' : ''}><a href="subject-detail-management?id=${s.id}">${s.code} - ${s.name}</a></option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div><!--end col-->
-
-                            <div class="search-bar p-0 d-none d-lg-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <div class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="search" id="s" placeholder="Search..." value="${param.search}">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        
 
                         <div class="row">
                             <div class="col-12 mt-4">

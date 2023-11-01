@@ -288,6 +288,54 @@ public class ManagerDAO extends DBContext {
         return questions;
     }
     
+//    public List<Question> getListProductPerPage(int numberProductPerPage, int pageCur, String[] typeIds, String priceFrom, String priceTo) {
+//
+//        String sql = ""
+//                + "Select DISTINCT\n"
+//                + "	p.productId,\n"
+//                + "	p.productName,\n"
+//                + "	p.productImg,\n"
+//                + "	p.productPrice,\n"
+//                + "	p.productDescription,\n"
+//                + "	p.categoryId,\n"
+//                + "	p.productIsFeatured,\n"
+//                + "	p.productIsRecent,\n"
+//                + "	p.productDeleted,\n"
+//                + "     p.typeId,\n"
+//                + "     p.quantity\n"
+//                + "from product p \n"
+//                + " Where p.productDeleted = 0 AND p.productPrice between ? and ? ";
+//        if (typeIds != null) {
+//            sql += " AND (";
+//            for (int i = 0; i < typeIds.length - 1; i++) {
+//                sql += " p.typeId = " + typeIds[i] + " OR ";
+//            }
+//            sql += " p.typeId = " + typeIds[typeIds.length - 1] + " ) ";
+//        }
+//        sql += " Order BY p.productId\n"
+//                + "OFFSET ? ROWS \n"
+//                + "FETCH NEXT ? ROWS ONLY";
+//        try (  PreparedStatement ps = connection.prepareStatement(sql);) {
+//            ps.setObject(1, priceFrom);
+//            ps.setObject(2, priceTo);
+//            ps.setObject(3, pageCur * numberProductPerPage - numberProductPerPage);
+//            ps.setObject(4, numberProductPerPage);
+//            ResultSet rs = ps.executeQuery();
+//
+//            List<Question> list = new ArrayList<>();//
+//            while (rs.next()) {
+//                Question q = Question.builder()
+//                        .
+//                        .build();
+//                list.add(q);
+//            }
+//            return list;
+//        } catch (SQLException e) {
+//            e.printStackTrace(System.out);
+//        }
+//        return null;
+//    }
+    
     public List<Question> GetListQuestionExport(int subjectId) {
         List<Question> questions = new ArrayList<>();
         String sql = "select question_id, question_detail from question \n" +

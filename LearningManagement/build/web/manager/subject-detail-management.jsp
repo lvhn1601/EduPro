@@ -248,7 +248,7 @@
                 </form>
                 <!-- Chapter Tab Content -->
 
-                <form id="chapterTab" class="tab-content">
+                <div id="chapterTab" class="tab-content">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
@@ -274,12 +274,15 @@
                                             <td>${c.title}</td>
                                             <td>${c.description}</td>
                                             <td>
-                                                <label for="active">
+                   <form class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" >
+                   </form>
+<!--                                                <label for="active">
                                                     <input type="radio"  disabled ${c.status eq true ? "checked" : ""}>Active
                                                 </label>
                                                 <label for="inactive">
                                                     <input type="radio" disabled ${c.status eq true ? "" : "checked"}>Inactive
-                                                </label>
+                                                </label>-->
                                             </td>
                                             <td style="text-align: center;">
                                                 <button style=" all: unset;"
@@ -296,9 +299,9 @@
                             </table>
                         </div>
                     </div>
-                </form>
+                </div>
                 <!-- Dimensions Tab Content -->
-                <form id="dimensionsTab" class="tab-content">
+                <div id="dimensionsTab" class="tab-content">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
@@ -350,7 +353,7 @@
                             </table>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </main>
     </div>

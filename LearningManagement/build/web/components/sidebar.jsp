@@ -31,7 +31,11 @@
                 <li><a href="/LearningManagement/manager/lessons"><i class="uil uil-file-landscape-alt me-2 d-inline-block"></i>Lessons</a></li>
                 <li><a href="/LearningManagement/manager/class"><i class="uil uil-users-alt me-2 d-inline-block"></i>Classes</a></li>
             </c:if>
-            
+            <c:if test="${sessionScope.accountCur.role.id eq 4}">
+                <li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                <li><a href="/LearningManagement/quiz"><i class="uil uil-file me-2 d-inline-block"></i>Quiz</a></li>
+                
+            </c:if>
         </ul>
         <!-- sidebar-menu  -->
     </div>
