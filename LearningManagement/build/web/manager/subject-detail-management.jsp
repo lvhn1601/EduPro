@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Users Manager - LMS</title>
+        <title>Subject - Manager</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -21,15 +21,7 @@
         <!-- simplebar -->
         <link href="../assets/css/simplebar.css" rel="stylesheet" type="text/css" />
         <!-- Icons -->
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
-            integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-            />
-        <link 
-            <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
@@ -292,7 +284,7 @@
                                             <td style="text-align: center;">
                                                 <button style=" all: unset;"
                                                         onclick="openModal('${subject.id}', '${c.id}', '${c.status}', '${c.title}', '${c.description}'); event.preventDefault();">
-                                                    <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
+                                                    <i class="uil uil-edit"></i>
                                                 </button>
 <!--                                                <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
@@ -336,7 +328,7 @@
                                             <td>${d.name}</td>
                                             <td>${d.description}</td>
                                             <td>
-                                            <label for="active">
+                                                <label for="active">
                                                     <input type="radio"  disabled ${d.status eq true ? "checked" : ""}>Active
                                                 </label>
                                                 <label for="inactive">
@@ -346,7 +338,7 @@
                                             <td style="text-align: center;">
                                                 <button style=" all: unset;  "
                                                         onclick="openModalx('${subject.id}', '${d.id}', '${d.status}', '${d.type}', '${d.name}'); event.preventDefault();">
-                                                    <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
+                                                    <i class="uil uil-edit"></i>
                                                 </button>
 <!--                                                <a href="#" onclick="confirmDeleteDimension('${subject.id}', '${d.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
@@ -365,30 +357,7 @@
     <%@include file="../modal/modal-update-subject-detail.jsp" %>
     <%@include file="../modal/modal-add-subject-detail.jsp" %>
 
-    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <p>Modal content goes here.</p>
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <!-- Add these links in the <head> section of your HTML -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -396,164 +365,170 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <!-- simplebar -->
+    <script src="../assets/js/simplebar.min.js"></script>
+    <!-- Icons -->
+    <script src="../assets/js/feather.min.js"></script>
+    <!-- Main Js -->
+    <script src="../assets/js/app.js"></script>
 
 </body>
 <script>
-                                                    function openAddModal(subjectId) {
-                                                        console.log(subjectId);
-                                                        $('#subjectIdadd').val(subjectId);
-                                                        $('#chapterAddModal').modal('show');
-                                                    }
-                                                    function openAddModalx(subjectId) {
-                                                        console.log(subjectId);
-                                                        $('#subjectIdaddx').val(subjectId);
-                                                        $('#dimensionAddModal').modal('show');
-                                                    }
+                                                            function openAddModal(subjectId) {
+                                                                console.log(subjectId);
+                                                                $('#subjectIdadd').val(subjectId);
+                                                                $('#chapterAddModal').modal('show');
+                                                            }
+                                                            function openAddModalx(subjectId) {
+                                                                console.log(subjectId);
+                                                                $('#subjectIdaddx').val(subjectId);
+                                                                $('#dimensionAddModal').modal('show');
+                                                            }
 
-                                                    function openModal(subjectId, id, status, title, description) {
-                                                        console.log(subjectId);
-                                                        $('#activeChapter').prop('checked', status === "true");
-                                                        $('#inactiveChapter').prop('checked', status === "false");
-                                                        $('#chapterId').val(id);
-                                                        $('#chapterTitle').val(title);
-                                                        $('#subjectId').val(subjectId);
-                                                        $('#chapterTitleh3').text(title);
-                                                        $('#chapterDescription').val(description);
+                                                            function openModal(subjectId, id, status, title, description) {
+                                                                console.log(subjectId);
+                                                                $('#activeChapter').prop('checked', status === "true");
+                                                                $('#inactiveChapter').prop('checked', status === "false");
+                                                                $('#chapterId').val(id);
+                                                                $('#chapterTitle').val(title);
+                                                                $('#subjectId').val(subjectId);
+                                                                $('#chapterTitleh3').text(title);
+                                                                $('#chapterDescription').val(description);
 
-                                                        // Show the modal
-                                                        $('#chapterModal').modal('show');
-                                                    }
-                                                    function openModalx(subjectId, id, status, title, description) {
-                                                        console.log(status);
-                                                        $('#subjectIdx').val(subjectId);
-                                                        $('#dimensionId').val(id);
-                                                        $('#dimensionTitle').val(title);
-                                                        $('#dimensionDescription').val(description);
-                                                        $('#activeDimension').prop('checked', status === "true");
-                                                        $('#inactiveDimension').prop('checked', status === "false");
-                                                        $('#dimensionModal').modal('show');
-                                                    }
-                                                    function confirmDeleteChapter(subjectId, chapterId) {
-                                                        console.log(subjectId);
-                                                        var result = confirm("Bạn có chắc muốn xóa?");
-                                                        if (result) {
-                                                            // Nếu người dùng chọn OK, chuyển hướng đến URL xóa
-                                                            window.location.href = `subject-detail-management?id=` + subjectId + `&action=delete-chapter&cid=` + chapterId;
-                                                        } else {
-                                                            // Nếu người dùng chọn Cancel, không làm gì cả
-                                                        }
-                                                    }
-                                                    function confirmDeleteDimension(subjectId, dimensionId) {
-                                                        console.log(subjectId);
-                                                        var result = confirm("Bạn có chắc muốn xóa?");
-                                                        if (result) {
-                                                            // Nếu người dùng chọn OK, chuyển hướng đến URL xóa
-                                                            window.location.href = `subject-detail-management?id=` + subjectId + `&action=delete-dimension&did=` + dimensionId;
-                                                        } else {
-                                                            // Nếu người dùng chọn Cancel, không làm gì cả
-                                                        }
-                                                    }
+                                                                // Show the modal
+                                                                $('#chapterModal').modal('show');
+                                                            }
+                                                            function openModalx(subjectId, id, status, title, description) {
+                                                                console.log(status);
+                                                                $('#subjectIdx').val(subjectId);
+                                                                $('#dimensionId').val(id);
+                                                                $('#dimensionTitle').val(title);
+                                                                $('#dimensionDescription').val(description);
+                                                                $('#activeDimension').prop('checked', status === "true");
+                                                                $('#inactiveDimension').prop('checked', status === "false");
+                                                                $('#dimensionModal').modal('show');
+                                                            }
+                                                            function confirmDeleteChapter(subjectId, chapterId) {
+                                                                console.log(subjectId);
+                                                                var result = confirm("Bạn có chắc muốn xóa?");
+                                                                if (result) {
+                                                                    // Nếu người dùng chọn OK, chuyển hướng đến URL xóa
+                                                                    window.location.href = `subject-detail-management?id=` + subjectId + `&action=delete-chapter&cid=` + chapterId;
+                                                                } else {
+                                                                    // Nếu người dùng chọn Cancel, không làm gì cả
+                                                                }
+                                                            }
+                                                            function confirmDeleteDimension(subjectId, dimensionId) {
+                                                                console.log(subjectId);
+                                                                var result = confirm("Bạn có chắc muốn xóa?");
+                                                                if (result) {
+                                                                    // Nếu người dùng chọn OK, chuyển hướng đến URL xóa
+                                                                    window.location.href = `subject-detail-management?id=` + subjectId + `&action=delete-dimension&did=` + dimensionId;
+                                                                } else {
+                                                                    // Nếu người dùng chọn Cancel, không làm gì cả
+                                                                }
+                                                            }
 
 
-                                                    function changeSubject() {
-                                                        var selectedSubjectId = document.getElementById('subjectDropdown').value;
-                                                        // Lưu giá trị vào localStorage
-                                                        console.log();
-                                                        localStorage.setItem('selectedSubjectId', selectedSubjectId);
+                                                            function changeSubject() {
+                                                                var selectedSubjectId = document.getElementById('subjectDropdown').value;
+                                                                // Lưu giá trị vào localStorage
+                                                                console.log();
+                                                                localStorage.setItem('selectedSubjectId', selectedSubjectId);
 
-                                                        window.location.href = 'subject-detail-management?id=' + selectedSubjectId;
-                                                    }
+                                                                window.location.href = 'subject-detail-management?id=' + selectedSubjectId;
+                                                            }
 
-                                                    function openTab(tabId, showAlert) {
-                                                        // Hide all tab contents
-                                                        var tabs = document.getElementsByClassName('tab-content');
-                                                        for (var i = 0; i < tabs.length; i++) {
-                                                            tabs[i].classList.remove('active');
-                                                        }
+                                                            function openTab(tabId, showAlert) {
+                                                                // Hide all tab contents
+                                                                var tabs = document.getElementsByClassName('tab-content');
+                                                                for (var i = 0; i < tabs.length; i++) {
+                                                                    tabs[i].classList.remove('active');
+                                                                }
 
-                                                        // Remove 'active' class from all tabs
-                                                        var tabButtons = document.getElementsByClassName('tab');
-                                                        for (var i = 0; i < tabButtons.length; i++) {
-                                                            tabButtons[i].classList.remove('active');
-                                                        }
+                                                                // Remove 'active' class from all tabs
+                                                                var tabButtons = document.getElementsByClassName('tab');
+                                                                for (var i = 0; i < tabButtons.length; i++) {
+                                                                    tabButtons[i].classList.remove('active');
+                                                                }
 
-                                                        // Show the selected tab content
-                                                        document.getElementById(tabId).classList.add('active');
+                                                                // Show the selected tab content
+                                                                document.getElementById(tabId).classList.add('active');
 
-                                                        // Check if showAlert is true and show alert
-                                                        if (showAlert) {
-                                                            alert('Update successful!');
-                                                        }
-                                                    }
-                                                    function openTabDeleted(tabId, showAlert) {
-                                                        // Hide all tab contents
-                                                        var tabs = document.getElementsByClassName('tab-content');
-                                                        for (var i = 0; i < tabs.length; i++) {
-                                                            tabs[i].classList.remove('active');
-                                                        }
+                                                                // Check if showAlert is true and show alert
+                                                                if (showAlert) {
+                                                                    alert('Update successful!');
+                                                                }
+                                                            }
+                                                            function openTabDeleted(tabId, showAlert) {
+                                                                // Hide all tab contents
+                                                                var tabs = document.getElementsByClassName('tab-content');
+                                                                for (var i = 0; i < tabs.length; i++) {
+                                                                    tabs[i].classList.remove('active');
+                                                                }
 
-                                                        // Remove 'active' class from all tabs
-                                                        var tabButtons = document.getElementsByClassName('tab');
-                                                        for (var i = 0; i < tabButtons.length; i++) {
-                                                            tabButtons[i].classList.remove('active');
-                                                        }
+                                                                // Remove 'active' class from all tabs
+                                                                var tabButtons = document.getElementsByClassName('tab');
+                                                                for (var i = 0; i < tabButtons.length; i++) {
+                                                                    tabButtons[i].classList.remove('active');
+                                                                }
 
-                                                        // Show the selected tab content
-                                                        document.getElementById(tabId).classList.add('active');
+                                                                // Show the selected tab content
+                                                                document.getElementById(tabId).classList.add('active');
 
-                                                        // Check if showAlert is true and show alert
-                                                        if (showAlert) {
-                                                            alert('Delete successful!');
-                                                        }
-                                                    }
-                                                    function openTabAdded(tabId, showAlert) {
-                                                        // Hide all tab contents
-                                                        var tabs = document.getElementsByClassName('tab-content');
-                                                        for (var i = 0; i < tabs.length; i++) {
-                                                            tabs[i].classList.remove('active');
-                                                        }
+                                                                // Check if showAlert is true and show alert
+                                                                if (showAlert) {
+                                                                    alert('Delete successful!');
+                                                                }
+                                                            }
+                                                            function openTabAdded(tabId, showAlert) {
+                                                                // Hide all tab contents
+                                                                var tabs = document.getElementsByClassName('tab-content');
+                                                                for (var i = 0; i < tabs.length; i++) {
+                                                                    tabs[i].classList.remove('active');
+                                                                }
 
-                                                        // Remove 'active' class from all tabs
-                                                        var tabButtons = document.getElementsByClassName('tab');
-                                                        for (var i = 0; i < tabButtons.length; i++) {
-                                                            tabButtons[i].classList.remove('active');
-                                                        }
+                                                                // Remove 'active' class from all tabs
+                                                                var tabButtons = document.getElementsByClassName('tab');
+                                                                for (var i = 0; i < tabButtons.length; i++) {
+                                                                    tabButtons[i].classList.remove('active');
+                                                                }
 
-                                                        // Show the selected tab content
-                                                        document.getElementById(tabId).classList.add('active');
+                                                                // Show the selected tab content
+                                                                document.getElementById(tabId).classList.add('active');
 
-                                                        // Check if showAlert is true and show alert
-                                                        if (showAlert) {
-                                                            alert('Add successful!');
-                                                        }
-                                                    }
-                                                    window.onload = function () {
-                                                        var urlParams = new URLSearchParams(window.location.search);
-                                                        var urlSubjectId = urlParams.get('id');
-                                                        var updateType = urlParams.get('updateType');
-                                                        var deleteType = urlParams.get('deleteType');
-                                                        var addType = urlParams.get('addType');
-                                                        document.getElementById('subjectDropdown').value = urlSubjectId;
+                                                                // Check if showAlert is true and show alert
+                                                                if (showAlert) {
+                                                                    alert('Add successful!');
+                                                                }
+                                                            }
+                                                            window.onload = function () {
+                                                                var urlParams = new URLSearchParams(window.location.search);
+                                                                var urlSubjectId = urlParams.get('id');
+                                                                var updateType = urlParams.get('updateType');
+                                                                var deleteType = urlParams.get('deleteType');
+                                                                var addType = urlParams.get('addType');
+                                                                document.getElementById('subjectDropdown').value = urlSubjectId;
 
-                                                        localStorage.setItem('selectedSubjectId', urlSubjectId);
+                                                                localStorage.setItem('selectedSubjectId', urlSubjectId);
 
-                                                        if (updateType === 'chapter') {
-                                                            openTab('chapterTab', true);
-                                                        } else if (updateType === 'dimension') {
-                                                            openTab('dimensionsTab', true);
-                                                        }
-                                                        if (deleteType === 'chapter') {
-                                                            openTabDeleted('chapterTab', true);
-                                                        } else if (deleteType === 'dimension') {
-                                                            openTabDeleted('dimensionsTab', true);
-                                                        }
-                                                        if (addType === 'chapter') {
-                                                            openTabAdded('chapterTab', true);
-                                                        } else if (addType === 'dimension') {
-                                                            openTabAdded('dimensionsTab', true);
-                                                        }
-                                                    };
+                                                                if (updateType === 'chapter') {
+                                                                    openTab('chapterTab', true);
+                                                                } else if (updateType === 'dimension') {
+                                                                    openTab('dimensionsTab', true);
+                                                                }
+                                                                if (deleteType === 'chapter') {
+                                                                    openTabDeleted('chapterTab', true);
+                                                                } else if (deleteType === 'dimension') {
+                                                                    openTabDeleted('dimensionsTab', true);
+                                                                }
+                                                                if (addType === 'chapter') {
+                                                                    openTabAdded('chapterTab', true);
+                                                                } else if (addType === 'dimension') {
+                                                                    openTabAdded('dimensionsTab', true);
+                                                                }
+                                                            };
 
 </script>
 </html>
