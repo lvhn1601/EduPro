@@ -13,10 +13,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-
 public class Answer {
-
     private int id;
     private String detail;
-
+    private boolean correct;
 }
