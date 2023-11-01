@@ -42,6 +42,7 @@ public class ManagerDAO extends DBContext {
                 + "    a.account_name,\n"
                 + "    d.dimension_id,\n"
                 + "    d.dimension_type,\n"
+                + "    d.dimension_description,\n"
                 + "    d.dimension_name\n"
                 + "FROM\n"
                 + "    subject s\n"
@@ -59,6 +60,7 @@ public class ManagerDAO extends DBContext {
                         .id(rs.getInt("dimension_id"))
                         .type(rs.getString("dimension_type"))
                         .name(rs.getString("dimension_name"))
+                        .description(rs.getString("dimension_description"))
                         .build();
 
                 List<Dimension> dimensions = new ArrayList<>();
@@ -118,6 +120,7 @@ public class ManagerDAO extends DBContext {
                         .type(rs.getString("dimension_type"))
                         .status(rs.getBoolean("dimension_status"))
                         .name(rs.getString("dimension_name"))
+                        .description(rs.getString("dimension_description"))
                         .build();
                 dimensions.add(dimension);
             }
@@ -225,18 +228,13 @@ public class ManagerDAO extends DBContext {
         int check = 0;
         String sql = "INSERT INTO `chapter` (`chapter_title`, `chapter_description`, `chapter_subject_id`, `created_by`, `update_by`) "
                 + "VALUES (?, ?, ?, ?, ?);";
-        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, obj.getTitle());
             ps.setObject(2, obj.getDescription());
             ps.setObject(3, subjectId);
             ps.setObject(4, accId);
             ps.setObject(5, accId);
-            check = ps.executeUpdate();
-            if (check > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                return rs.getInt(1);
-            }
+            return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         }
@@ -247,18 +245,13 @@ public class ManagerDAO extends DBContext {
         int check = 0;
         String sql = "INSERT INTO `dimension` (`dimension_type`, `dimension_name`, `dimension_subject_id`, `created_by`, `update_by`) "
                 + "VALUES (?, ?, ?, ?, ?);";
-        try ( PreparedStatement ps = connection.prepareStatement(sql);) {
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, obj.getType());
             ps.setObject(2, obj.getName());
             ps.setObject(3, subjectId);
             ps.setObject(4, accId);
             ps.setObject(5, accId);
-            check = ps.executeUpdate();
-            if (check > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                return rs.getInt(1);
-            }
+            return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
         }

@@ -207,7 +207,7 @@
             <div id="subjectDropdownContainer" onchange="changeSubject()">
                 <select id="subjectDropdown" >
                     <c:forEach items="${requestScope.subjects}" var="s">
-                        <option value="${s.id}">${s.name}</option>
+                        <option value="${s.id}">${s.code}</option>
                     </c:forEach>
                     <!-- Thêm các môn học khác nếu cần -->
                 </select>
@@ -293,9 +293,9 @@
                                                         onclick="openModal('${subject.id}', '${c.id}', '${c.status}', '${c.title}', '${c.description}'); event.preventDefault();">
                                                     <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                 </button>
-                                                <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
+<!--                                                <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
-                                                </a>
+                                                </a>-->
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -320,9 +320,10 @@
 
                                 <tr>
                                     <th style="width: 3%; text-align: center;">ID</th>
-                                    <th style="width: 20%;text-align: center;">Type</th>
+                                    <th style="width: 10%;text-align: center;">Type</th>
                                     <th style="width: 25%;text-align: center;">Name</th>
-                                    <th style="width: 10%;text-align: center;">Status</th>
+                                    <th style="width: 25%;text-align: center;">Description</th>
+                                    <th style="width: 15%;text-align: center;">Status</th>
                                     <th style="width: 5%;text-align: center;">Action</th>
                                 </tr>
 
@@ -332,6 +333,7 @@
                                             <td>${loop.index + 1}</td>
                                             <td>${d.type}</td>
                                             <td>${d.name}</td>
+                                            <td>${d.description}</td>
                                             <td>
                                             <label for="active">
                                                     <input type="radio"  disabled ${d.status eq true ? "checked" : ""}>Active
@@ -345,9 +347,9 @@
                                                         onclick="openModalx('${subject.id}', '${d.id}', '${d.status}', '${d.type}', '${d.name}'); event.preventDefault();">
                                                     <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                 </button>
-                                                <a href="#" onclick="confirmDeleteDimension('${subject.id}', '${d.id}')">
+<!--                                                <a href="#" onclick="confirmDeleteDimension('${subject.id}', '${d.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
-                                                </a>
+                                                </a>-->
                                             </td>
                                         </tr>
                                     </c:forEach>
