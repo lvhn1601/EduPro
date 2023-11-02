@@ -3,9 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.manager;
+package controller.trainer;
 
-import dao.ManagerDAO;
+import dao.TrainerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,12 +15,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import model.Account;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -28,12 +30,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author tango
  */
-@WebServlet(name="QuestionImportServlet", urlPatterns={"/manager/question-import"})
+@WebServlet(name="TraineeImportServlet", urlPatterns={"/trainer/import-trainee"})
 @MultipartConfig(
     maxFileSize = 1024 * 1024 * 1024, // 
     maxRequestSize = 1024 * 1024 * 1024 // 
 )
-public class QuestionImportServlet extends HttpServlet {
+public class TraineeImportServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -50,10 +52,10 @@ public class QuestionImportServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ImportQuestionServlet</title>");  
+            out.println("<title>Servlet TraineeImportServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ImportQuestionServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet TraineeImportServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,12 +72,18 @@ public class QuestionImportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Account acc = (Account) request.getSession().getAttribute("accountCur");
-        ManagerDAO db = new ManagerDAO();
+        // Create an Excel workbook
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("trainee");
         
-        request.setAttribute("subjects", db.getListSubjects(acc.getId()));
-        
-        request.getRequestDispatcher("question-import.jsp").forward(request, response);
+        // Create a header row
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Enter trainee email here");
+      
+        // Write the Excel workbook to a file 
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=trainee.xlsx");
+        workbook.write(response.getOutputStream());
     } 
 
     /** 
@@ -89,66 +97,28 @@ public class QuestionImportServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         Account acc = (Account) request.getSession().getAttribute("accountCur");
-        ManagerDAO db = new ManagerDAO();
-        
-        int id;        
-        boolean status = true;
-        int subject = Integer.parseInt(request.getParameter("subject"));
-        int chapter = Integer.parseInt(request.getParameter("chapter"));
-        int lesson = Integer.parseInt(request.getParameter("lesson"));
-        int dimension = Integer.parseInt(request.getParameter("dimension"));
-
-        // Get the file upload part
+        TrainerDAO dao = new TrainerDAO();
+        int class_id = Integer.parseInt(request.getParameter("class_id"));
+        // get file upload part
         Part filePart = request.getPart("file");
-        
-         // Get an input stream for the file upload part
+        // get imput stream for file upload part
         InputStream inputStream = filePart.getInputStream();
-        
-        // Read the Excel file
+        // read excel file
         XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-        
-        //Get first sheet from the workbook
+        // get first sheet from the workbook
         XSSFSheet sheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = sheet.iterator();
-   
-        while (rowIterator.hasNext()) {
+        List<String> list = new ArrayList<>();
+        while(rowIterator.hasNext()) {
             Row row = rowIterator.next();
-            String detail = row.getCell(0).getStringCellValue();
-            String adetails[] = {row.getCell(1).getStringCellValue(), 
-                                row.getCell(2).getStringCellValue(), 
-                                row.getCell(3).getStringCellValue(), 
-                                row.getCell(4).getStringCellValue()};
-            
-            int correct = 0;
-            switch(row.getCell(5).getStringCellValue()) {
-                case "A": {
-                    correct = 0;
-                    break;
-                }
-                case "B": {
-                    correct = 1;
-                    break;
-                }
-                case "C": {
-                    correct = 2;
-                    break;
-                }
-                case "D": {
-                    correct = 3;
-                    break;
-                }
-            } 
-            db.addQuestion(subject, chapter, lesson, detail, status, acc.getId());
-            int questionId = db.getTopQuestionId();
-            db.addQuestionDimension(questionId, dimension);
-            for(int i=0; i<adetails.length; i++) {
-                if(i == correct) {
-                    db.addAnswer(adetails[i], true, questionId);
-                } else db.addAnswer(adetails[i], false, questionId);
-            }
+            String email = row.getCell(0).getStringCellValue();
+            list.add(email);
         }
-        request.setAttribute("message", "Import question successfully");
-        request.setAttribute("subjectId", subject);
+        for(String str: list) {
+            dao.addTraineeToClass(dao.getTraineeByEmail(str.trim()).get(0).getId(), class_id);
+        }
+        request.setAttribute("class_id", class_id);
+        request.setAttribute("message", "Import trainee to class successfull");
         request.getRequestDispatcher("success.jsp").forward(request, response);
     }
 

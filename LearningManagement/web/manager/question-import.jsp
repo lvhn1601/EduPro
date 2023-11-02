@@ -72,7 +72,7 @@
                                         </div><!--end col-->
                                     </div><!--end row-->
                                     
-                                    <form class="mt-4" id="questionForm" action="question-import" method="post" onsubmit="">
+                                    <form class="mt-4" id="questionForm" action="question-import" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="id" value="${question.id}"/>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -118,14 +118,16 @@
                                         
                                         <div id="error-mess" style="color: red">${error}</div>
             
-                                        <button type="submit" id="submit-btn" class="btn btn-primary mt-4">Import</button>
-                                        
+                                        <button type="submit" id="submit-btn" class="btn btn-primary mt-4" >Submit</button>
+                                        <button type="button" id="submit-btn" class="btn btn-primary mt-4" onclick="getTemplate()">
+                                            Download template</button>
+                                        <input type="file" name="file" class="btn btn-primary mt-3"/>                                        
                                     </form>
                                         
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
-
+                        
                         
                     </div>
                 </div><!--end container-->
@@ -157,7 +159,69 @@
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
         
-        <script>          
+        <script>        
+            function getTemplate() {
+                const servletUrl = "http://localhost:9999/LearningManagement/manager/get-template";
+                const xhr = new XMLHttpRequest();
+                
+                xhr.open("GET", servletUrl);
+                
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                
+                xhr.send();
+                
+                xhr.onload = function() {
+                    window.location.href = servletUrl;
+                };
+            }
+            function importQuestion() {
+                // Get the form element
+                const form = document.getElementById("#questionForm");
+                
+                // Get the select element by its name attribute
+                const selectSubject = form.querySelector('select[name="subject"]'); 
+                const selectChapter = form.querySelector('select[name="chapter');
+                const selectLesson = form.querySelector('select[name=lesson');
+                const selectDimension = form.querySelector('select[name=dimension');
+                
+                // Get the selected option element
+                const selectedSubject = selectSubject.querySelector('option:checked');
+                const selectedChapter = selectChapter.querySelector('option:checked');
+                const selectedLesson = selectLesson.querySelector('option:checked');
+                const selectedDimension = selectDimension.querySelector('option:checked');
+                
+                // Get the value of the selected option element
+                const subjectId = selectedSubject.value;
+                const chapterId = selectedChapter.value;
+                const lessonId = selectedLesson.value;
+                const dimensionId = selectedDimension.value;
+                
+                // Create a new XMLHttpRequest object
+                const xhr = new XMLHttpRequest();
+                
+                // Open a POST request to the server
+                xhr.open('POST', 'http://localhost:9999/LearningManagement/manager/quesion-import');
+                
+                // Set the request headers
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                
+                const formData = new FormData();
+                formData.append('subject', subjectId);
+                formData.append('chapter', chapterId);
+                formData.append('lesson', lessonId);
+                formData.append('dimension', dimensionId);
+                // Set the request body
+                xhr.send(formData);
+                
+                // Handle the response from the server
+                xhr.onload = function() {
+                  if (xhr.status === 200) {
+                    // Success!
+                  } else {
+                    // Error!
+                  }
+                };
+            }
             function setcorrectVal(cb, par) {
                 const hid = par.querySelector(".answer-hidden");
                 hid.value = cb.checked ? "true" : "false";
