@@ -32,14 +32,14 @@
     </head>
     <body>
         <!-- Loader -->
-<!--        <div id="preloader">
+        <div id="preloader">
             <div id="status">
                 <div class="spinner">
                     <div class="double-bounce1"></div>
                     <div class="double-bounce2"></div>
                 </div>
             </div>
-        </div>-->
+        </div>
         <!-- Loader -->
 
         <div class="page-wrapper doctris-theme toggled">
@@ -72,16 +72,15 @@
                                         </div><!--end col-->
                                     </div><!--end row-->
                                     
-                                    <form class="mt-4" id="questionForm" action="question-details?action=${param.action}" method="post" onsubmit="return checkEmpty();">
+                                    <form class="mt-4" id="questionForm" action="question-import" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="id" value="${question.id}"/>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Subject:</label>
                                                     <select name="subject" id="subject" class="form-control department-name select2input bg-white" onchange="updateDatas(this.value)" ${param.action eq 'update' ? 'disabled' : ''}>
-                                                        <option value="0">Choose Subject...</option>
                                                         <c:forEach items="${subjects}" var="s">
-                                                            <option value="${s.id}" ${question.subject.id eq s.id ? 'selected' : ''}>${s.code} - ${s.name}</option>
+                                                            <option value="${s.id}" ${lesson.subject.id eq s.id ? 'selected' : ''}>${s.code} - ${s.name}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </div>
@@ -114,67 +113,21 @@
                                                         
                                                     </select>
                                                 </div>
-                                            </div><!--end col-->
-                                            
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Question:</label>
-                                                    <textarea name="detail" id="detail" class="form-control" placeholder="Enter your question..." rows="3" required="true">${question.detail}</textarea >
-                                                </div>
-                                            </div><!--end col-->
-                                            
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Status:</label>
-                                                    <div class="d-flex ms-4">
-                                                        <div class="form-check pe-4">
-                                                            <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" value="true" ${question.status ? 'checked' : ''} checked>
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Active
-                                                            </label>
-                                                        </div>
-                                                        
-                                                        <div class="form-check pe-4">
-                                                            <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" ${question.status ? '' : 'checked'} value="false"} >
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Inactive
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div><!--end col-->
-                                            
-                                            <div class="col-md-8">
-                                                <div class="mb-3" id="answer-container">
-                                                    <label class="form-label">List Answers:</label>
-                                                    <c:forEach items="${question.answers}" var="a">
-                                                        <div>
-                                                            <div class="d-flex align-items-center mx-4 mb-3">
-                                                                <input type="hidden" name="answer-id" value="${a.id}"/>
-                                                                <input name="answer-correct" class="answer-hidden" type="hidden" value="${a.correct ? 'true' : 'false'}">
-                                                                <input onclick="setcorrectVal(this, this.parentNode)" type="checkbox" class="form-check-input mt-0" ${a.correct ? 'checked' : ''}>
-                                                                <input name="answer-detail" id="answer" type="text" class="form-control mx-4" placeholder="Answer..." value="${a.detail}">
-                                                                <a href="#" class="btn btn-icon btn-pills btn-soft-danger" onclick="removeAnswer(this.parentNode);"><i class="uil uil-trash-alt"></i></a>
-                                                                <input type="hidden" name="answer-remove" value="no"/>
-                                                            </div>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
-                                                
-                                                <button type="button" class="btn btn-pills btn-light" onclick="addAnswer()">+ Add Answer</button>
-                                            </div><!--end col-->
+                                            </div><!--end col-->                    
                                         </div><!--end row-->
                                         
                                         <div id="error-mess" style="color: red">${error}</div>
             
-                                        <button type="submit" id="submit-btn" class="btn btn-primary mt-4">${param.action eq 'add' ? 'Add' : 'Save'}</button>
-                                        
+                                        <button type="submit" id="submit-btn" class="btn btn-primary mt-4" >Submit</button>
+                                        <button type="button" id="submit-btn" class="btn btn-primary mt-4" onclick="getTemplate()">
+                                            Download template</button>
+                                        <input type="file" name="file" class="btn btn-primary mt-3"/>                                        
                                     </form>
                                         
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
-
+                        
                         
                     </div>
                 </div><!--end container-->
@@ -206,7 +159,69 @@
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
         
-        <script>          
+        <script>        
+            function getTemplate() {
+                const servletUrl = "http://localhost:9999/LearningManagement/manager/get-template";
+                const xhr = new XMLHttpRequest();
+                
+                xhr.open("GET", servletUrl);
+                
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                
+                xhr.send();
+                
+                xhr.onload = function() {
+                    window.location.href = servletUrl;
+                };
+            }
+            function importQuestion() {
+                // Get the form element
+                const form = document.getElementById("#questionForm");
+                
+                // Get the select element by its name attribute
+                const selectSubject = form.querySelector('select[name="subject"]'); 
+                const selectChapter = form.querySelector('select[name="chapter');
+                const selectLesson = form.querySelector('select[name=lesson');
+                const selectDimension = form.querySelector('select[name=dimension');
+                
+                // Get the selected option element
+                const selectedSubject = selectSubject.querySelector('option:checked');
+                const selectedChapter = selectChapter.querySelector('option:checked');
+                const selectedLesson = selectLesson.querySelector('option:checked');
+                const selectedDimension = selectDimension.querySelector('option:checked');
+                
+                // Get the value of the selected option element
+                const subjectId = selectedSubject.value;
+                const chapterId = selectedChapter.value;
+                const lessonId = selectedLesson.value;
+                const dimensionId = selectedDimension.value;
+                
+                // Create a new XMLHttpRequest object
+                const xhr = new XMLHttpRequest();
+                
+                // Open a POST request to the server
+                xhr.open('POST', 'http://localhost:9999/LearningManagement/manager/quesion-import');
+                
+                // Set the request headers
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                
+                const formData = new FormData();
+                formData.append('subject', subjectId);
+                formData.append('chapter', chapterId);
+                formData.append('lesson', lessonId);
+                formData.append('dimension', dimensionId);
+                // Set the request body
+                xhr.send(formData);
+                
+                // Handle the response from the server
+                xhr.onload = function() {
+                  if (xhr.status === 200) {
+                    // Success!
+                  } else {
+                    // Error!
+                  }
+                };
+            }
             function setcorrectVal(cb, par) {
                 const hid = par.querySelector(".answer-hidden");
                 hid.value = cb.checked ? "true" : "false";
@@ -244,11 +259,6 @@
                 
                 chapterSelect.innerHTML = "";
                 
-                var optionDef = document.createElement("option");
-                optionDef.value = 0;
-                optionDef.text = "Choose chapter...";
-                chapterSelect.appendChild(optionDef);
-                
                 await fetch('getDatas?table=chapter&subject=' + sid)
                     .then(response => {
                         if (response.ok)
@@ -274,11 +284,6 @@
                 let lessonSelect = document.getElementById('lesson');
                 
                 lessonSelect.innerHTML = "";
-                
-                var def = document.createElement("option");
-                def.value = 0;
-                def.text = "Choose Lesson...";
-                lessonSelect.appendChild(def);
                 
                 fetch('getDatas?table=lesson&chapter=' + cid)
                     .then(response => {
@@ -343,88 +348,6 @@
                 `;
         
                 ansContainer.appendChild(newRow);
-            }
-            
-            const subjectSel = document.getElementById("subject");
-            const chapterSel = document.getElementById("chapter");
-            const lessonSel = document.getElementById("lesson");
-            const dimensionSel = document.getElementById("dimension");
-            const detailTxt = document.getElementById("detail");
-            
-            const errorText = document.getElementById("error-mess");
-            
-            function checkEmpty() {
-                // Check input Subject
-                if (subjectSel.value == 0) {
-                    errorText.textContent = "You must choose subject!";
-                    return false;
-                }
-                
-                // Check input Chapter
-                if (chapterSel.value == 0) {
-                    errorText.textContent = "You must choose chapter!";
-                    return false;
-                }
-                
-                // Check input Lesson
-                if (lessonSel.value == 0) {
-                    errorText.textContent = "You must choose lesson!";
-                    return false;
-                }
-                
-                // Check input Dimension
-                if (dimensionSel.value == 0) {
-                    errorText.textContent = "You must choose at least 1 dimension!";
-                    return false;
-                }
-                
-                // Check input Question detail
-                if (detailTxt.value.trim() == '') {
-                    errorText.textContent = "Detail of question can not be empty!";
-                    return false;
-                }
-                
-                // Check all question detail
-                let answers = document.querySelectorAll("#answer");
-                var check = true;
-                var count = 0;
-                answers.forEach(item => {
-                    var par = item.parentNode;
-                    if (par.parentNode.style.display != 'none') {
-                        if (item.value.trim() == '') {
-                            errorText.textContent = "Answer detail can not be empty!";
-                            check = false;
-                        } else {
-                            count++;
-                        }
-                    }
-                });
-                
-                if (!check)
-                    return check;
-                
-                // Check correct answer (must be at least 1 correct answer)
-                let corrects = document.querySelectorAll(".answer-hidden");
-                var corCount = 0;
-                corrects.forEach(item => {
-                    var par = item.parentNode;
-                    if (par.parentNode.style.display != 'none' && item.value == 'true') {
-                        corCount++;
-                    }
-                });
-                
-                if (corCount < 1) {
-                    errorText.textContent = "Please choose at least 1 correct answer";
-                    return false;
-                }
-                
-                // Check number of answers (must be at least 2 answer)
-                if (count < 2) {
-                    errorText.textContent = "You must add at least 2 answer!";
-                    return false;
-                }
-                
-                return true;
             }
             
             

@@ -1,8 +1,4 @@
-<%-- 
-    Document   : users
-    Created on : Sep 18, 2023, 3:11:42 PM
-    Author     : lvhn1
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -123,7 +119,7 @@
                                             <div class="col-md-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Question:</label>
-                                                    <textarea name="detail" id="detail" class="form-control" placeholder="Enter your question..." rows="3">${question.detail}</textarea>
+                                                    <textarea name="detail" id="detail" class="form-control" placeholder="Enter your question..." rows="3" required="true">${question.detail}</textarea >
                                                 </div>
                                             </div><!--end col-->
                                             
@@ -139,7 +135,7 @@
                                                         </div>
                                                         
                                                         <div class="form-check pe-4">
-                                                            <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" ${question.status ? '' : 'checked'} value="false">
+                                                            <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" ${question.status ? '' : 'checked'} value="false"} >
                                                             <label class="form-check-label" for="flexRadioDefault2">
                                                                 Inactive
                                                             </label>
@@ -172,7 +168,9 @@
                                         <div id="error-mess" style="color: red">${error}</div>
             
                                         <button type="submit" id="submit-btn" class="btn btn-primary mt-4">${param.action eq 'add' ? 'Add' : 'Save'}</button>
+                                        
                                     </form>
+                                        
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
@@ -208,8 +206,7 @@
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
         
-        <script>
-            
+        <script>          
             function setcorrectVal(cb, par) {
                 const hid = par.querySelector(".answer-hidden");
                 hid.value = cb.checked ? "true" : "false";
