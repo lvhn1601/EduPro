@@ -61,6 +61,9 @@ public class SignInController extends HttpServlet {
                     if (account.getRole().getId() == 2) {
                         response.sendRedirect("manager/subject-list");
                     }
+                    if (account.getRole().getId() == 3) {
+                        response.sendRedirect("trainer/class-trainee");
+                    }
                     foundMatch = true;
                     return;
                 }
@@ -120,6 +123,9 @@ public class SignInController extends HttpServlet {
             }
             if (account.getRole().getId() == 2) {
                 response.sendRedirect("manager/subject-list");
+            }
+            if (account.getRole().getId() == 3) {
+                response.sendRedirect("trainer/class-trainee");
             }
         }
     }
