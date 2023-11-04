@@ -294,17 +294,17 @@ public class ManagerDAO extends DBContext {
         }
         return questions;
     }
-    
+
     public List<Question> GetListQuestionExport(int subjectId) {
         List<Question> questions = new ArrayList<>();
-        String sql = "select question_id, question_detail from question \n" +
-                      "where question_subject_id = ?";
+        String sql = "select question_id, question_detail from question \n"
+                + "where question_subject_id = ?";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, subjectId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Question question = Question.builder()
-                        .id(rs.getInt("question_id"))                        
+                        .id(rs.getInt("question_id"))
                         .detail(rs.getString("question_detail"))
                         .answers(getAnswerByQuestion(rs.getInt("question_id")))
                         .build();
@@ -315,19 +315,19 @@ public class ManagerDAO extends DBContext {
         }
         return questions;
     }
-    
+
     public List<Answer> getAnswerByQuestion(int questionId) {
         List<Answer> answers = new ArrayList();
         String sql = "select * from answer where answer_question_id = ?";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, questionId);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 Answer answer = Answer.builder()
-                                .id(rs.getInt("answer_id"))
-                                .detail(rs.getString("answer_detail"))
-                                .correct(rs.getBoolean("answer_correct"))
-                                .build();
+                        .id(rs.getInt("answer_id"))
+                        .detail(rs.getString("answer_detail"))
+                        .correct(rs.getBoolean("answer_correct"))
+                        .build();
                 answers.add(answer);
             }
         } catch (Exception e) {
@@ -335,16 +335,16 @@ public class ManagerDAO extends DBContext {
         }
         return answers;
     }
-    
+
     public int getTopQuestionId() {
         int n = 0;
-        String sql = "SELECT question_id \n" +
-                        "FROM question \n" +
-                        "ORDER BY question_id DESC\n" +
-                        "LIMIT 1";
+        String sql = "SELECT question_id \n"
+                + "FROM question \n"
+                + "ORDER BY question_id DESC\n"
+                + "LIMIT 1";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 n = rs.getInt(1);
             }
         } catch (Exception e) {
@@ -444,17 +444,35 @@ public class ManagerDAO extends DBContext {
         return list;
     }
 
-    public List<Dimension> getListDimensions(int manager_id, int subject_id) {
-        String sql = "SELECT * FROM dimension\n"
-                + "join subject on dimension.dimension_subject_id = subject.subject_id\n"
-                + "where subject_manager_id = ? and subject_id = ? and dimension_status = 1";
+    public List<String> getDimensionTypes(int subject_id) {
+        String sql = "select DISTINCT dimension_type from dimension where dimension_subject_id = ?";
+
+        List<String> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, subject_id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(rs.getString("dimension_type"));
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public List<Dimension> getListDimensions(int subject_id, String dimension_type) {
+        String sql = "SELECT dimension_id, dimension_name FROM dimension\n"
+                + "where dimension_subject_id = ? and dimension_type = ?";
 
         List<Dimension> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, manager_id);
-            ps.setInt(2, subject_id);
+            ps.setInt(1, subject_id);
+            ps.setString(2, dimension_type);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -506,6 +524,7 @@ public class ManagerDAO extends DBContext {
             while (rs.next()) {
                 list.add(Config.builder()
                         .id(rs.getInt("config_id"))
+                        .type(rs.getBoolean("config_type"))
                         .dimension(Dimension.builder()
                                 .id(rs.getInt("config_dimension_id"))
                                 .build()
@@ -592,7 +611,7 @@ public class ManagerDAO extends DBContext {
     }
 
     public List<Quiz> getQuizzes(int manager_id, String search, int page_num, int subject_id) {
-        String sql = "SELECT quiz_id, quiz_title, quiz_type, subject_id, subject_code, chapter_id, chapter_title, quiz_status, creator.account_name as created_by, quiz.created_at, updater.account_name as update_by, quiz.update_at \n"
+        String sql = "SELECT quiz_id, quiz_title, quiz_description, quiz_type, subject_id, subject_code, chapter_id, chapter_title, quiz_status, quiz_config_by, quiz_dimension_type, quiz_num_of_question, creator.account_name as created_by, quiz.created_at, updater.account_name as update_by, quiz.update_at \n"
                 + "FROM quiz\n"
                 + "JOIN subject on quiz.quiz_subject_id = subject.subject_id\n"
                 + "JOIN chapter on quiz.quiz_chapter_id = chapter.chapter_id\n"
@@ -614,6 +633,7 @@ public class ManagerDAO extends DBContext {
                 list.add(Quiz.builder()
                         .id(rs.getInt("quiz_id"))
                         .title(rs.getString("quiz_title"))
+                        .description(rs.getString("quiz_description"))
                         .type(rs.getBoolean("quiz_type"))
                         .subject(Subject.builder()
                                 .id(rs.getInt("subject_id"))
@@ -626,6 +646,9 @@ public class ManagerDAO extends DBContext {
                                 .build()
                         )
                         .status(rs.getBoolean("quiz_status"))
+                        .config_by(rs.getBoolean("quiz_config_by"))
+                        .dimension_type(rs.getString("quiz_dimension_type"))
+                        .num_of_question(rs.getInt("quiz_num_of_question"))
                         .created_by(rs.getString("created_by"))
                         .created_at(rs.getString("created_at"))
                         .update_by(rs.getString("update_by"))
@@ -660,21 +683,25 @@ public class ManagerDAO extends DBContext {
         }
     }
 
-    public boolean updateQuiz(int id, String title, int chapter, boolean type, boolean status, int manager_id) {
-        String sql = "UPDATE quiz SET quiz_title = ?, quiz_chapter_id = ?, quiz_type = ?, quiz_status = ?, update_by = ?\n"
+    public boolean updateQuiz(int id, String title, String descrition, int chapter, boolean type, boolean status, boolean config_by, String dimension_type, int numOfQues, int manager_id) {
+        String sql = "UPDATE quiz SET quiz_title = ?, quiz_description = ?, quiz_chapter_id = ?, quiz_type = ?, quiz_status = ?, quiz_config_by = ?, quiz_dimension_type = ?, quiz_num_of_question = ?, update_by = ?\n"
                 + "WHERE quiz_id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, title);
-            ps.setInt(2, chapter);
-            ps.setBoolean(3, type);
-            ps.setBoolean(4, status);
-            ps.setInt(5, manager_id);
-            ps.setInt(6, id);
+            ps.setString(2, descrition);
+            ps.setInt(3, chapter);
+            ps.setBoolean(4, type);
+            ps.setBoolean(5, status);
+            ps.setBoolean(6, config_by);
+            ps.setString(7, dimension_type);
+            ps.setInt(8, numOfQues);
+            ps.setInt(9, manager_id);
+            ps.setInt(10, id);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -693,7 +720,48 @@ public class ManagerDAO extends DBContext {
             ps.setInt(4, quiz);
 
             ps.execute();
-            
+
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean addConfig(boolean type, int config, int num_of_question, int quiz) {
+        String sql;
+
+        if (type) {
+            sql = "insert into quiz_config(config_type, config_dimension_id, config_num_of_question, config_quiz_id)\n"
+                    + "values (?, ?, ?, ?)";
+        } else {
+            sql = "insert into quiz_config(config_type, config_chapter_id, config_num_of_question, config_quiz_id)\n"
+                    + "values (?, ?, ?, ?)";
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setBoolean(1, type);
+            ps.setInt(2, config);
+            ps.setInt(3, num_of_question);
+            ps.setInt(4, quiz);
+
+            ps.execute();
+
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public boolean deleteAllConfig(int quiz_id) {
+        String sql = "DELETE from quiz_config where config_quiz_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, quiz_id);
+
+            ps.execute();
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -708,7 +776,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(1, id);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -727,7 +795,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(4, id);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -896,7 +964,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(8, manager_id);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -931,7 +999,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(5, maxAttempt);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -1031,7 +1099,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(2, dimension);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -1050,7 +1118,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(4, id);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -1066,7 +1134,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(2, question);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -1084,7 +1152,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(3, question);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -1099,7 +1167,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(1, id);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -1116,7 +1184,7 @@ public class ManagerDAO extends DBContext {
             ps.setInt(3, id);
 
             ps.execute();
-            
+
             return true;
         } catch (SQLException e) {
             return false;
@@ -1461,8 +1529,5 @@ public class ManagerDAO extends DBContext {
             e.printStackTrace(System.out);
         }
         return listClass;
-    }
-    public static void main(String[] args) {
-        
     }
 }
