@@ -610,23 +610,20 @@ public class ManagerDAO extends DBContext {
         return 0;
     }
 
-    public List<Quiz> getQuizzes(int manager_id, String search, int page_num, int subject_id) {
+    public List<Quiz> getQuizzes(int manager_id, int subject_id) {
         String sql = "SELECT quiz_id, quiz_title, quiz_description, quiz_type, subject_id, subject_code, chapter_id, chapter_title, quiz_status, quiz_config_by, quiz_dimension_type, quiz_num_of_question, creator.account_name as created_by, quiz.created_at, updater.account_name as update_by, quiz.update_at \n"
                 + "FROM quiz\n"
                 + "JOIN subject on quiz.quiz_subject_id = subject.subject_id\n"
                 + "JOIN chapter on quiz.quiz_chapter_id = chapter.chapter_id\n"
                 + "JOIN account as creator on quiz.created_by = creator.account_id\n"
                 + "JOIN account as updater on quiz.update_by = updater.account_id\n"
-                + "WHERE subject.subject_manager_id = ?" + (subject_id == 0 ? "" : " and subject_id = " + subject_id) + " and quiz_title like '%" + search + "%'\n"
-                + "limit 8 offset ?";
+                + "WHERE subject.subject_manager_id = ?" + (subject_id == 0 ? "" : " and subject_id = " + subject_id);
 
         List<Quiz> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, manager_id);
-            ps.setInt(2, (page_num - 1) * 8);
-            System.out.println(ps.toString());
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -755,6 +752,21 @@ public class ManagerDAO extends DBContext {
 
     public boolean deleteAllConfig(int quiz_id) {
         String sql = "DELETE from quiz_config where config_quiz_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, quiz_id);
+
+            ps.execute();
+
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+    
+    public boolean deleteAllQuestion(int quiz_id) {
+        String sql = "delete from quiz_question WHERE quiz_id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);

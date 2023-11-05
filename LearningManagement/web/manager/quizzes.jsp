@@ -36,8 +36,17 @@
         <!-- selectize -->
         <script src="../assets/js/selectize.js"></script>
         <link rel="stylesheet" href="../assets/css/selectize.bootstrap5.css">
+        <!--Datatable-->
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"/>
         <!-- Icon Font Stylesheet -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
+        <style>
+            .dataTables_filter {
+                display: none;
+            }
+        </style>
     </head>
     <body>
         <!-- Loader -->
@@ -70,16 +79,16 @@
                             <h5 class="mb-0">Quizzes Manager</h5>
                         </div>
                                             
-                        <form action="quizzes" method="get" class="d-md-flex justify-content-between mt-4">
+                        <div class="d-md-flex justify-content-between mt-4">
                             <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNew" onclick="showAddNew()"><i class="uil uil-plus"></i> New Quiz</a>
 
-                            <div class="col-sm-12 col-md-2 d-flex align-items-center">
+                            <div class="col-sm-12 col-md-3 d-flex align-items-center">
                                 <h6 class="mb-0" style="padding-right: 5px">Subject: </h6>
                                 <div class="mb-0 position-relative w-100">
-                                    <select class="form-control time-during select2input" name="subject" style="background-color: #fff; border-radius: 10px;" onchange="this.form.submit()">
-                                        <option value="0"}>All</option>
+                                    <select class="form-control bg-white rounded-md" id="filter-subject">
+                                        <option value=""}>All</option>
                                         <c:forEach items="${subjects}" var="s">
-                                            <option value="${s.id}" ${s.id eq param.subject ? 'selected' : ''}>${s.code} - ${s.name}</option>
+                                            <option value="${s.code}">${s.code} - ${s.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -88,19 +97,20 @@
                             <div class="search-bar p-0 d-none d-lg-block ms-2">
                                 <div id="search" class="menu-search mb-0">
                                     <div class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="search" id="s" placeholder="Search..." value="${param.search}">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
+                                        <input type="text" class="form-control border rounded-pill" name="search" id="searchBox" placeholder="Search...">
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                                
+                        <div class="d-flex justify-content-between" id="filter-container">
+                            
+                        </div>
 
                         <div class="row">
                             <div class="col-12 mt-4">
-                                <div class="table-responsive shadow rounded">
-                                    <table class="table table-center bg-white mb-0">
+                                <div class="table-responsive rounded">
+                                    <table class="table table-center rounded bg-white mb-0" id="quizzes-table">
                                         <thead>
                                             <tr>
                                                 <th class="border-bottom p-3" style="min-width: 50px;">#</th>
@@ -148,27 +158,6 @@
                                     </table>
                                 </div>
                             </div>
-                        </div><!--end row-->
-
-                        <div class="row text-center">
-                            <!-- PAGINATION START -->
-                            <c:set var="cur" value="${param.page eq null ? 1 : param.page}" />
-                            <div class="col-12 mt-4">
-                                <div class="d-md-flex align-items-center text-center justify-content-between">
-                                    <span class="text-muted me-3">Showing ${(cur - 1) * 8 + 1} - ${(cur * 8) > requestScope.count ? requestScope.count : (cur * 8)} out of ${requestScope.count}</span>
-                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(1)" aria-label="Previous">First</a></li>
-                                        <c:forEach begin="${cur > 1 ? (cur + 3 > pages ? (pages - 4 < 1 ? 1 : pages - 4) : cur - 1) : 1}" end="${cur > 1 ? (cur + 3 > pages ? pages : cur + 3) : (5 > pages ? pages : 5)}" var="i">
-                                            <li class="page-item ${(param.page == i || (i==1 && param.page==null)) ? 'active' : ''}">
-                                                <a class="page-link" href="javascript:jumpTo(${i})">${i}</a>
-                                            </li>
-                                        </c:forEach>
-                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(${pages})" aria-label="Next">Last</a></li>
-
-                                    </ul>
-                                </div>
-                            </div><!--end col-->
-                            <!-- PAGINATION END -->
                         </div><!--end row-->
                     </div>
                 </div><!--end container-->
@@ -435,21 +424,18 @@
                                         <div class="tab-pane fade show" id="tab-fixed" role="tabpanel">
                                             
                                             <div class="table-responsive shadow rounded">
-                                                <!--<form id="questionForm" action="quizzes?action=updateQuestions" method="post">-->
-                                                    <input type="number" name="quiz" id="quiz-id-q" value="0" style="display: none"/>
-                                                    <table class="table table-center bg-white mb-0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="border-bottom p-3" style="width: 10px;">#</th>
-                                                                <th class="border-bottom p-3" style="min-width: 300px;">Question</th>
-                                                                <th class="border-bottom p-3" style="width: 50px;"></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="quiz-question-container">
-                                                            
-                                                        </tbody>
-                                                    </table>
-                                                <!--</form>-->
+                                                <table class="table table-center bg-white mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-bottom p-3" style="width: 10px;">#</th>
+                                                            <th class="border-bottom p-3" style="min-width: 300px;">Question</th>
+                                                            <th class="border-bottom p-3" style="width: 50px;"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="quiz-question-container">
+
+                                                    </tbody>
+                                                </table>
                                             </div>
                                             
                                             <div class="p-4">
@@ -458,7 +444,7 @@
                                                         
                                                     </select>
 
-                                                    <button class="btn btn-pills btn-soft-primary ms-2" onclick="checkAddQues(this.parentNode)"><i class="uil uil-plus"></i></button>
+                                                    <button type="button" class="btn btn-pills btn-soft-primary ms-2" onclick="checkAddQues(this.parentNode)"><i class="uil uil-plus"></i></button>
                                                 </div>
                                             </div>
                                             
@@ -582,8 +568,32 @@
         <script src="../assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="../assets/js/app.js"></script>
+        
 
         <script>
+            //$('#quizzes-table').dataTable();
+            let fContainer = document.getElementById('filter-container');
+            let table = new DataTable('#quizzes-table', {
+                scrollX: false,
+                //searching: false,
+                lengthChange: false
+            });
+            
+            const ftSubject = document.getElementById('filter-subject');
+            
+            ftSubject.addEventListener('change', function () {
+                var val = DataTable.util.escapeRegex(ftSubject.value);
+
+                table.column(2)
+                    .search(val ? '^' + val + '$' : '', true, false)
+                    .draw();
+            });
+            
+            const searchBox = document.getElementById('searchBox');
+            
+            searchBox.addEventListener('keyup', () => {
+                table.column(1).search(searchBox.value, false, true).draw();
+            });
             
             function removeConfig(config) {
                 config.parentNode.remove();
@@ -601,7 +611,7 @@
                 const detail = sel.options[sel.selectedIndex].text;
                 
                 if (id != 0) {
-                    addQuizQuestion(id, detail, 'new');
+                    addQuizQuestion(id, detail);
                 }
             }
             
@@ -618,7 +628,7 @@
                 document.getElementById('description').value = description;
                 document.getElementById('subjectSelect').value = subject;
                 
-                await updateDatas(dimension_type);
+                await updateDatas(subject, dimension_type);
                 document.getElementById('chapterSelect').value = chapter;
                 if (type) {
                     document.getElementById('flexRadioDefault2 quiz-type-random').checked = true;
@@ -648,14 +658,13 @@
                 document.getElementById('totalNum').value = num_of_question;
                 
                 //document.getElementById('quiz-id-c').value = id;
-                document.getElementById('quiz-id-q').value = id;
-//                console.log(id);
+                //document.getElementById('quiz-id-q').value = id;
                 getListConfig(id);
                 getListQuizQuestion(id);
             }
             
-            async function updateDatas(dtype) {
-                let sid = document.getElementById('subjectSelect').value;
+            async function updateDatas(sid, dtype) {
+                //let sid = document.getElementById('subjectSelect').value;
                 //let qid = document.getElementById('quiz-id').value;
                 
                 //getListConfig(qid);
@@ -842,7 +851,7 @@
                 })
                     .then(data => {
                         data.forEach(item => {
-                            addQuizQuestion(item.id, item.detail, 'old');
+                            addQuizQuestion(item.id, item.detail);
                     });
                 })
                     .catch(error => {
@@ -850,25 +859,33 @@
                 });
             }
             
-            function addQuizQuestion(id, detail, status) {
+            function addQuizQuestion(id, detail) {
+                const container = document.getElementById("quiz-question-container");
+                
+                var listRow = container.childNodes;
+                for (var i=0; i<listRow.length; i++) {
+                    var qid = listRow[i].querySelector('input').value;
+                    if (qid === id.toString()) {
+                        alert("This question is already exist in this quiz!");
+                        return;
+                    }
+                }
+                
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
                     <th class="p-3">` + id + `</th>
                     <td class="py-3">
                         <div class="d-flex align-items-center">
-                            <input type="hidden" name="question-id" value="` + id + `"/>
-                            <input type="hidden" name="status" value="` + status + `"/>
+                            <input type="hidden" name="question-id" class="ques-id" value="` + id + `"/>
                             <span class="ms-2">` + detail + `</span>
                         </div>
                     </td>
 
                     <td class="text-end p-3">
-                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger" onclick="removeThis(this.parentNode)"><i class="uil uil-trash-alt"></i></a>
-                        <input type="hidden" name="remove" value="no"/>
+                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger" onclick="removeConfig(this.parentNode)"><i class="uil uil-trash-alt"></i></a>
                     </td>
                 `;
-        
-                const container = document.getElementById("quiz-question-container");
+                
                 container.appendChild(newRow);
             }
             
@@ -958,7 +975,7 @@
                         });
             }
             
-            updateDatas(null);
+            //updateDatas(null);
             switchQuizType();
         </script>
     </body>
