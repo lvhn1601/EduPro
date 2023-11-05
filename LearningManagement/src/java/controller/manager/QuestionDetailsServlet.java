@@ -15,10 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
 
-/**
- *
- * @author lvhn1
- */
 @WebServlet(name="QuestionDetailsServlet", urlPatterns={"/manager/question-details"})
 public class QuestionDetailsServlet extends HttpServlet {
    

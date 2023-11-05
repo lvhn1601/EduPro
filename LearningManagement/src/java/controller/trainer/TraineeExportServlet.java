@@ -9,31 +9,26 @@ import dao.TrainerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import java.io.InputStream;
-import java.util.Iterator;
+import java.util.List;
 import model.Account;
+import model.Answer;
+import model.Question;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
  * @author tango
  */
-@WebServlet(name="TraineeImportServlet", urlPatterns={"/trainer/import-trainee"})
-@MultipartConfig(
-    maxFileSize = 1024 * 1024 * 1024, // 
-    maxRequestSize = 1024 * 1024 * 1024 // 
-)
-public class TraineeImportServlet extends HttpServlet {
+@WebServlet(name="TraineeExportServlet", urlPatterns={"/trainer/trainee-export"})
+public class TraineeExportServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -50,10 +45,10 @@ public class TraineeImportServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TraineeImportServlet</title>");  
+            out.println("<title>Servlet TraineeExportServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TraineeImportServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet TraineeExportServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,17 +65,35 @@ public class TraineeImportServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        TrainerDAO dao = new TrainerDAO();
+        int class_id = Integer.parseInt(request.getParameter("classId"));
+        
+        List<Account> accs = dao.getTraineeInAClass(class_id, "");
+        
         // Create an Excel workbook
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("trainee");
+        Sheet sheet = workbook.createSheet("Data");
         
         // Create a header row
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Enter trainee email or ID here");
-      
+        headerRow.createCell(0).setCellValue("ID");
+        headerRow.createCell(1).setCellValue("Name");
+        headerRow.createCell(2).setCellValue("Email");
+        headerRow.createCell(3).setCellValue("Phone Number");
+        headerRow.createCell(4).setCellValue("Status");
+        // Populate the worksheet with data
+        int rowNum = 1;
+        for(Account a:accs) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(a.getId());
+            row.createCell(1).setCellValue(a.getName());
+            row.createCell(2).setCellValue(a.getEmail());
+            row.createCell(3).setCellValue(a.getPhone());
+            row.createCell(4).setCellValue((a.getActive() == 1 ? "active" : "inactive"));
+        }
         // Write the Excel workbook to a file 
         response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition", "attachment; filename=trainee.xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
         workbook.write(response.getOutputStream());
     } 
 
@@ -94,50 +107,7 @@ public class TraineeImportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Account acc = (Account) request.getSession().getAttribute("accountCur");
-        TrainerDAO dao = new TrainerDAO();
-        int class_id = Integer.parseInt(request.getParameter("class_id"));
-        // get file upload part
-        Part filePart = request.getPart("file");
-        // get imput stream for file upload part
-        InputStream inputStream = filePart.getInputStream();
-        // read excel file
-        XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-        // get first sheet from the workbook
-        XSSFSheet sheet = workbook.getSheetAt(0);
-        Iterator<Row> rowIterator = sheet.iterator();
-        
-        int id;
-        try {
-            id = (int) sheet.getRow(0).getCell(0).getNumericCellValue();
-        } catch (Exception e) {
-            id = 1000;
-        }
-        // neu nguoi dung nhap vao email
-        if(id == 1000) {
-            while(rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                String email = row.getCell(0).getStringCellValue();
-                
-                // student đã tồn tại trong hệ thống
-                if(dao.getTraineeByEmail(email.trim()).size() != 0) {
-                    dao.addTraineeToClass(dao.getTraineeByEmail(email.trim()).get(0).getId(), class_id);
-                } else { // student chưa tồn tại trong hệ thống
-                    dao.createNewTrainee(email, email.substring(0, email.indexOf('@')), acc.getId());
-                }
-                dao.addTraineeToClass(dao.getTopTraineeId(), class_id);
-            }
-        } else { // neu nguoi dung nhap student id
-            while(rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                int trainee_id = (int) row.getCell(0).getNumericCellValue();
-                dao.addTraineeToClass(trainee_id, class_id);
-            }
-        }
-
-        request.setAttribute("class_id", class_id);
-        request.setAttribute("message", "Import trainee to class successfull");
-        request.getRequestDispatcher("success.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /** 

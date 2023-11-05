@@ -85,6 +85,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-2 d-flex justify-content-end" style="height: 40px">
+                                            <a href="trainee-export?classId=${class_id}" class="btn btn-primary">Export</a>
+                                        </div>
                                     </form>
 
                                     <div class="row" style="margin: 10px 0; justify-content: center">
@@ -114,7 +117,7 @@
                                                         <c:forEach items="${trainees}" var="tr">
                                                             <c:set var="number" value="${number+1}"></c:set>
                                                             <tr>
-                                                                <th class="p-3">${number}</th>
+                                                                <th class="p-3">${tr.id}</th>
                                                                 <td class="py-3">
                                                                     <div class="d-flex align-items-center">
                                                                         <span class="ms-2">${tr.name}</span>
@@ -140,8 +143,8 @@
                                                                 <td class="p-3">
                                                                     <form class="form-check form-switch">
                                                                         <input class="form-check-input" type="checkbox"
-                                                                            id="flexSwitchCheckDefault" ${l.status
-                                                                            ? 'checked' : '' }>
+                                                                            id="flexSwitchCheckDefault" ${tr.active eq 1
+                                                                                ? 'checked' : '' } disabled="">
                                                                     </form>
                                                                 </td>
                                                             </tr>

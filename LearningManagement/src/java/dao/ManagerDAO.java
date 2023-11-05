@@ -1418,7 +1418,20 @@ public class ManagerDAO extends DBContext {
         }
         return listClass;
     }
+    public int checkDuplicateQuestion(String detail) {
+        String sql = "select COUNT(*) from question where question_detail = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setString(1, detail);
+            ResultSet rs = stm.executeQuery();
+            int rowCount = rs.next() ? rs.getInt(1) : 0;
+            return rowCount;
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
+        return 0;
+    }
     public static void main(String[] args) {
-        
+        ManagerDAO dao = new ManagerDAO();
+        System.out.println(dao.checkDuplicateQuestion("The operation for removing and returning the end element of the queue is traditionally called"));
     }
 }

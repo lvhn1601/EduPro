@@ -63,9 +63,9 @@
                                 <div class="d-md-flex justify-content-between">
                                     <h5 class="mb-0">Class Manager</h5>
 
-                                    <form class="d-flex justify-content-between mt-4" method="get" action="class-trainee"
-                                        class="d-md-flex justify-content-between mt-4">
-                                        
+                                    <form class="d-flex justify-content-between mt-4" method="get"
+                                        action="class-trainee" class="d-md-flex justify-content-between mt-4">
+
                                         <div class="col-sm-12 col-md-3 d-flex align-items-center">
                                             <h6 class="mb-0" style="padding-right: 5px">Subject: </h6>
                                             <div class="mb-0 position-relative w-100">
@@ -75,12 +75,12 @@
                                                     <c:forEach items="${subjects}" var="s">
                                                         <option value="${s.name}" ${s.name eq param.subject ? 'selected'
                                                             : '' }>
-                                                           ${s.code} - ${s.name}</option>
+                                                            ${s.code} - ${s.name}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
                                         </div><!--end col-->
-                                        
+
                                         <div class="col-sm-12 col-md-3 d-flex align-items-center">
                                             <h6 class="mb-0" style="padding-right: 5px">Semester: </h6>
                                             <div class="mb-0 position-relative w-100">
@@ -88,14 +88,14 @@
                                                     id="subject" style="background-color: #fff; border-radius: 10px;">
                                                     <option value="" }>All</option>
                                                     <c:forEach items="${semesters}" var="s">
-                                                        <option value="${s.title}" ${s.title eq param.semester ? 'selected'
-                                                            : '' }>
+                                                        <option value="${s.title}" ${s.title eq param.semester
+                                                            ? 'selected' : '' }>
                                                             ${s.title}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
                                         </div><!--end col-->
-                                        
+
                                         <div class="search-bar p-0 d-none d-lg-block ms-2">
                                             <div id="search" class="menu-search mb-0">
                                                 <div class="searchform">
@@ -124,9 +124,8 @@
                                                             Name</th>
                                                         <th class="border-bottom p-3">Subject</th>
                                                         <th class="border-bottom p-3">Semester</th>
-
                                                         <th class="border-bottom p-3"></th>
-
+                                                        <th class="border-bottom p-3" style="min-width: 50px;"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -144,6 +143,22 @@
                                                                     class="btn btn-primary">View</a></td>
                                                             <td class="p-3"><a href="add-trainee?classId=${c.class_id}"
                                                                     class="btn btn-primary">Add Trainee</a></td>
+                                                            <td class="text-end p-3">
+                                                                <a href="#"
+                                                                    class="btn btn-icon btn-pills btn-soft-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#classDetailModal"
+                                                                    data-classId="${c.class_id}"
+                                                                    data-className="${c.class_name}"
+                                                                    data-classSubject="${c.class_subject_name}"
+                                                                    data-classTrainer="${c.class_trainer_name}"
+                                                                    data-classSemester="${c.class_semester_name}"
+                                                                    data-classStatus="${c.class_status}"
+                                                                    data-classStart="${c.class_start}"
+                                                                    data-classEnd="${c.class_end}">
+                                                                    <i class="uil uil-edit"></i>
+                                                                </a>
+                                                            </td>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
@@ -208,7 +223,8 @@
                 <!-- page-wrapper -->
 
 
-
+                <!------------------------MODAL UPDATE CLASS DETAIL-------------------------->   
+                <%@include file="modal/modal-update-class-information.jsp"%>
                 <!-- javascript -->
                 <script src="../assets/js/bootstrap.bundle.min.js"></script>
                 <!-- simplebar -->
@@ -244,6 +260,39 @@
                                 console.log(data);
                             });
                     }
+                </script>
+                <script>
+                    document.addEventListener('click', function (e) {
+                        if (e.target && e.target.dataset.bsToggle === 'modal' && e.target.dataset.bsTarget === '#classDetailModal') {
+                            const classId = e.target.dataset.classId;
+                            const className = e.target.dataset.className;
+                            const classSubject = e.target.dataset.classSubject;
+                            const classSemester = e.target.dataset.classSemester;
+                            const classTrainer = e.target.dataset.classTrainer;
+                            const classStart = e.target.dataset.classStart;
+                            const classEnd = e.target.dataset.classEnd;
+                            const classStatus = e.target.dataset.classStatus;
+
+                            // Kiểm tra giá trị trước khi gán
+                            if (classStart && classEnd) {
+                                // Điền thông tin vào các trường input và select
+                                document.getElementById('className').value = className;
+                                document.getElementById('classSubject').value = classSubject;
+                                document.getElementById('classSemester').value = classSemester;
+                                document.getElementById('classTrainer').value = classTrainer;
+                                document.getElementById('classStart').value = classStart;
+                                document.getElementById('classEnd').value = classEnd;
+
+                                if (classStatus === 'active') {
+                                    document.getElementById('active').checked = true;
+                                    document.getElementById('inactive').checked = false;
+                                } else {
+                                    document.getElementById('active').checked = false;
+                                    document.getElementById('inactive').checked = true;
+                                }
+                            }
+                        }
+                    });
                 </script>
             </body>
 

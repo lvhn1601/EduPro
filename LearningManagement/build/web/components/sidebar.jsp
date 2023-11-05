@@ -34,8 +34,8 @@
                 
             <c:if test="${sessionScope.accountCur.role.id eq 3}">
                 <li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                
-                <li><a href="/LearningManagement/trainer/class-trainee"><i class="uil uil-users-alt me-2 d-inline-block"></i>Trainee</a></li>
+                <li><a href="/LearningManagement/trainer/lessons"><i class="uil uil-users-alt me-2 d-inline-block"></i>Lesson</a></li>
+                <li><a href="/LearningManagement/trainer/class-trainee"><i class="uil uil-users-alt me-2 d-inline-block"></i>Class</a></li>
             </c:if>
         </ul>
         <!-- sidebar-menu  -->
