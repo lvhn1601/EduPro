@@ -161,6 +161,34 @@ public class StudentDAO extends DBContext {
         return list;
     }
 
+    public List<Question> getListQuestionByChapter(int chapter_id, int num_of_ques) {
+        String sql = "select question_id, question_detail, question_chapter_id from question\n"
+                + "where question_chapter_id = ? and question_status = 1\n"
+                + "group by (question_id)\n"
+                + "order by rand()\n"
+                + "limit ?";
+        
+        List<Question> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, chapter_id);
+            ps.setInt(2, num_of_ques);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(Question.builder()
+                        .id(rs.getInt("question_id"))
+                        .detail(rs.getString("question_detail"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
     public void addQuestionsToQuiz(int submitId, int questionId, int quesNum) {
         String sql = "insert into quizsubmit_question values (?, ?, ?)";
 
@@ -236,10 +264,11 @@ public class StudentDAO extends DBContext {
                         .detail(rs.getString("answer_detail"))
                         .choose(rs.getInt("choose_id") != 0)
                         .build();
-                
-                if (getCorrect)
+
+                if (getCorrect) {
                     answer.setCorrect(rs.getBoolean("answer_correct"));
-                
+                }
+
                 list.add(answer);
             }
         } catch (SQLException e) {
@@ -346,14 +375,14 @@ public class StudentDAO extends DBContext {
     public List<QuizResult> getQuizResults(int lesson, int submitter) {
         String sql = "select * from quiz_submit\n"
                 + "where quizlesson_id = ? and submitter_id = ?";
-        
+
         List<QuizResult> list = new ArrayList<>();
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, lesson);
             ps.setInt(2, submitter);
-            
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(QuizResult.builder()
@@ -366,7 +395,7 @@ public class StudentDAO extends DBContext {
             }
         } catch (SQLException e) {
         }
-        
+
         return list;
     }
 }

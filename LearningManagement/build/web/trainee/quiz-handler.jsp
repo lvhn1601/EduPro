@@ -69,11 +69,11 @@
                                             <c:forEach items="${question.answers}" var="a">
                                                 <tr>
                                                     <td class="p-3" style="max-width: 50px">
-                                                        <input class="form-check-input" type="checkbox" id="flexCheckChecked" ${a.choose ? 'checked' : ''} onclick="updateChoice(this, ${a.id})" ${param.action == 'review' ? 'disabled' : ''}>
+                                                        <input class="form-check-input" type="checkbox" id="flexCheckChecked" ${a.choose && param.action == 'review' ? 'checked' : ''} onclick="updateChoice(this, ${a.id})" ${param.action == 'review' ? 'disabled' : ''}>
                                                     </td>
                                                     <td class="p-3">
-                                                        <p class="mb-0 ${a.correct ? 'text-success' : (a.choose ? 'text-danger' : '')}" style="font-size: large">
-                                                            ${!a.correct && a.choose ? '<del>' : ''}${a.detail}${!a.correct && a.choose ? '</del>' : ''}
+                                                        <p class="mb-0 ${a.correct && param.action == 'review' ? 'text-success' : (a.choose && param.action == 'review' ? 'text-danger' : '')}" style="font-size: large">
+                                                            ${!a.correct && a.choose && param.action == 'review' ? '<del>' : ''}${a.detail}${!a.correct && a.choose && param.action == 'review' ? '</del>' : ''}
                                                         </p>
                                                     </td>
                                                 </tr>

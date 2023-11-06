@@ -20,7 +20,7 @@
         <meta name="website" content="../../../index.html" />
         <meta name="Version" content="v1.2.0" />
         <!-- favicon -->
-        <link rel="shortcut icon" href="../assets/img/logo.png">
+        <link rel="shortcut icon" href="/LearningManagement/assets/img/logo.png">
         <!-- Bootstrap -->
         <link href="/LearningManagement/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <!-- simplebar -->
@@ -59,7 +59,7 @@
                             <div class="col-lg-8 mt-4">
                                 <div class="card shadow rounded border-0">
                                     <div class="card-body d-flex flex-column align-items-center">
-                                        <h3 class="card-title">${lesson.title}</h3>
+                                        <h3 class="card-title mt-4">${lesson.title}</h3>
                                         <p class="text-black-50">${lesson.description}</p>
                                         <h5 class="text-dark">Number of Attempt Allowed: ${lesson.maxAttempt}</h5>
                                         <h5 class="text-dark">Values to Pass: ${lesson.passValue}%</h5>
@@ -82,7 +82,7 @@
                                                             <c:forEach items="${results}" var="r" varStatus="loop">
                                                                 <tr>
                                                                     <td class="p-3">${loop.index + 1}</td>
-                                                                    <td class="p-3"><span class="badge rounded-md bg-${r.score >= lesson.passValue ? 'primary' : 'danger'}"> ${r.status ? (r.score >= lesson.passValue ? "Finished" : "Not Pass") : "Not Submitted"} </span></td>
+                                                                    <td class="p-3"><span class="badge rounded-md bg-${r.score >= lesson.passValue ? 'success' : 'danger'}"> ${r.status ? (r.score >= lesson.passValue ? "Finished" : "Not Pass") : "Not Submitted"} </span></td>
                                                                     <td class="p-3">${r.submit_at}</td>
                                                                     <td class="p-3">${r.score}</td>
                                                                     <td class="p-3"><a href="quiz?action=review&id=${r.id}&qnum=1" class="text-info">Review</a></td>

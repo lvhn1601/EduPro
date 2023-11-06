@@ -111,16 +111,18 @@ public class LessonServlet extends HttpServlet {
                     for (Config c : listCf) {
                         listQues.addAll(sd.getListQuestionByDimension(c.getDimension().getId(), c.getNum_of_question()));
                     }
+                } else {
+                    for (Config c : listCf)
+                        listQues.addAll(sd.getListQuestionByChapter(c.getChapter().getId(), c.getNum_of_question()));
                 }
                 int i = 0;
                 for (Question q : listQues) {
                     i++;
                     sd.addQuestionsToQuiz(submitId, q.getId(), i);
-                    //response.getWriter().println(submitId + " " + q.getId() + " " + i);
                 }
             }
             
-            response.sendRedirect("quiz?action=take?id=" + submitId);
+            response.sendRedirect("quiz?action=take&id=" + submitId + "qnum=1");
         }
     }
 
