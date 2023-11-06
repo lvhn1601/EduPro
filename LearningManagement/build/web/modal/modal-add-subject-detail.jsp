@@ -131,7 +131,7 @@
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" id="inactiveDimension" name="status" value="inactive">
-           1                 <label class="form-check-label" for="inactiveDimension">Inactive</label>
+                            <label class="form-check-label" for="inactiveDimension">Inactive</label>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Add</button>

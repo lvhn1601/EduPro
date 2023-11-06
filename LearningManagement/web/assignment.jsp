@@ -70,16 +70,7 @@
                                                 <th class="border-bottom p-3" style="min-width: 50px;">NAME</th>
                                                 <th class="border-bottom p-3" style="min-width: 240px;">DUE DATE</th>
                                                 <th class="border-bottom p-3">STATUS</th>
-                                                    <c:choose>
-                                                        <c:when test="${sessionScope.accountCur.role.id == 4}">
-                                                        <th class="border-bottom p-3">SUBMISSION TIME</th>
-
-                                                    </c:when>
-                                                    <c:when test="${sessionScope.accountCur.role.id == 3}">
-                                                        <th class="border-bottom p-3" hidden="">GRADE</th>
-
-                                                    </c:when>
-                                                </c:choose>
+                                                   
 
                                             </tr>
                                         </thead>
@@ -103,24 +94,17 @@
                                                     <td class="p-3">
                                                         ${asm.lessonId.status == true ? 'On Going' : 'Expired'}
                                                     </td>
-                                                    <td class="p-3">
 
-                                                    </td>
+                                                    <c:choose>
+                                                        <c:when test="${sessionScope.accountCur.role.id == 4}">
+                                                            <td hidden="" class="p-3">12/12</td>
 
-                                                    <td class="p-3">${u.created_by}</td>
 
-                                                    <td class="text-end p-3">
-                                                        <a href="#"
-                                                           class="btn btn-icon btn-pills btn-soft-primary" 
-                                                           data-bs-toggle="modal" 
-                                                           data-bs-target="#viewprofile"
-                                                           onclick="showUserInfo('${u.avatar_url}', '${u.name}', '${u.email}', '${u.phone}', '${u.dob}', '${u.role.title}', '${u.created_by}', '${u.created_at}', '${u.update_by}', '${u.update_at}')"
-                                                           >
-                                                            <i class="uil uil-eye"></i>
-                                                        </a>
-                                                        <a href="edit-user?id=${u.id}" class="btn btn-icon btn-pills btn-soft-success"><i class="uil uil-pen"></i></a>
-                                                        <!--<a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i class="uil uil-trash"></i></a>-->
-                                                    </td>
+                                                        </c:when>
+
+                                                    </c:choose>
+
+
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

@@ -138,6 +138,7 @@ public class SubjectDetailManagementController extends HttpServlet {
                 Chapter chapterAdd = Chapter.builder()
                         .title(request.getParameter("title"))
                         .description(request.getParameter("description"))
+                        .status("active".equals(request.getParameter("status")))
                         .build();
                 managerDAO.addChapter(chapterAdd, accountCur.getId(), subjectId);
                 response.sendRedirect("subject-detail-management?id=" + subjectId + "&addType=" + "chapter");

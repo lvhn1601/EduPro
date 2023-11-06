@@ -228,14 +228,15 @@ public class ManagerDAO extends DBContext {
 
     public int addChapter(Chapter obj, int accId, int subjectId) {
         int check = 0;
-        String sql = "INSERT INTO `chapter` (`chapter_title`, `chapter_description`, `chapter_subject_id`, `created_by`, `update_by`) "
-                + "VALUES (?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO `chapter` (`chapter_title`, `chapter_description`, `chapter_subject_id`, `created_by`, `update_by`, `chapter_status`) "
+                + "VALUES (?, ?, ?, ?, ?, ?);";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, obj.getTitle());
             ps.setObject(2, obj.getDescription());
             ps.setObject(3, subjectId);
             ps.setObject(4, accId);
             ps.setObject(5, accId);
+            ps.setObject(6, obj.isStatus());
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
@@ -245,8 +246,8 @@ public class ManagerDAO extends DBContext {
 
     public int addDimension(Dimension obj, int accId, int subjectId) {
         int check = 0;
-        String sql = "INSERT INTO `dimension` (`dimension_type`, `dimension_name`, `dimension_subject_id`, `created_by`, `update_by`,`dimension_description`) "
-                + "VALUES (?, ?, ?, ?, ?,?);";
+        String sql = "INSERT INTO `dimension` (`dimension_type`, `dimension_name`, `dimension_subject_id`, `created_by`, `update_by`,`dimension_description`, `dimension_status`) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?);";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, obj.getType());
             ps.setObject(2, obj.getName());
@@ -254,6 +255,7 @@ public class ManagerDAO extends DBContext {
             ps.setObject(4, accId);
             ps.setObject(5, accId);
             ps.setObject(6, obj.getDescription());
+            ps.setObject(7, obj.isStatus());
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);

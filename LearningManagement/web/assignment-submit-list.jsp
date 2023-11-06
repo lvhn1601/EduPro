@@ -69,25 +69,27 @@
                                             <tr>
                                                 <th class="border-bottom p-3" >#</th>
                                                 <th class="border-bottom p-3" style="min-width: 100px;">NAME</th>
+                                                <th class="border-bottom p-3">SUBMIT TIME</th>
                                                 <th class="border-bottom p-3">SCORE</th>
                                                 <th class="border-bottom p-3">Grade</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${requestScope.data}" var="asm" varStatus="loop">
+                                            <c:forEach items="${requestScope.data}" var="asmSub" varStatus="loop">
                                                 <tr>
                                                     <td class="p-3">${loop.index + 1}</td>
-                                                    <td class="p-3">${asm.submitterId.name}</td>
+                                                    <td class="p-3">${asmSub.submitterId.name}</td>
+                                                    <td class="p-3">${asmSub.submitTime}</td>
                                                     <td class="p-3">
-                                                        ${asm.submitScore}
+                                                        ${asmSub.submitScore}
                                                     </td>
                                                     <td class=" p-3">
                                                         <a href="#"
                                                            class="btn btn-icon btn-pills btn-soft-primary" 
                                                            data-bs-toggle="modal" 
                                                            data-bs-target="#viewprofile"
-                                                           onclick="showUserInfo('${asm.submitUrl}', '${asm.submitterId.id}', '${asm.lessonId.id}', '${asm.submitScore}')"
+                                                           onclick="showUserInfo('${asmSub.submitUrl}', '${asmSub.submitterId.id}', '${asmSub.lessonId.id}', '${asmSub.submitScore}')"
                                                            >
                                                             <i class="uil uil-eye"></i>
                                                         </a>
