@@ -2,10 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.trainee;
+package controller;
 
-import dao.ManagerDAO;
-import dao.TraineeDAO;
+import dao.ClassDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,16 +12,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Question;
-import model.Quiz;
+import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import model.Account;
+import model.Assignment;
+import model.AssignmentSubmit;
 
 /**
  *
  * @author dell
  */
-@WebServlet(name = "QuizController", urlPatterns = {"/quiz"})
-public class QuizController extends HttpServlet {
+@WebServlet(name = "AssignmentDetailController", urlPatterns = {"/assignment-detail"})
+public class AssignmentDetailController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +43,10 @@ public class QuizController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet QuizController</title>");            
+            out.println("<title>Servlet AssignmentSubmit</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet QuizController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AssignmentSubmit at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,16 +64,30 @@ public class QuizController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        ManagerDAO managerDAO = new ManagerDAO();
-        TraineeDAO traineeDAO = new TraineeDAO();
-        
-        List<Question> questions = managerDAO.getListQuizQuestions(id);
-        Quiz quiz = traineeDAO.getQuizById(id);
-        
-        request.setAttribute("quiz", quiz);
-        request.setAttribute("questions", questions);
-        request.getRequestDispatcher("/trainee/quiz.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        ClassDAO classDAO = new ClassDAO();
+        Account accountCur = (Account) session.getAttribute("accountCur");
+        int asmId = Integer.parseInt(request.getParameter("id"));
+        Assignment asm = classDAO.getAsmById(asmId);
+        AssignmentSubmit asmSub = classDAO.getAsmSubmitted(asmId, accountCur.getId());
+        if (asmSub != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime timeSubmit = LocalDateTime.parse(asmSub.getSubmitTime(), formatter);
+            LocalDateTime timeDueDate = LocalDateTime.parse(asm.getDueDate(), formatter);
+            int comparison = timeSubmit.compareTo(timeDueDate);
+
+            if (comparison < 0) {
+                request.setAttribute("msg", "Submitted");
+            } else if (comparison >= 0) {
+                request.setAttribute("msg", "Late");
+            }
+        } else {
+            request.setAttribute("msg", "Missing");
+        }
+
+        request.setAttribute("asmSub", asmSub);
+        request.setAttribute("asm", asm);
+        request.getRequestDispatcher("assignment-detail.jsp").forward(request, response);
     }
 
     /**

@@ -262,7 +262,7 @@ public class AccountDAO extends DBContext {
 
     public int registerGoogleAcc(UserGoogleDto obj) {
         int check = 0;
-        String sql = "INSERT INTO Account(account_email, account_avatar_url, account_name, account_oauth, account_role_id) VALUES (?, ?, ?, ?, 4)";
+        String sql = "INSERT INTO Account(account_email, account_avatar_url, account_name, account_oauth, account_active, account_role_id) VALUES (?, ?, ?, ?, 1, 4)";
 
         if (sql.isEmpty()) {
             return 0;

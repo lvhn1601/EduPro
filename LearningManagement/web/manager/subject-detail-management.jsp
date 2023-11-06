@@ -24,10 +24,18 @@
         <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+            integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+            />
         <!-- Css -->
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <!-- Icon Font Stylesheet -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
+        <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     </head>
     <style>
         .page-wrapper .sidebar-wrapper {
@@ -138,13 +146,6 @@
 
 
 
-
-        /* Áp dụng khi modal và overlay được kích hoạt */
-
-
-
-
-        /* Áp dụng khi modal và overlay được kích hoạt */
         #dimensionModal.active,
         .overlay.active {
             display: block;
@@ -220,26 +221,20 @@
 
                         <div class="col-md-4">
                             <label for="code">Subject Code</label>
-                            <input id="code" type="text" placeholder="${subject.code}" readonly=""/>
+                            <input id="code" type="text" placeholder="${subject.code}" disabled/>
                         </div>
                         <div class="col-md-8">
                             <label for="subject">Subject Name</label>
-                            <input id="subject" type="text" placeholder="${subject.name}" readonly=""/>
+                            <input id="subject" type="text" placeholder="${subject.name}" disabled/>
                         </div>
                         <div class="col-md-12">
                             <label for="manager">Manager</label>
-                            <input id="manager" type="text"  placeholder="${subject.manager.name}" readonly=""/>
+                            <input id="manager" type="text"  placeholder="${subject.manager.name}" disabled=""/>
                         </div>
                         <div class="col-md-6">
                             <label>Status</label>
                             <div class="radio-group">
-
-                                <label for="active">
-                                    <input type="radio" id="active" name="status" value="active" disabled ${subject.status eq true ? "checked" : ""}>Active
-                                </label>
-                                <label for="inactive">
-                                    <input type="radio" id="inactive" name="status" value="inactive" disabled ${subject.status eq true ? "" : "checked"}>Inactive
-                                </label>
+                                <input type="text" id="active" name="status" value="${subject.status eq true ? "Active" : "Inactive"}" disabled >
                             </div>
                         </div>
 
@@ -248,7 +243,7 @@
                 </form>
                 <!-- Chapter Tab Content -->
 
-                <div id="chapterTab" class="tab-content">
+                <form id="chapterTab" class="tab-content">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
@@ -274,20 +269,15 @@
                                             <td>${c.title}</td>
                                             <td>${c.description}</td>
                                             <td>
-                   <form class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" >
-                   </form>
-<!--                                                <label for="active">
-                                                    <input type="radio"  disabled ${c.status eq true ? "checked" : ""}>Active
-                                                </label>
-                                                <label for="inactive">
-                                                    <input type="radio" disabled ${c.status eq true ? "" : "checked"}>Inactive
-                                                </label>-->
+                                                ${c.status eq true ? "Active" : "Inactive"} 
+<!--                                                <form class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" ${c.status == true ? 'checked' : ''} onchange="updateStatus(this,${u.id})">
+                                                </form>-->
                                             </td>
                                             <td style="text-align: center;">
                                                 <button style=" all: unset;"
                                                         onclick="openModal('${subject.id}', '${c.id}', '${c.status}', '${c.title}', '${c.description}'); event.preventDefault();">
-                                                    <i class="uil uil-edit"></i>
+                                                    <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                 </button>
 <!--                                                <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
@@ -299,9 +289,9 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </form>
                 <!-- Dimensions Tab Content -->
-                <div id="dimensionsTab" class="tab-content">
+                <form id="dimensionsTab" class="tab-content">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="row">
@@ -329,19 +319,20 @@
                                             <td>${loop.index + 1}</td>
                                             <td>${d.type}</td>
                                             <td>${d.name}</td>
-                                            <td>${d.description}</td>
-                                            <td>
-                                                <label for="active">
+                                            <td style="text-align: left;">${d.description}</td>
+                                            <td style="text-align: center;">
+                                                ${d.status eq true ? "Active" : "Inactive"} 
+<!--                                                <label for="active">
                                                     <input type="radio"  disabled ${d.status eq true ? "checked" : ""}>Active
                                                 </label>
                                                 <label for="inactive">
                                                     <input type="radio" disabled ${d.status eq true ? "" : "checked"}>Inactive
-                                                </label>
+                                                </label>-->
                                             </td>
                                             <td style="text-align: center;">
                                                 <button style=" all: unset;  "
-                                                        onclick="openModalx('${subject.id}', '${d.id}', '${d.status}', '${d.type}', '${d.name}'); event.preventDefault();">
-                                                    <i class="uil uil-edit"></i>
+                                                        onclick="openModalx('${subject.id}', '${d.id}', '${d.status}', '${d.type}', '${d.name}', '${d.description}'); event.preventDefault();">
+                                                    <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                 </button>
 <!--                                                <a href="#" onclick="confirmDeleteDimension('${subject.id}', '${d.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
@@ -353,14 +344,14 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </main>
     </div>
     <%@include file="../modal/modal-update-subject-detail.jsp" %>
     <%@include file="../modal/modal-add-subject-detail.jsp" %>
 
-    
+
 
     <!-- Add these links in the <head> section of your HTML -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
@@ -375,9 +366,28 @@
     <script src="../assets/js/feather.min.js"></script>
     <!-- Main Js -->
     <script src="../assets/js/app.js"></script>
-
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 </body>
 <script>
+                                                            function updateStatus(element, id) {
+                                                                var radioName = "status" + id;
+                                                                var radios = document.getElementsByName(radioName);
+
+                                                                var isChecked = false;
+                                                                for (var i = 0; i < radios.length; i++) {
+                                                                    if (radios[i].checked) {
+                                                                        isChecked = true;
+                                                                        break;
+                                                                    }
+                                                                }
+
+                                                                fetch("../admin/updateStatus?table=chapter&id=" + id + "&isChecked=" + isChecked)
+                                                                        .then(response => response.text())
+                                                                        .then(data => {
+                                                                            console.log(data);
+                                                                        });
+                                                            }
+
                                                             function openAddModal(subjectId) {
                                                                 console.log(subjectId);
                                                                 $('#subjectIdadd').val(subjectId);
@@ -402,11 +412,12 @@
                                                                 // Show the modal
                                                                 $('#chapterModal').modal('show');
                                                             }
-                                                            function openModalx(subjectId, id, status, title, description) {
+                                                            function openModalx(subjectId, id, status, title, name, description) {
                                                                 console.log(status);
                                                                 $('#subjectIdx').val(subjectId);
                                                                 $('#dimensionId').val(id);
                                                                 $('#dimensionTitle').val(title);
+                                                                $('#dimensionName').val(name);
                                                                 $('#dimensionDescription').val(description);
                                                                 $('#activeDimension').prop('checked', status === "true");
                                                                 $('#inactiveDimension').prop('checked', status === "false");

@@ -177,6 +177,7 @@ public class ManagerDAO extends DBContext {
         String sql = "update dimension  \n"
                 + "set dimension_type = ?,\n"
                 + "dimension_name = ?,\n"
+                + "dimension_description = ?,\n"
                 + "dimension_status = ?,\n"
                 + "update_by = ?\n"
                 + "where dimension_id = ?";
@@ -184,9 +185,10 @@ public class ManagerDAO extends DBContext {
         try ( PreparedStatement ps = connection.prepareStatement(sql);) {
             ps.setObject(1, obj.getType());
             ps.setObject(2, obj.getName());
-            ps.setObject(3, obj.isStatus());
-            ps.setObject(4, accId);
-            ps.setObject(5, id);
+            ps.setObject(3, obj.getDescription());
+            ps.setObject(4, obj.isStatus());
+            ps.setObject(5, accId);
+            ps.setObject(6, id);
             check = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
@@ -243,14 +245,15 @@ public class ManagerDAO extends DBContext {
 
     public int addDimension(Dimension obj, int accId, int subjectId) {
         int check = 0;
-        String sql = "INSERT INTO `dimension` (`dimension_type`, `dimension_name`, `dimension_subject_id`, `created_by`, `update_by`) "
-                + "VALUES (?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO `dimension` (`dimension_type`, `dimension_name`, `dimension_subject_id`, `created_by`, `update_by`,`dimension_description`) "
+                + "VALUES (?, ?, ?, ?, ?,?);";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setObject(1, obj.getType());
             ps.setObject(2, obj.getName());
             ps.setObject(3, subjectId);
             ps.setObject(4, accId);
             ps.setObject(5, accId);
+            ps.setObject(6, obj.getDescription());
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(System.out);
@@ -287,7 +290,7 @@ public class ManagerDAO extends DBContext {
         }
         return questions;
     }
-    
+
 //    public List<Question> getListProductPerPage(int numberProductPerPage, int pageCur, String[] typeIds, String priceFrom, String priceTo) {
 //
 //        String sql = ""
@@ -335,17 +338,16 @@ public class ManagerDAO extends DBContext {
 //        }
 //        return null;
 //    }
-    
     public List<Question> GetListQuestionExport(int subjectId) {
         List<Question> questions = new ArrayList<>();
-        String sql = "select question_id, question_detail from question \n" +
-                      "where question_subject_id = ?";
+        String sql = "select question_id, question_detail from question \n"
+                + "where question_subject_id = ?";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, subjectId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Question question = Question.builder()
-                        .id(rs.getInt("question_id"))                        
+                        .id(rs.getInt("question_id"))
                         .detail(rs.getString("question_detail"))
                         .answers(getAnswerByQuestion(rs.getInt("question_id")))
                         .build();
@@ -356,19 +358,19 @@ public class ManagerDAO extends DBContext {
         }
         return questions;
     }
-    
+
     public List<Answer> getAnswerByQuestion(int questionId) {
         List<Answer> answers = new ArrayList();
         String sql = "select * from answer where answer_question_id = ?";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, questionId);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 Answer answer = Answer.builder()
-                                .id(rs.getInt("answer_id"))
-                                .detail(rs.getString("answer_detail"))
-                                .correct(rs.getBoolean("answer_correct"))
-                                .build();
+                        .id(rs.getInt("answer_id"))
+                        .detail(rs.getString("answer_detail"))
+                        .correct(rs.getBoolean("answer_correct"))
+                        .build();
                 answers.add(answer);
             }
         } catch (Exception e) {
@@ -376,16 +378,16 @@ public class ManagerDAO extends DBContext {
         }
         return answers;
     }
-    
+
     public int getTopQuestionId() {
         int n = 0;
-        String sql = "SELECT question_id \n" +
-                        "FROM question \n" +
-                        "ORDER BY question_id DESC\n" +
-                        "LIMIT 1";
+        String sql = "SELECT question_id \n"
+                + "FROM question \n"
+                + "ORDER BY question_id DESC\n"
+                + "LIMIT 1";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 n = rs.getInt(1);
             }
         } catch (Exception e) {
@@ -1459,7 +1461,8 @@ public class ManagerDAO extends DBContext {
         }
         return listClass;
     }
+
     public static void main(String[] args) {
-        
+
     }
 }

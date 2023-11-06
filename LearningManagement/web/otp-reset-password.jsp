@@ -32,8 +32,8 @@
             </div>
             <button type="submit">Continue</button>
             <div class="social">
-                <a href="sign-up-byMail" style="margin-left: 30px; text-decoration: none" ><i class="fab fa-google" ></i> Try another email</a>
-                <a href="/LearningManagement" style="margin-left: 70px; text-decoration: none" ><i class="fab fa-facebook" ></i> Home</a>
+                <a href="sign-up-byMail" style="margin-left: 20px; text-decoration: none" > Try another email</a>
+                <a href="/LearningManagement" style="margin-left: 70px; text-decoration: none" ></i> Home</a>
             </div>
         </form>
     </body>

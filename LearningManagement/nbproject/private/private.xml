@@ -3,14 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/src/java/dao/ManagerDAO.java</file>
-            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/src/java/controller/SignInController.java</file>
-            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/src/java/connection/DBContext.java</file>
-            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/src/java/controller/manager/SubjectDetailManagementController.java</file>
-            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/web/sign-in.jsp</file>
-            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/web/manager/subject-list.jsp</file>
-            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/web/manager/subject-detail-management.jsp</file>
-            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/src/java/dao/AccountDAO.java</file>
+            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/web/assignment-submit-list.jsp</file>
+            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/web/assignment-detail.jsp</file>
+            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/src/java/controller/AssignmentDetailController.java</file>
+            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/web/admin/users.jsp</file>
+            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/src/java/controller/DownloadAsmController.java</file>
+            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/src/java/model/AssignmentSubmit.java</file>
+            <file>file:/D:/Code/SWP_LMS/g5/LearningManagement/web/assignment.jsp</file>
         </group>
     </open-files>
 </project-private>

@@ -232,8 +232,8 @@
                                         <th>ID</th>
                                         <th>Detail</th>
                                         <th>Lesson</th>
-                                        <th>Chapter</th>
-                                        <th>Status</th>
+                                        <th style="width: 15%;text-align: center;">Chapter</th>
+                                        <th >Status</th>
                                         <th>Action</th>
                                     </tr>
 
@@ -244,23 +244,18 @@
                                                 <td>${q.detail}</td>
                                                 <td>${q.lesson.title}</td>
                                                 <td>${q.chapter.title}</td>
-                                                <td>
-                                                    <label for="active">
-                                                        <input type="radio"  disabled ${q.status eq true ? "checked" : ""}>Active
-                                                    </label>
-                                                    <label for="inactive">
-                                                        <input type="radio" disabled ${q.status eq true ? "" : "checked"}>Inactive
-                                                    </label>
+                                                <td style=text-align: center;">
+                                                    ${q.status eq true ? "Active" : "Inactive"}
                                                 </td>
-                                                <td>
+                                                <td style="text-align: center;">
                                                     <button style=" all: unset; margin-right: 15px"
                                                             type="button"
                                                             onclick="window.location.href = 'question-details?action=update&id=${q.id}'">
                                                         <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                     </button>
-                                                    <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
+<!--                                                    <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
                                                         <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
-                                                    </a>
+                                                    </a>-->
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -290,27 +285,27 @@
 
 </body>
 <script>
-                                                function changeSubject() {
-                                                    var selectedSubjectId = document.getElementById('subjectDropdown').value;
-                                                    // Lưu giá trị vào localStorage
-                                                    console.log();
-                                                    localStorage.setItem('selectedSubjectId', selectedSubjectId);
+                                                                function changeSubject() {
+                                                                    var selectedSubjectId = document.getElementById('subjectDropdown').value;
+                                                                    // Lưu giá trị vào localStorage
+                                                                    console.log();
+                                                                    localStorage.setItem('selectedSubjectId', selectedSubjectId);
 
-                                                    window.location.href = 'question-detail-management?id=' + selectedSubjectId;
-                                                }
-
-
+                                                                    window.location.href = 'question-detail-management?id=' + selectedSubjectId;
+                                                                }
 
 
-                                                window.onload = function () {
-                                                    var urlParams = new URLSearchParams(window.location.search);
-                                                    var urlSubjectId = urlParams.get('id');
-
-                                                    document.getElementById('subjectDropdown').value = urlSubjectId;
-
-                                                    localStorage.setItem('selectedSubjectId', urlSubjectId);
 
 
-                                                };
+                                                                window.onload = function () {
+                                                                    var urlParams = new URLSearchParams(window.location.search);
+                                                                    var urlSubjectId = urlParams.get('id');
+
+                                                                    document.getElementById('subjectDropdown').value = urlSubjectId;
+
+                                                                    localStorage.setItem('selectedSubjectId', urlSubjectId);
+
+
+                                                                };
 </script>
 </html>

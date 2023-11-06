@@ -77,9 +77,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items="${requestScope.subjects}" var="s">
+                                            <c:forEach items="${requestScope.subjects}" var="s" varStatus="loop">
                                                 <tr>
-                                                    <th class="p-3">${s.id}</th>
+                                                    <th class="p-3">${loop.index + 1}</th>
                                                     <td class="py-3">
                                                         <div class="d-flex align-items-center">
                                                             <span class="ms-2"><a href="subject-detail-management?id=${s.id}">${s.code}</a></span>
@@ -89,9 +89,7 @@
 
 
                                                     <td class="p-3">
-                                                        <form class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" ${s.status ? 'checked' : ''} onchange="updateStatus(this, ${l.id})">
-                                                        </form>
+                                                        ${s.status eq false ? "Active" : "Inactive"} 
                                                     </td>
 
                                                     <td class="text-end p-3">

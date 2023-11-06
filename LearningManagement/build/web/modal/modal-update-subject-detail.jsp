@@ -116,7 +116,11 @@
                         <input type="text" class="form-control" id="dimensionTitle" name="title" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label for="dimensionDescription">Name:</label>
+                        <label for="dimensionName">N</label>
+                        <input  type="text" class="form-control" id="dimensionName" name="name"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="dimensionDescription">Description:</label>
                         <textarea class="form-control" id="dimensionDescription" name="description"></textarea>
                     </div>
                     <div class="form-group">

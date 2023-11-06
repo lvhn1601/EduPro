@@ -58,13 +58,16 @@ public class SignInController extends HttpServlet {
             if (account != null) {
                 session.setAttribute("accountCur", account);
                 if (account.getRole().getId() == 4) {
-                    response.sendRedirect("/LearningManagement");
+                    response.sendRedirect("/LearningManagement/assignment-detail?id=35");
                 }
                 if (account.getRole().getId() == 1) {
                     response.sendRedirect("admin/users");
                 }
                 if (account.getRole().getId() == 2) {
                     response.sendRedirect("manager/subject-list");
+                }
+                if (account.getRole().getId() == 3) {
+                    response.sendRedirect("assignment?classId=1");
                 }
                 return;
             }
@@ -94,6 +97,9 @@ public class SignInController extends HttpServlet {
                     }
                     if (account.getRole().getId() == 2) {
                         response.sendRedirect("manager/subject-list");
+                    }
+                    if (account.getRole().getId() == 3) {
+                        response.sendRedirect("/LearningManagement");
                     }
                     foundMatch = true;
                     return;
@@ -164,6 +170,9 @@ public class SignInController extends HttpServlet {
             }
             if (account.getRole().getId() == 2) {
                 response.sendRedirect("manager/subject-list");
+            }
+            if (account.getRole().getId() == 3) {
+                response.sendRedirect("/LearningManagement");
             }
         }
     }
