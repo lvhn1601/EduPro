@@ -13,9 +13,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Answer {
+public class QuizResult {
     private int id;
-    private String detail;
-    private boolean correct;
-    private boolean choose;
+    private Lesson lesson;
+    private Account submitter;
+    private boolean status;
+    private int score;
+    private String submit_at;
 }

@@ -195,7 +195,7 @@ public class QuestionDetailsServlet extends HttpServlet {
             }
         }
 
-        response.sendRedirect("question-details?action=update&id=" + id);
+        response.sendRedirect("question-details?action=add");
     }
 
     /**

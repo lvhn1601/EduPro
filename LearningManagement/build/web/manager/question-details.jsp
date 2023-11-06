@@ -300,6 +300,7 @@
             }
             
             function updateListDimensions(sid) {
+                console.log('update');
                 let ds = document.getElementById('dimension');
                 
                 ds.innerHTML = "";

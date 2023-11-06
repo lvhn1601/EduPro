@@ -465,14 +465,13 @@ public class ManagerDAO extends DBContext {
 
     public List<Dimension> getListDimensions(int subject_id, String dimension_type) {
         String sql = "SELECT dimension_id, dimension_name FROM dimension\n"
-                + "where dimension_subject_id = ? and dimension_type = ?";
+                + "where dimension_subject_id = ?" + (dimension_type == null || dimension_type.equals("") ? "" : " and dimension_type = '" + dimension_type + "'");
 
         List<Dimension> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, subject_id);
-            ps.setString(2, dimension_type);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
