@@ -1,6 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -48,7 +48,7 @@
     <body>
         <div class="page-wrapper doctris-theme">
             <%@include file="components/sidebar.jsp" %>
-            
+
             <main class="page-content bg-light">
                 <%@include file="components/header.jsp" %>
                 <!-- Topbar End -->
@@ -56,7 +56,8 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="profile-img">
-                                <img src="${sessionScope.accountCur.avatar_url}" alt="" />
+                                <img src="<c:out value="${accountCur.avatar_url}" />" alt="Avatar">
+
 
 
                                 <div class="file btn btn-lg btn-primary">  
@@ -72,6 +73,13 @@
                         <div class="row col-md-9">
                             <div class="col-md-9">
                                 <div class="profile-head">
+                                    <input
+                                        type="hidden"
+                                        class="form-control"
+                                        id="id"
+                                        name="accountId"
+                                        value="${sessionScope.accountCur.id}"
+                                        />
                                     <h5>${sessionScope.accountCur.name}</h5>
                                     <h6>Email: ${sessionScope.accountCur.email}</h6>
                                     <h6>Phone: ${sessionScope.accountCur.phone}</h6>
@@ -380,6 +388,13 @@
                 myModal.show();
             };
         }
+    </script>
+
+    <script>
+        // This code will reload the avatar image when the modal is closed.
+        $('#changeAvatarModal').on('hidden.bs.modal', function () {
+            location.reload();
+        });
     </script>
 
 

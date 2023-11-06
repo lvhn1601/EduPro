@@ -5,9 +5,11 @@
 package dao;
 
 import connection.DBContext;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.Account;
@@ -17,6 +19,7 @@ import model.Dimension;
 import model.Lesson;
 import model.Question;
 import model.Quiz;
+import model.Setting;
 import model.Subject;
 
 /**
@@ -24,6 +27,7 @@ import model.Subject;
  * @author lvhn1
  */
 public class ManagerDAO extends DBContext {
+
     public Subject getSubjectById(int subjectId) {
         Subject subject = null;
         String sql = "SELECT\n"
@@ -289,7 +293,6 @@ public class ManagerDAO extends DBContext {
         return questions;
     }
 
-
     public List<Subject> getListSubjects(int manager_id) {
         String sql = "SELECT * FROM subject where subject_manager_id = ? and subject_status = 1";
 
@@ -373,10 +376,10 @@ public class ManagerDAO extends DBContext {
 
         return list;
     }
-    
+
     public List<Question> getListQuestions(int subject_id) {
         String sql = "SELECT * FROM question WHERE question_subject_id = ?";
-        
+
         List<Question> list = new ArrayList<>();
 
         try {
@@ -393,7 +396,7 @@ public class ManagerDAO extends DBContext {
             }
         } catch (SQLException e) {
         }
-        
+
         return list;
     }
 
@@ -449,7 +452,7 @@ public class ManagerDAO extends DBContext {
             }
         } catch (SQLException e) {
         }
-        
+
         return list;
     }
 
@@ -625,10 +628,10 @@ public class ManagerDAO extends DBContext {
         } catch (SQLException e) {
         }
     }
-    
+
     public boolean addQuizQuestion(int quiz, int question) {
         String sql = "INSERT INTO quiz_question(quiz_id, question_id) VALUES (?, ?)";
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, quiz);
@@ -639,15 +642,15 @@ public class ManagerDAO extends DBContext {
             return true;
         }
     }
-    
+
     public boolean deleteQuizQuestion(int quiz, int question) {
         String sql = "DELETE from quiz_question where quiz_id = ? and question_id = ?";
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, quiz);
             ps.setInt(2, question);
-            
+
             return ps.execute();
         } catch (SQLException e) {
             return true;
@@ -859,5 +862,362 @@ public class ManagerDAO extends DBContext {
             ps.execute();
         } catch (SQLException e) {
         }
+    }
+
+    public List<model.Class> getAllClass() {
+        List<model.Class> listClass = new ArrayList<>();
+        String sql = "SELECT\n"
+                + "    c.class_id,\n"
+                + "    c.class_name,\n"
+                + "    s.subject_name,\n"
+                + "    se.setting_title,\n"
+                + "    trainer.account_email AS trainer_email,\n"
+                + "    c.class_status,\n"
+                + "    c.class_start,\n"
+                + "    c.class_end,\n"
+                + "    creator.account_email AS created_by_email,\n"
+                + "    c.created_at,\n"
+                + "    updater.account_email AS updated_by_email,\n"
+                + "    c.update_at\n"
+                + "FROM class c\n"
+                + "LEFT JOIN subject s ON c.class_subject_id = s.subject_id\n"
+                + "LEFT JOIN setting se ON c.class_semester_id = se.setting_id\n"
+                + "LEFT JOIN account trainer ON c.class_trainer_id = trainer.account_id\n"
+                + "LEFT JOIN account creator ON c.created_by = creator.account_id\n"
+                + "LEFT JOIN account updater ON c.update_by = updater.account_id;";
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                model.Class c = model.Class.builder()
+                        .class_id(rs.getInt("class_id"))
+                        .class_name(rs.getString("class_name"))
+                        .class_subject_name(rs.getString("subject_name"))
+                        .class_semester_name(rs.getString("setting_title"))
+                        .class_trainer_name(rs.getString("trainer_email"))
+                        .class_status(rs.getBoolean("class_status"))
+                        .class_start(rs.getDate("class_start"))
+                        .class_end(rs.getDate("class_end"))
+                        .created_by(rs.getString("created_by_email"))
+                        .created_at(rs.getDate("created_at"))
+                        .update_by(rs.getString("updated_by_email"))
+                        .update_at(rs.getDate("update_at"))
+                        .build();
+                listClass.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return listClass;
+    }
+
+    public model.Class getOneClass(int classId) {
+        model.Class classDetail = null;
+        String sql = "SELECT\n"
+                + "    c.class_id,\n"
+                + "    c.class_name,\n"
+                + "    s.subject_name,\n"
+                + "    se.setting_title,\n"
+                + "    trainer.account_email AS trainer_email,\n"
+                + "    c.class_status,\n"
+                + "    c.class_start,\n"
+                + "    c.class_end,\n"
+                + "    creator.account_email AS created_by_email,\n"
+                + "    c.created_at,\n"
+                + "    updater.account_email AS updated_by_email,\n"
+                + "    c.update_at\n"
+                + "FROM class c\n"
+                + "LEFT JOIN subject s ON c.class_subject_id = s.subject_id\n"
+                + "LEFT JOIN setting se ON c.class_semester_id = se.setting_id\n"
+                + "LEFT JOIN account trainer ON c.class_trainer_id = trainer.account_id\n"
+                + "LEFT JOIN account creator ON c.created_by = creator.account_id\n"
+                + "LEFT JOIN account updater ON c.update_by = updater.account_id\n"
+                + "WHERE c.class_id = ?";
+
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, classId);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                classDetail = model.Class.builder()
+                        .class_id(rs.getInt("class_id"))
+                        .class_name(rs.getString("class_name"))
+                        .class_subject_name(rs.getString("subject_name"))
+                        .class_semester_name(rs.getString("setting_title"))
+                        .class_trainer_name(rs.getString("trainer_email"))
+                        .class_status(rs.getBoolean("class_status"))
+                        .class_start(rs.getDate("class_start"))
+                        .class_end(rs.getDate("class_end"))
+                        .created_by(rs.getString("created_by_email"))
+                        .created_at(rs.getDate("created_at"))
+                        .update_by(rs.getString("updated_by_email"))
+                        .update_at(rs.getDate("update_at"))
+                        .build();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return classDetail;
+    }
+
+    public boolean addClass(String class_name, int class_subject_id, int class_semester_id,
+            int class_trainer_id, Boolean class_status, Date class_start, Date class_end,
+            int created_by, LocalDateTime created_at) {
+        int check = 0;
+        String sql = "INSERT INTO edupro.class (class_name,class_subject_id,class_semester_id,"
+                + "class_trainer_id,class_status,class_start,class_end,created_by,created_at) \n"
+                + "VALUES (?,?,?,?,?,?,?,?,?);";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setObject(1, class_name);
+            ps.setObject(2, class_subject_id);
+            ps.setObject(3, class_semester_id);
+            ps.setObject(4, class_trainer_id);
+            ps.setObject(5, class_status);
+            ps.setObject(6, class_start);
+            ps.setObject(7, class_end);
+            ps.setObject(8, created_by);
+            ps.setObject(9, created_at);
+
+            check = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return check > 0;
+    }
+
+    public boolean classExist(String className) {
+        String sql = "select *\n"
+                + "from class where class_name = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, className);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+        }
+        return false;
+    }
+
+    public List<Subject> getSubject() {
+        String sql = "SELECT subject_id,subject_name FROM edupro.subject where subject_status =1;";
+
+        List<Subject> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Subject.builder()
+                        .id(rs.getInt("subject_id"))
+                        .name(rs.getString("subject_name"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public List<Account> getTrainer() {
+        String sql = "SELECT account_id,account_email,account_name FROM edupro.account where account_role_id = 3;";
+
+        List<Account> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Account.builder()
+                        .id(rs.getInt("account_id"))
+                        .email(rs.getString("account_email"))
+                        .name(rs.getString("account_name"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public List<Setting> getSemester() {
+        String sql = "SELECT setting_id,setting_title FROM edupro.setting where setting_key = 2 AND setting_status = 1;";
+
+        List<Setting> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Setting.builder()
+                        .id(rs.getInt("setting_id"))
+                        .title(rs.getString("setting_title"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public int getTotalClasses() {
+        int totalClasses = 0;
+        String sql = "SELECT COUNT(*) FROM class";
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                totalClasses = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return totalClasses;
+    }
+
+    public List<model.Class> getClassesForPage(int start, int pageSize) {
+        List<model.Class> listClass = new ArrayList<>();
+        String sql = "SELECT\n"
+                + "    c.class_id,\n"
+                + "    c.class_name,\n"
+                + "    s.subject_name,\n"
+                + "    se.setting_title,\n"
+                + "    trainer.account_email AS trainer_email,\n"
+                + "    c.class_status,\n"
+                + "    c.class_start,\n"
+                + "    c.class_end,\n"
+                + "    creator.account_email AS created_by_email,\n"
+                + "    c.created_at,\n"
+                + "    updater.account_email AS updated_by_email,\n"
+                + "    c.update_at\n"
+                + "FROM class c\n"
+                + "LEFT JOIN subject s ON c.class_subject_id = s.subject_id\n"
+                + "LEFT JOIN setting se ON c.class_semester_id = se.setting_id\n"
+                + "LEFT JOIN account trainer ON c.class_trainer_id = trainer.account_id\n"
+                + "LEFT JOIN account creator ON c.created_by = creator.account_id\n"
+                + "LEFT JOIN account updater ON c.update_by = updater.account_id\n"
+                + "LIMIT ?, ?"; // Sử dụng LIMIT để trả về một phạm vi kết quả cụ thể
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, start);
+            stm.setInt(2, pageSize);
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                model.Class c = model.Class.builder()
+                        .class_id(rs.getInt("class_id"))
+                        .class_name(rs.getString("class_name"))
+                        .class_subject_name(rs.getString("subject_name"))
+                        .class_semester_name(rs.getString("setting_title"))
+                        .class_trainer_name(rs.getString("trainer_email"))
+                        .class_status(rs.getBoolean("class_status"))
+                        .class_start(rs.getDate("class_start"))
+                        .class_end(rs.getDate("class_end"))
+                        .created_by(rs.getString("created_by_email"))
+                        .created_at(rs.getDate("created_at"))
+                        .update_by(rs.getString("updated_by_email"))
+                        .update_at(rs.getDate("update_at"))
+                        .build();
+                listClass.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return listClass;
+    }
+
+    public List<model.Class> searchClasses(String searchKeyword) {
+        List<model.Class> listClass = new ArrayList<>();
+        String sql = "SELECT\n"
+                + "    c.class_id,\n"
+                + "    c.class_name,\n"
+                + "    s.subject_name,\n"
+                + "    se.setting_title,\n"
+                + "    trainer.account_email AS trainer_email,\n"
+                + "    c.class_status,\n"
+                + "    c.class_start,\n"
+                + "    c.class_end,\n"
+                + "    creator.account_email AS created_by_email,\n"
+                + "    c.created_at,\n"
+                + "    updater.account_email AS updated_by_email,\n"
+                + "    c.update_at\n"
+                + "FROM class c\n"
+                + "LEFT JOIN subject s ON c.class_subject_id = s.subject_id\n"
+                + "LEFT JOIN setting se ON c.class_semester_id = se.setting_id\n"
+                + "LEFT JOIN account trainer ON c.class_trainer_id = trainer.account_id\n"
+                + "LEFT JOIN account creator ON c.created_by = creator.account_id\n"
+                + "LEFT JOIN account updater ON c.update_by = updater.account_id\n"
+                + "WHERE c.class_name LIKE ?"; // Sử dụng LIKE để tìm kiếm theo tên lớp
+
+        try ( PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setString(1, "%" + searchKeyword + "%"); // Bắt đầu hoặc kết thúc bằng từ khóa tìm kiếm
+
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                model.Class c = model.Class.builder()
+                        .class_id(rs.getInt("class_id"))
+                        .class_name(rs.getString("class_name"))
+                        .class_subject_name(rs.getString("subject_name"))
+                        .class_semester_name(rs.getString("setting_title"))
+                        .class_trainer_name(rs.getString("trainer_email"))
+                        .class_status(rs.getBoolean("class_status"))
+                        .class_start(rs.getDate("class_start"))
+                        .class_end(rs.getDate("class_end"))
+                        .created_by(rs.getString("created_by_email"))
+                        .created_at(rs.getDate("created_at"))
+                        .update_by(rs.getString("updated_by_email"))
+                        .update_at(rs.getDate("update_at"))
+                        .build();
+                listClass.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return listClass;
+    }
+
+    public boolean updateClass(String class_name, int class_subject_id, int class_semester_id,
+            int class_trainer_id, Boolean class_status, Date class_start, Date class_end,
+            int update_by, LocalDateTime update_at, int class_id) {
+        int check = 0;
+        String sql = "UPDATE edupro.class\n"
+                + "SET class_name = ?,\n"
+                + "    class_subject_id = ?,\n"
+                + "    class_semester_id = ?,\n"
+                + "    class_trainer_id = ?,\n"
+                + "    class_status = ?,\n"
+                + "    class_start = ?,\n"
+                + "    class_end = ?,\n"
+                + "    update_by = ?,\n"
+                + "    update_at = ?\n"
+                + "WHERE class_id = ?;";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setObject(1, class_name);
+            ps.setObject(2, class_subject_id);
+            ps.setObject(3, class_semester_id);
+            ps.setObject(4, class_trainer_id);
+            ps.setObject(5, class_status);
+            ps.setObject(6, class_start);
+            ps.setObject(7, class_end);
+            ps.setObject(8, update_by);
+            ps.setObject(9, update_at);
+            ps.setObject(10, class_id);
+            check = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return check > 0;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new ManagerDAO().updateClass("SE1736", 1, 8, 16, true, Date.valueOf("2024-01-30"), Date.valueOf("2024-04-01"), 13, LocalDateTime.now(), 1));
+
     }
 }

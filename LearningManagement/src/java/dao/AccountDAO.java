@@ -6,6 +6,8 @@ package dao;
 
 import connection.DBContext;
 import dto.UserGoogleDto;
+import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -334,7 +336,29 @@ public class AccountDAO extends DBContext {
         return phoneNumbers;
     }
 
+    public boolean uploadAvatar(int accountId, String newAvatarUrl) {
+
+        int check = 0;
+        String sql = "UPDATE account SET account_avatar_url = ? WHERE account_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setObject(2, accountId);
+            ps.setObject(1, newAvatarUrl);
+            check = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+
+        return check > 0;
+    }
+    
+    
+
+
     public static void main(String[] args) {
         System.out.println(new AccountDAO().getAllPhoneNumbers());
     }
+
 }
