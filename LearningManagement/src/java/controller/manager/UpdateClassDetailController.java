@@ -67,8 +67,10 @@ public class UpdateClassDetailController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         ManagerDAO managerDAO = new ManagerDAO();
+        int classDetailId = Integer.parseInt((request.getParameter("id")));
         List<Subject> listSubject = managerDAO.getSubject();
         List<Account> listTrainer = managerDAO.getTrainer();
+        List<Account> listTrainee = managerDAO.getTrainee(classDetailId);
         List<Setting> listSemester = managerDAO.getSemester();
         List<model.Class> listClass = managerDAO.getAllClass();
 
@@ -76,8 +78,10 @@ public class UpdateClassDetailController extends HttpServlet {
 
         request.setAttribute("listSubject", listSubject);
         request.setAttribute("listTrainer", listTrainer);
+        request.setAttribute("listTrainee", listTrainee);
         request.setAttribute("listSemester", listSemester);
         request.setAttribute("listClass", listClass);
+        request.setAttribute("classDetailId", classDetailId);
 
         request.getRequestDispatcher("update-class-detail.jsp").forward(request, response);
     }
@@ -112,9 +116,9 @@ public class UpdateClassDetailController extends HttpServlet {
         boolean updateClassSuccess = managerDAO.updateClass(className, subjectId, semesterId, trainerId, classStatus, classStart, classEnd, account.getId(), currentTime, classId);
         session.setAttribute("listClass", listClass);
         if (updateClassSuccess) {
-            session.setAttribute("msgUpdateClass", "Update Class Success|" + classId);
+            session.setAttribute("msgUpdateClass", "Update Class Success");
         } else {
-            session.setAttribute("msgUpdateClass", "Update Class Fail|" + classId);
+            session.setAttribute("msgUpdateClass", "Update Class Fail");
         }
 
         response.sendRedirect("class-detail?id=" + classId);

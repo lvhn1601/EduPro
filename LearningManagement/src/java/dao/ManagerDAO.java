@@ -1046,6 +1046,31 @@ public class ManagerDAO extends DBContext {
 
         return list;
     }
+    
+        public List<Account> getTrainee( int classDetailId) {
+        String sql = "SELECT account_id,account_email,account_name, account_phone FROM edupro.account Join class_trainee ON class_trainee.trainee_id = account.account_id where class_id = ?";
+
+        List<Account> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setObject(1, classDetailId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Account.builder()
+                        .id(rs.getInt("account_id"))
+                        .email(rs.getString("account_email"))
+                        .name(rs.getString("account_name"))
+                        .phone(rs.getString("account_phone"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
 
     public List<Setting> getSemester() {
         String sql = "SELECT setting_id,setting_title FROM edupro.setting where setting_key = 2 AND setting_status = 1;";

@@ -152,8 +152,7 @@
 
                     <!------------------------MODAL ADD CLASS-------------------------->   
                     <%@include file="modal/modal-add-class.jsp"%>
-                    <!------------------------MODAL UPDATE CLASS DETAIL-------------------------->   
-                    <%@include file="modal/modal-update-class-information.jsp"%>
+        
 
                     <!-- javascript -->
                     <script src="../assets/js/bootstrap.bundle.min.js"></script>
@@ -177,15 +176,7 @@
                             };
                         }
                     </script>
-                    <script>
-                        const msgUpdateClass = '<%= session.getAttribute("msgUpdateClass") %>';
-                        if (msgUpdateClass !== 'null') {
-                            const myModal = new bootstrap.Modal(document.getElementById("classDetailModal" + msgUpdateClass.split("|")[1]), {});
-                            document.onreadystatechange = function () {
-                                myModal.show();
-                            };
-                        }
-                    </script>
+                  
                     <script>
                         function jumpTo(page) {
                             let search = "${param.search eq null ? '' : param.search}";

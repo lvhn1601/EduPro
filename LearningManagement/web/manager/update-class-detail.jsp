@@ -55,99 +55,108 @@
                             </li>
                         </ul>
                         <c:forEach items="${requestScope.listClass}" var="c">
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="classDetails" role="tabpanel" aria-labelledby="classDetailsTab">
-                                    <div class="row">
-                                        <div class="col-lg-12 mt-4">
-                                            <div class="card border-0 p-4 rounded shadow">
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                                        <h4 class="">Class Details</h4>
+                            <c:if test="${c.class_id eq classDetailId}">
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="classDetails" role="tabpanel" aria-labelledby="classDetailsTab">
+                                        <div class="row">
+                                            <c:if test="${sessionScope.msgUpdateClass != null}">
+                                                <div class="col-lg-12 mt-4">
+                                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                        <strong>${sessionScope.msgUpdateClass}</strong>                                                   
                                                     </div>
                                                 </div>
-                                                <form class="mt-4" action="class-details?id=${c.class_id}" method="post" onsubmit="return checkEmpty();">
-                                                    <input type="hidden" name="classId" id="classId" value="${c.class_id}">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Class Name:</label>
-                                                                <input type="text" class="form-control" id="className" name="className" value="${c.class_name}" />
-                                                            </div>
+                                            </c:if>
+                                            <div class="col-lg-12 mt-2">
+                                                <div class="card border-0 p-4 rounded shadow">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                                            <h4 class="">Class Details</h4>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Subject:</label>
-                                                                <select class="form-control" id="classSubject" name="classSubject">
-                                                                    <c:forEach items="${listSubject}" var="ls">
-                                                                        <option value="${ls.id}" ${ls.name == c.class_subject_name ? 'selected' : ''}>${ls.name}</option>
-                                                                    </c:forEach>
-                                                                </select>
+                                                    </div>
+                                                    <form class="mt-4" action="class-detail?id=${c.class_id}" method="post" onsubmit="return checkEmpty();">
+                                                        <input type="hidden" name="classId" id="classId" value="${c.class_id}">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Class Name:</label>
+                                                                    <input type="text" class="form-control" id="className" name="className" value="${c.class_name}" />
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="mb-3">
-                                                                <label for="classSemester">Semester:</label>
-                                                                <select class="form-control" id="classSemester" name="classSemester">
-                                                                    <c:forEach items="${listSemester}" var="l">
-                                                                        <option value="${l.id}" ${l.title == c.class_semester_name ? 'selected' : ''}>${l.title}</option>
-                                                                    </c:forEach>
-                                                                </select>
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Subject:</label>
+                                                                    <select class="form-control" id="classSubject" name="classSubject">
+                                                                        <c:forEach items="${listSubject}" var="ls">
+                                                                            <option value="${ls.id}" ${ls.name == c.class_subject_name ? 'selected' : ''}>${ls.name}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="mb-3">
-                                                                <label for="classTrainer">Trainer:</label>
-                                                                <select class="form-control" id="classTrainer" name="classTrainer">
-                                                                    <c:forEach items="${listTrainer}" var="t">
-                                                                        <option value="${t.id}" ${t.email == c.class_trainer_name ? 'selected' : ''}>${t.email} - ${t.name}</option>
-                                                                    </c:forEach>
-                                                                </select>
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    <label for="classSemester">Semester:</label>
+                                                                    <select class="form-control" id="classSemester" name="classSemester">
+                                                                        <c:forEach items="${listSemester}" var="l">
+                                                                            <option value="${l.id}" ${l.title == c.class_semester_name ? 'selected' : ''}>${l.title}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="mb-3">
-                                                                <label for="classStart">Date Start:</label>
-                                                                <input type="date" class="form-control" id="classStart" name="classStart" value="${c.class_start}" />
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    <label for="classTrainer">Trainer:</label>
+                                                                    <select class="form-control" id="classTrainer" name="classTrainer">
+                                                                        <c:forEach items="${listTrainer}" var="t">
+                                                                            <option value="${t.id}" ${t.email == c.class_trainer_name ? 'selected' : ''}>${t.email} - ${t.name}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="mb-3">
-                                                                <label for="classEnd">Date End:</label>
-                                                                <input type="date" class="form-control" id="classEnd" name="classEnd" value="${c.class_end}" />
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    <label for="classStart">Date Start:</label>
+                                                                    <input type="date" class="form-control" id="classStart" name="classStart" value="${c.class_start}" />
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Class Status:</label>
-                                                                <div class="d-flex ms-4">
-                                                                    <div class="form-check pe-4">
-                                                                        <input class="form-check-input" type="radio" name="classStatus" id="active" value="true" ${c.class_status == 'true' ? 'checked' : ''}>
-                                                                        <label class="form-check-label" for="active">Active</label>
-                                                                    </div>
-                                                                    <div class="form-check pe-4">
-                                                                        <input class="form-check-input" type="radio" name="classStatus" id="inactive" value="false" ${c.class_status == 'false' ? 'checked' : ''}>
-                                                                        <label class="form-check-label" for="inactive">Inactive</label>
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    <label for="classEnd">Date End:</label>
+                                                                    <input type="date" class="form-control" id="classEnd" name="classEnd" value="${c.class_end}" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Class Status:</label>
+                                                                    <div class="d-flex ms-4">
+                                                                        <div class="form-check pe-4">
+                                                                            <input class="form-check-input" type="radio" name="classStatus" id="active" value="true" ${c.class_status == 'true' ? 'checked' : ''}>
+                                                                            <label class="form-check-label" for="active">Active</label>
+                                                                        </div>
+                                                                        <div class="form-check pe-4">
+                                                                            <input class="form-check-input" type="radio" name="classStatus" id="inactive" value="false" ${c.class_status == 'false' ? 'checked' : ''}>
+                                                                            <label class="form-check-label" for="inactive">Inactive</label>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <br>
+                                                            <c:if test="${c.update_by != null && c.update_at != null}">
+                                                                <ul class="list-unstyled mb-0">
+                                                                    <li>
+                                                                        <em class="text-muted mb-0" id="info-update-by">Last update by ${c.update_by}</em>
+                                                                        <em class="text-muted" id="info-update-at"> at ${c.update_at} </em>
+                                                                    </li>
+                                                                </ul>
+                                                            </c:if>
                                                         </div>
-                                                        <br>
-                                                        <c:if test="${c.update_by != null && c.update_at != null}">
-                                                            <ul class="list-unstyled mb-0">
-                                                                <li>
-                                                                    <em class="text-muted mb-0" id="info-update-by">Last update by ${c.update_by}</em>
-                                                                    <em class="text-muted" id="info-update-at"> at ${c.update_at} </em>
-                                                                </li>
-                                                            </ul>
-                                                        </c:if>
-                                                    </div>
-                                                    <div id="error-mess" style="color: red">${error}</div>
-                                                    <button type="submit" id="submit-btn" class="btn btn-primary mt-4">Update</button>
-                                                </form>
+                                                        <div id="error-mess" style="color: red">${error}</div>
+                                                        <button type="submit" id="submit-btn" class="btn btn-primary mt-4">Update</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </c:if>
                             </c:forEach>
                             <div class="tab-pane fade" id="listStudent" role="tabpanel" aria-labelledby="listStudentTab">
                                 <div class="row">
@@ -156,7 +165,32 @@
                                             <div class="row align-items-center">
                                                 <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
                                                     <h4 class="">List Students</h4>
-
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 mt-4">
+                                                    <div class="table-responsive shadow rounded">
+                                                        <table class="table table-center bg-white mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="border-bottom p-3" style="min-width: 50px;">Id</th>
+                                                                    <th class="border-bottom p-3" style="min-width: 180px;">Student Name</th>
+                                                                    <th class="border-bottom p-3">Email</th>
+                                                                    <th class="border-bottom p-3">Phone</th>                                                                  
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <c:forEach items="${requestScope.listTrainee}" var="c">
+                                                                    <tr>
+                                                                        <td>${c.id}</td>
+                                                                        <td>${c.name}</td><!-- comment -->
+                                                                        <td>${c.email}</td><!-- comment -->
+                                                                        <td>${c.phone}</td><!-- comment -->
+                                                                    </tr>
+                                                                </c:forEach>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -183,3 +217,7 @@
         });
     });
 </script>
+
+<%
+                       request.getSession().removeAttribute("msgUpdateClass");
+%>
