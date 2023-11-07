@@ -47,7 +47,7 @@
                         <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                             <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                 <li class="breadcrumb-item"><a href="#">${sessionScope.accountCur.role.title}</a></li>
-                                <li class="breadcrumb-item"><a href="lesson?id=${lid}">Quiz Lesson</a></li>
+                                <li class="breadcrumb-item"><a href="lesson?classid=${param.classid}&id=${lid}">Quiz Lesson</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">${param.action} Quiz</li>
                             </ul>
                         </nav>
@@ -88,7 +88,7 @@
                                             <h5>Questions:</h5>
                                             <div>
                                                 <c:forEach begin="1" end="${numOfQues}" var="i">
-                                                    <a href="quiz?action=${param.action}&id=${param.id}&qnum=${i}" class="btn btn-icon btn-soft-primary m-1 ${param.qnum == i ? 'active' : ''}">${i}</a>
+                                                    <a href="quiz?action=${param.action}&id=${param.id}&qnum=${i}&classid=${param.classid}" class="btn btn-icon btn-soft-primary m-1 ${param.qnum == i ? 'active' : ''}">${i}</a>
                                                 </c:forEach>
                                             </div>
                                             
@@ -118,7 +118,7 @@
                                 <p>You are about to submit your quiz...</p>
                                 <p>One you press the Submit button you cannot return to your quiz</p>
                             </div>
-                            <form class="modal-footer" action="quiz?id=${param.id}" method="post">
+                            <form class="modal-footer" action="quiz?classid=${param.classid}&id=${param.id}" method="post">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Save & Submit</button>
                             </form>

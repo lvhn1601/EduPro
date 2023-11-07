@@ -50,6 +50,23 @@ public class StudentDAO extends DBContext {
         return list;
     }
 
+    public int getSubjectId(int classId) {
+        String sql = "select class_subject_id from class\n"
+                + "where class_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, classId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("class_subject_id");
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+
     public void createQuizSubmit(int quiz_lesson, int submitter) {
         String sql = "insert into quiz_submit(quizlesson_id, submitter_id)\n"
                 + "values (?, ?)";
@@ -167,7 +184,7 @@ public class StudentDAO extends DBContext {
                 + "group by (question_id)\n"
                 + "order by rand()\n"
                 + "limit ?";
-        
+
         List<Question> list = new ArrayList<>();
 
         try {
@@ -249,7 +266,8 @@ public class StudentDAO extends DBContext {
     public List<Answer> getAnswersOfQuestion(int quesId, boolean getCorrect) {
         String sql = "select answer.answer_id, answer_detail, quiz_answer.answer_id as choose_id, answer_correct from answer\n"
                 + "left join quiz_answer on answer.answer_id = quiz_answer.answer_id\n"
-                + "where answer_question_id = ?";
+                + "where answer_question_id = ?\n"
+                + "group by (answer.answer_id)";
 
         List<Answer> list = new ArrayList<>();
 
@@ -397,5 +415,95 @@ public class StudentDAO extends DBContext {
         }
 
         return list;
+    }
+
+    public List<Quiz> getPracticeQuizzes(int traineeId) {
+        String sql = "select * from quiz\n"
+                + "where quiz_practice = 1 and created_by = ?";
+
+        List<Quiz> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, traineeId);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(Quiz.builder()
+                        .id(rs.getInt("quiz_id"))
+                        .title(rs.getString("quiz_title"))
+                        .config_by(rs.getBoolean("quiz_config_by"))
+                        .dimension_type(rs.getString("quiz_dimension_type"))
+                        .num_of_question(rs.getInt("quiz_num_of_question"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public boolean addPracticeQuiz(String title, boolean configBy, int totalNum, String dimensionType, int creator) {
+        String sql = "insert into quiz(quiz_title, quiz_config_by, quiz_num_of_question, quiz_dimension_type, quiz_practice, created_by, update_by)\n"
+                + "values (?, ?, ?, ?, 1, ?, ?)";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, title);
+            ps.setBoolean(2, configBy);
+            ps.setInt(3, totalNum);
+            ps.setString(4, dimensionType);
+            ps.setInt(5, creator);
+            ps.setInt(6, creator);
+            System.out.println(ps.toString());
+
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+    
+    public int getQuizId(int creator) {
+        String sql = "select max(quiz_id) as num from quiz where created_by = ?";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, creator);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("num");
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+    
+    public boolean addConfig(boolean type, int config, int num_of_question, int quiz) {
+        String sql;
+
+        if (type) {
+            sql = "insert into quiz_config(config_type, config_dimension_id, config_num_of_question, config_quiz_id)\n"
+                    + "values (?, ?, ?, ?)";
+        } else {
+            sql = "insert into quiz_config(config_type, config_chapter_id, config_num_of_question, config_quiz_id)\n"
+                    + "values (?, ?, ?, ?)";
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setBoolean(1, type);
+            ps.setInt(2, config);
+            ps.setInt(3, num_of_question);
+            ps.setInt(4, quiz);
+
+            ps.execute();
+
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 }

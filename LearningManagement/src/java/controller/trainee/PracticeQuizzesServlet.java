@@ -5,6 +5,7 @@
 
 package controller.trainee;
 
+import dao.ManagerDAO;
 import dao.StudentDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,19 +14,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.servlet.http.HttpSession;
 import model.Account;
-import model.Config;
-import model.Question;
-import model.Quiz;
+import model.Alert;
 
 /**
  *
  * @author lvhn1
  */
-@WebServlet(name="QuizHandlerServlet", urlPatterns={"/quiz"})
-public class QuizHandlerServlet extends HttpServlet {
+@WebServlet(name="PracticeQuizzesServlet", urlPatterns={"/practice-quizzes"})
+public class PracticeQuizzesServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -42,10 +40,10 @@ public class QuizHandlerServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet QuizHandlerServlet</title>");  
+            out.println("<title>Servlet PracticeQuizzesServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet QuizHandlerServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet PracticeQuizzesServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,48 +62,23 @@ public class QuizHandlerServlet extends HttpServlet {
     throws ServletException, IOException {
         Account acc = (Account) request.getSession().getAttribute("accountCur");
         StudentDAO sd = new StudentDAO();
-
-        int qnum = 1;
-        try {
-            qnum = Integer.parseInt(request.getParameter("qnum"));
-        } catch (NumberFormatException | NullPointerException e) {
-        }
-
-        int submitId = Integer.parseInt(request.getParameter("id"));
-
-        Question question = sd.getQuestionByNum(submitId, qnum, !request.getParameter("action").equalsIgnoreCase("take"));
-        request.setAttribute("question", question);
+        ManagerDAO md = new ManagerDAO();
         
-        String correct;
-        switch (question.getCorrect_id()) {
-            case 1:
-                correct = "one";
-                break;
-            case 2:
-                correct = "two";
-                break;
-            case 3:
-                correct = "three";
-                break;
-            case 4:
-                correct = "four";
-                break;
-            case 5:
-                correct = "five";
-                break;
-            default:
-                correct = "correct answers";
-                break;
-        }
+        int classId = Integer.parseInt(request.getParameter("classid"));
+        
+        int subjectId = sd.getSubjectId(classId);
         
         if (acc.getRole().getId() == 4) {
             request.setAttribute("classList", sd.getClassList(acc.getId()));
         }
-        request.setAttribute("correctNum", correct);
-        request.setAttribute("numOfQues", sd.getNumOfQuestions(submitId));
-        request.setAttribute("lid", sd.getQuizLessonId(submitId));
         
-        request.getRequestDispatcher("trainee/quiz-handler.jsp").forward(request, response);
+        request.setAttribute("subjectId", subjectId);
+        request.setAttribute("chapters", md.getListChaptersBySubject(subjectId));
+        request.setAttribute("dimensionTypes", md.getDimensionTypes(subjectId));
+        
+        request.setAttribute("quizzes", sd.getPracticeQuizzes(acc.getId()));
+        
+        request.getRequestDispatcher("trainee/practice-quizzes.jsp").forward(request, response);
     } 
 
     /** 
@@ -118,11 +91,46 @@ public class QuizHandlerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        Account acc = (Account) request.getSession().getAttribute("accountCur");
         StudentDAO sd = new StudentDAO();
-        int submitId = Integer.parseInt(request.getParameter("id"));
-        sd.submitQuiz(submitId);
         
-        response.sendRedirect("lesson?classid=" + request.getParameter("classid") + "&id=" + sd.getQuizLessonId(submitId));
+        boolean success = true;
+        
+        String title = request.getParameter("title");
+        boolean configBy = request.getParameter("config-type").equals("1");
+        int totalNum = Integer.parseInt(request.getParameter("totalNum"));
+        String dimensionType = request.getParameter("dimensionType");
+        
+        success = sd.addPracticeQuiz(title, configBy, totalNum, dimensionType, acc.getId()) ? success : false;
+        int id = sd.getQuizId(acc.getId());
+        
+        String[] nums = request.getParameterValues("numOfQues");
+        if (configBy) {
+            String[] cds = request.getParameterValues("config-dimension");
+            for (int i=0; i<cds.length; i++)
+                success = sd.addConfig(configBy, Integer.parseInt(cds[i]), Integer.parseInt(nums[i]), id) ? success : false;
+        } else {
+            String[] ccs = request.getParameterValues("config-chapter");
+            for (int i=0; i<ccs.length; i++)
+                success = sd.addConfig(configBy, Integer.parseInt(ccs[i]), Integer.parseInt(nums[i]), id) ? success : false;
+        }
+        
+        HttpSession session = request.getSession();
+        
+        if (success)
+            session.setAttribute("alert", Alert.builder()
+                    .type(true)
+                    .message("You have added practice quiz successfully!")
+                    .build()
+            );
+        else
+            session.setAttribute("alert", Alert.builder()
+                    .type(false)
+                    .message("Add practice quiz failed! Please try again!")
+                    .build()
+            );
+        
+        response.sendRedirect("practice-quizzes?classid=" + request.getParameter("classid"));
     }
 
     /** 

@@ -85,7 +85,7 @@
                                                                     <td class="p-3"><span class="badge rounded-md bg-${r.score >= lesson.passValue ? 'success' : 'danger'}"> ${r.status ? (r.score >= lesson.passValue ? "Finished" : "Not Pass") : "Not Submitted"} </span></td>
                                                                     <td class="p-3">${r.submit_at}</td>
                                                                     <td class="p-3">${r.score}</td>
-                                                                    <td class="p-3"><a href="quiz?action=review&id=${r.id}&qnum=1" class="text-info">Review</a></td>
+                                                                    <td class="p-3"><a href="quiz?action=review&id=${r.id}&qnum=1&classid=${param.classid}" class="text-info">Review</a></td>
                                                                 </tr>
                                                             </c:forEach>
                                                         </tbody>
@@ -116,7 +116,7 @@
                             <div class="modal-body">
                                 The quiz has a time limit of ${lesson.duration} minutes. Time will count down from the moment you start your attempt and you must submit before it expires. Are you sure that you wish to start now?
                             </div>
-                            <form class="modal-footer" action="lesson?type=quiz&id=${lesson.id}" method="post">
+                            <form class="modal-footer" action="lesson?type=quiz&id=${lesson.id}&classid=${param.classid}" method="post">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Start Attempt</button>
                             </form>

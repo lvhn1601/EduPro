@@ -410,18 +410,17 @@ public class ManagerDAO extends DBContext {
         return list;
     }
 
-    public List<Chapter> getListChapters(int manager_id, int subject_id) {
+    public List<Chapter> getListChaptersBySubject(int subject_id) {
         String sql = "SELECT * FROM chapter\n"
                 + "JOIN subject on chapter.chapter_subject_id = subject.subject_id\n"
-                + "WHERE subject_manager_id = ? and subject_id = ? and chapter_status = 1\n"
+                + "WHERE subject_id = ? and chapter_status = 1\n"
                 + "ORDER BY chapter_display_order";
 
         List<Chapter> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, manager_id);
-            ps.setInt(2, subject_id);
+            ps.setInt(1, subject_id);
             System.out.println(ps.toString());
             ResultSet rs = ps.executeQuery();
 
@@ -616,7 +615,7 @@ public class ManagerDAO extends DBContext {
                 + "JOIN chapter on quiz.quiz_chapter_id = chapter.chapter_id\n"
                 + "JOIN account as creator on quiz.created_by = creator.account_id\n"
                 + "JOIN account as updater on quiz.update_by = updater.account_id\n"
-                + "WHERE subject.subject_manager_id = ?" + (subject_id == 0 ? "" : " and subject_id = " + subject_id);
+                + "WHERE subject.subject_manager_id = ? and quiz_practice = 0" + (subject_id == 0 ? "" : " and subject_id = " + subject_id);
 
         List<Quiz> list = new ArrayList<>();
 

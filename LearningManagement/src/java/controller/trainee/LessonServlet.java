@@ -122,7 +122,7 @@ public class LessonServlet extends HttpServlet {
                 }
             }
             
-            response.sendRedirect("quiz?action=take&id=" + submitId + "qnum=1");
+            response.sendRedirect("quiz?action=take&id=" + submitId + "&qnum=1&classid=" + request.getParameter("classid"));
         }
     }
 
