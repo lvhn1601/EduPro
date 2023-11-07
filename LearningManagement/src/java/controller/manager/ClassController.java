@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Account;
 import model.Class;
+import model.ClassTrainee;
 import model.Setting;
 import model.Subject;
 
@@ -70,41 +71,17 @@ public class ClassController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         ManagerDAO managerDAO = new ManagerDAO();
+
         List<Subject> listSubject = managerDAO.getSubject();
         List<Account> listTrainer = managerDAO.getTrainer();
         List<Setting> listSemester = managerDAO.getSemester();
 
-      
-        int curPage = 1;
-        int pageSize = 8;
-        String pageParam = request.getParameter("page");
-        if (pageParam != null) {
-            curPage = Integer.parseInt(pageParam);
-        }
-        int start = (curPage - 1) * pageSize;
-
-        String searchKeyword = request.getParameter("search");
-        List<Class> listClass = new ArrayList<>();
-        int totalClasses;
-        int totalPages;
-
-        if (searchKeyword != null && !searchKeyword.isEmpty()) {
-            listClass = managerDAO.searchClasses(searchKeyword);
-        } else {
-       
-            listClass = managerDAO.getClassesForPage(start, pageSize);
-        }
-
-        totalClasses = managerDAO.getTotalClasses();
-        totalPages = (int) Math.ceil((double) totalClasses / pageSize);
-
-        Account account = (Account) session.getAttribute("accountCur");
-
+        List<Class> listClass =managerDAO.getAllClass();
+  
         request.setAttribute("listClass", listClass);
         request.setAttribute("listSubject", listSubject);
         request.setAttribute("listTrainer", listTrainer);
         request.setAttribute("listSemester", listSemester);
-        request.setAttribute("totalPages", totalPages);
 
         request.getRequestDispatcher("list-class.jsp").forward(request, response);
     }
@@ -164,9 +141,9 @@ public class ClassController extends HttpServlet {
                 boolean updateClassSuccess = managerDAO.updateClass(className, subjectId, semesterId, trainerId, classStatus, classStart, classEnd, account.getId(), currentTime, classId);
                   session.setAttribute("listClass", listClass);
                 if (updateClassSuccess) {
-                    session.setAttribute("msgUpdateClass", "Update Class Success|"+ classId);
+                    session.setAttribute("msgUpdateClass", "Update Class Success");
                 } else {
-                    session.setAttribute("msgUpdateClass", "Update Class Fail|" + classId);
+                    session.setAttribute("msgUpdateClass", "Update Class Fail");
                 }
             
                 break;

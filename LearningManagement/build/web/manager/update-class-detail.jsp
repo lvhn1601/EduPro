@@ -169,28 +169,30 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-12 mt-4">
-                                                    <div class="table-responsive shadow rounded">
-                                                        <table class="table table-center bg-white mb-0">
-                                                            <thead>
+                                                    <table id="example" class="display" style="width:100%">
+
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="border-bottom p-3" style="min-width: 50px;">Id</th>
+                                                                <th class="border-bottom p-3" style="min-width: 180px;">Student Name</th>
+                                                                <th class="border-bottom p-3">Email</th>
+                                                                <th class="border-bottom p-3">Phone</th>                                                                  
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <c:forEach items="${requestScope.listTrainee}" var="c">
                                                                 <tr>
-                                                                    <th class="border-bottom p-3" style="min-width: 50px;">Id</th>
-                                                                    <th class="border-bottom p-3" style="min-width: 180px;">Student Name</th>
-                                                                    <th class="border-bottom p-3">Email</th>
-                                                                    <th class="border-bottom p-3">Phone</th>                                                                  
+                                                                    <td class="p-3">${c.id}</td>
+                                                                    <td class="p-3">${c.name}</td><!-- comment -->
+                                                                    <td class="p-3">${c.email}</td><!-- comment -->
+                                                                    <td class="p-3">${c.phone}</td><!-- comment -->
                                                                 </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <c:forEach items="${requestScope.listTrainee}" var="c">
-                                                                    <tr>
-                                                                        <td>${c.id}</td>
-                                                                        <td>${c.name}</td><!-- comment -->
-                                                                        <td>${c.email}</td><!-- comment -->
-                                                                        <td>${c.phone}</td><!-- comment -->
-                                                                    </tr>
-                                                                </c:forEach>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                                
+                                                                
+                                                                
+                                                            </c:forEach>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -199,13 +201,22 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+
         </div>
-    </main>
+    </div>
+</main>
 </div>
 </body>
 </html>
+<!--Datatable-->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css"/>
+
+<script>
+                                                new DataTable('#example');
+</script>
 <script>
     $(document).ready(function () {
         $("#listStudentTab").click(function () {
