@@ -32,14 +32,14 @@
     </head>
     <body>
         <!-- Loader -->
-        <div id="preloader">
+<!--        <div id="preloader">
             <div id="status">
                 <div class="spinner">
                     <div class="double-bounce1"></div>
                     <div class="double-bounce2"></div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- Loader -->
 
         <div class="page-wrapper doctris-theme toggled">
@@ -72,15 +72,16 @@
                                         </div><!--end col-->
                                     </div><!--end row-->
                                     
-                                    <form class="mt-4" id="questionForm" action="question-details?action=${param.action}" method="post" onsubmit="">
+                                    <form class="mt-4" id="questionForm" action="question-details?action=${param.action}" method="post" onsubmit="return checkEmpty();">
                                         <input type="hidden" name="id" value="${question.id}"/>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Subject:</label>
                                                     <select name="subject" id="subject" class="form-control department-name select2input bg-white" onchange="updateDatas(this.value)" ${param.action eq 'update' ? 'disabled' : ''}>
+                                                        <option value="0">Choose Subject...</option>
                                                         <c:forEach items="${subjects}" var="s">
-                                                            <option value="${s.id}" ${lesson.subject.id eq s.id ? 'selected' : ''}>${s.code} - ${s.name}</option>
+                                                            <option value="${s.id}" ${question.subject.id eq s.id ? 'selected' : ''}>${s.code} - ${s.name}</option>
                                                         </c:forEach>
                                                     </select>
                                                 </div>
@@ -243,6 +244,11 @@
                 
                 chapterSelect.innerHTML = "";
                 
+                var optionDef = document.createElement("option");
+                optionDef.value = 0;
+                optionDef.text = "Choose chapter...";
+                chapterSelect.appendChild(optionDef);
+                
                 await fetch('getDatas?table=chapter&subject=' + sid)
                     .then(response => {
                         if (response.ok)
@@ -269,6 +275,11 @@
                 
                 lessonSelect.innerHTML = "";
                 
+                var def = document.createElement("option");
+                def.value = 0;
+                def.text = "Choose Lesson...";
+                lessonSelect.appendChild(def);
+                
                 fetch('getDatas?table=lesson&chapter=' + cid)
                     .then(response => {
                         if (response.ok)
@@ -289,6 +300,7 @@
             }
             
             function updateListDimensions(sid) {
+                console.log('update');
                 let ds = document.getElementById('dimension');
                 
                 ds.innerHTML = "";
@@ -332,6 +344,88 @@
                 `;
         
                 ansContainer.appendChild(newRow);
+            }
+            
+            const subjectSel = document.getElementById("subject");
+            const chapterSel = document.getElementById("chapter");
+            const lessonSel = document.getElementById("lesson");
+            const dimensionSel = document.getElementById("dimension");
+            const detailTxt = document.getElementById("detail");
+            
+            const errorText = document.getElementById("error-mess");
+            
+            function checkEmpty() {
+                // Check input Subject
+                if (subjectSel.value == 0) {
+                    errorText.textContent = "You must choose subject!";
+                    return false;
+                }
+                
+                // Check input Chapter
+                if (chapterSel.value == 0) {
+                    errorText.textContent = "You must choose chapter!";
+                    return false;
+                }
+                
+                // Check input Lesson
+                if (lessonSel.value == 0) {
+                    errorText.textContent = "You must choose lesson!";
+                    return false;
+                }
+                
+                // Check input Dimension
+                if (dimensionSel.value == 0) {
+                    errorText.textContent = "You must choose at least 1 dimension!";
+                    return false;
+                }
+                
+                // Check input Question detail
+                if (detailTxt.value.trim() == '') {
+                    errorText.textContent = "Detail of question can not be empty!";
+                    return false;
+                }
+                
+                // Check all question detail
+                let answers = document.querySelectorAll("#answer");
+                var check = true;
+                var count = 0;
+                answers.forEach(item => {
+                    var par = item.parentNode;
+                    if (par.parentNode.style.display != 'none') {
+                        if (item.value.trim() == '') {
+                            errorText.textContent = "Answer detail can not be empty!";
+                            check = false;
+                        } else {
+                            count++;
+                        }
+                    }
+                });
+                
+                if (!check)
+                    return check;
+                
+                // Check correct answer (must be at least 1 correct answer)
+                let corrects = document.querySelectorAll(".answer-hidden");
+                var corCount = 0;
+                corrects.forEach(item => {
+                    var par = item.parentNode;
+                    if (par.parentNode.style.display != 'none' && item.value == 'true') {
+                        corCount++;
+                    }
+                });
+                
+                if (corCount < 1) {
+                    errorText.textContent = "Please choose at least 1 correct answer";
+                    return false;
+                }
+                
+                // Check number of answers (must be at least 2 answer)
+                if (count < 2) {
+                    errorText.textContent = "You must add at least 2 answer!";
+                    return false;
+                }
+                
+                return true;
             }
             
             

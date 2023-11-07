@@ -27,11 +27,9 @@
     </head>
 
     <body>
-        <div id="preloader">
-            
-        </div>
         
         <div class="page-wrapper doctris-theme">
+            <%@include file="components/sidebar.jsp" %>
             <main class="page-content bg-light">
                 <%@include file="components/header.jsp" %>
                 <!-- Carousel Start -->

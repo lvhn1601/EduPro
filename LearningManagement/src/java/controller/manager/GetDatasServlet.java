@@ -76,11 +76,15 @@ public class GetDatasServlet extends HttpServlet {
         
         switch (table) {
             case "chapter":
-                jsonData = gson.toJson(db.getListChapters(acc.getId(), subject_id));
+                jsonData = gson.toJson(db.getListChaptersBySubject(subject_id));
                 break;
             case "dimension":
-                jsonData = gson.toJson(db.getListDimensions(acc.getId(), subject_id));
+                String dtype = request.getParameter("dimension-type");
+                jsonData = gson.toJson(db.getListDimensions(subject_id, dtype));
                 break;
+            case "dimension-type":
+                jsonData = gson.toJson(db.getDimensionTypes(subject_id));
+                break; 
             case "question":
                 jsonData = gson.toJson(db.getListQuestions(subject_id));
                 break;

@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Account;
 
 /**
@@ -60,6 +61,8 @@ public class LessonsServlet extends HttpServlet {
         Account acc = (Account) request.getSession().getAttribute("accountCur");
         ManagerDAO db = new ManagerDAO();
         
+        HttpSession session = request.getSession();
+        
         request.setAttribute("subjects", db.getListSubjects(acc.getId()));
         
         int page_num;
@@ -84,6 +87,9 @@ public class LessonsServlet extends HttpServlet {
         request.setAttribute("count", num_of_lessons);
         request.setAttribute("pages", Math.round(num_of_lessons / 8) + (num_of_lessons % 8 == 0 ? 0 : 1));
         request.setAttribute("lessons", db.getLessons(acc.getId(), search, page_num, subject_id));
+        
+        request.setAttribute("alert", session.getAttribute("alert"));
+        session.removeAttribute("alert");
         
         request.getRequestDispatcher("lessons.jsp").forward(request, response);
     } 

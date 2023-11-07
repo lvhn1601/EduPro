@@ -15,6 +15,7 @@ import lombok.ToString;
 @ToString
 public class Config {
     private int id;
+    private boolean type;
     private Dimension dimension;
     private int num_of_question;
     private Chapter chapter;
