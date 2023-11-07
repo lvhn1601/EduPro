@@ -129,12 +129,14 @@
                                                                     <input name="action" style="display: none"
                                                                         value="${action}" />
                                                                     <a style="display: ${action eq 'view' ? '' : 'none'}"
-                                                                        href="remove-trainee?id=${tr.id}&class_id=${class_id}"
+                                                                        href="#"
+                                                                        onclick="removeTrainee(${tr.id}, ${class_id})"
                                                                         class="">
                                                                         Remove
                                                                     </a>
                                                                     <a style="display: ${action eq 'view' ? 'none' : ''}"
-                                                                        href="add-trainee-detail?id=${tr.id}&classId=${class_id}"
+                                                                        href="#"
+                                                                        onclick="addTrainee(${tr.id}, ${class_id})"
                                                                         class="">
                                                                         Add to Class
                                                                     </a>
@@ -257,31 +259,23 @@
                                 window.location.href = servletUrl;
                             };
                         }
-//                        function importTrainee() {
-//                            const form = document.getElementById("#traineeForm");                          
-//                            const inputTag = document.getElementById("class_id");
-//                            const class_id = inputTag.value;
-//                            
-//                            const xhr = new XMLHttpRequest();
-//                            
-//                            xhr.open('POST', 'http://localhost:9999/LearningManagement/trainer/import-trainee')
-//                            
-//                            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-//                            
-//                            const formData = new FormData();
-//                            
-//                            formData.append('class', class_id);
-//                            
-//                            xhr.send(formData);
-//                            
-//                            xhr.onload = function() {
-//                                if (xhr.status === 200) {
-//                                  // Success!
-//                                } else {
-//                                  // Error!
-//                                }
-//                            };
-//                        }
+                        function removeTrainee(trainee_id, class_id) {
+                            if(confirm("Are you sure to remove this trainee?")) {
+                                fetch("remove-trainee?id="+trainee_id+"&class_id="+class_id)
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            window.location.replace("http://localhost:9999/LearningManagement/trainer/view-trainee?classId="+class_id);
+                                        });
+                            }
+                        };
+                        function addTrainee(trainee_id, class_id) {
+                            console.log(trainee_id+" "+class_id);
+                            fetch("add-trainee-detail?id="+trainee_id+"&classId="+class_id)
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            window.alert(data);
+                                        });
+                        };
                         function jumpTo(page_num) {
                             let action = "${param.action}";          
                             let search = "${param.search eq null ? '' : param.search}";
@@ -290,7 +284,7 @@
                                 location.href = "./view-trainee?page=" + Math.floor(page_num) + ("&search=" + search);
                             } else location.href = "./search-trainee?page=" + Math.floor(page_num) + ("&search=" + search) + ("&classId=" + class_id);
 
-                        }
+                        };
                     </script>
             </body>
 

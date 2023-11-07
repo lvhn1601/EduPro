@@ -13,12 +13,13 @@
 
                     <div class="form-group mt-4">
                         <label for="className">Class Name:</label>
-                        <input type="text" class="form-control" id="className" name="className" />
+                        <input type="text" class="form-control" id="className" name="className" value="AI-1578"/>
                     </div>
 
                     <div class="form-group mt-4">
                         <label for="classSubject">Subject:</label>
                         <select class="form-control" id="classSubject" name="classSubject">
+                            <option>Elementary Japanese 1-A1.1</option>
                             <c:forEach items="${listSubject}" var="ls">
                                 <option value="${ls.id}">${ls.name}</option>
                             </c:forEach>
@@ -28,6 +29,7 @@
                     <div class="form-group mt-4">
                         <label for="classSemester">Semester:</label>
                         <select class="form-control" id="classSemester" name="classSemester">
+                            <option>SPRING-2023</option>
                             <c:forEach items="${listSemester}" var="l">
                                 <option value="${l.id}">${l.title}</option>
                             </c:forEach>
@@ -37,6 +39,7 @@
                     <div class="form-group mt-4">
                         <label for="classTrainer">Trainer:</label>
                         <select class="form-control" id="classTrainer" name="classTrainer">
+                            <option>duytn@gmail.com</option>
                             <c:forEach items="${listTrainer}" var="t">
                                 <option value="${t.id}">${t.email} - ${t.name}</option>
                             </c:forEach>
@@ -56,7 +59,7 @@
                     <div class="form-group mt-4">
                         <label>Status:</label>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="classStatus" id="active" value="active">
+                            <input class="form-check-input" type="radio" name="classStatus" id="active" value="active" checked>
                             <label class="form-check-label" for="active">Active</label>
                         </div>
                         <div class="form-check form-check-inline">
