@@ -31,6 +31,8 @@ public class AccountDAO extends DBContext {
                 + "account_password, "
                 + "account_active, "
                 + "account_role_id, "
+                + "account_avatar_url, "
+                + "account_name, "
                 + "s.setting_id "
                 + "FROM account a "
                 + "INNER JOIN setting s ON a.account_role_id = s.setting_id "
@@ -51,6 +53,8 @@ public class AccountDAO extends DBContext {
                         .password(rs.getString("account_password"))
                         .active(rs.getInt("account_active"))
                         .phone(rs.getString("account_phone"))
+                        .avatar_url(rs.getString("account_avatar_url"))
+                        .name(rs.getString("account_name"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
                                 .build())
@@ -260,7 +264,7 @@ public class AccountDAO extends DBContext {
 
     public int registerGoogleAcc(UserGoogleDto obj) {
         int check = 0;
-        String sql = "INSERT INTO Account(account_email, account_avatar_url, account_name, account_oauth, account_role_id) VALUES (?, ?, ?, ?, 4)";
+        String sql = "INSERT INTO Account(account_email, account_avatar_url, account_name, account_oauth, account_active, account_role_id) VALUES (?, ?, ?, ?, 1, 4)";
 
         if (sql.isEmpty()) {
             return 0;

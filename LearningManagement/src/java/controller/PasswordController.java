@@ -105,6 +105,7 @@ public class PasswordController extends HttpServlet {
             session.removeAttribute("email");
             session.removeAttribute("isOtpConfirmSuccess");
             request.setAttribute("msg", "Reset password successful");
+            request.getSession().setAttribute("msg", "Reset password sucessful!!");
             response.sendRedirect("sign-in");
             return;
         }

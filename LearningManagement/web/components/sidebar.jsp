@@ -25,14 +25,18 @@
             
             <c:if test="${sessionScope.accountCur.role.id eq 2}">
                 <li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                <li><a href="/LearningManagement/manager/subject-detail-management"><i class="uil uil-file me-2 d-inline-block"></i>Subjects Setting</a></li>
+                <li><a href="/LearningManagement/manager/subject-list"><i class="uil uil-file me-2 d-inline-block"></i>Subjects Setting</a></li>
                 <li><a href="/LearningManagement/manager/question-detail-management"><i class="uil uil-file-question me-2 d-inline-block"></i>Questions</a></li>
                 <li><a href="/LearningManagement/manager/quizzes"><i class="uil uil-lightbulb-alt me-2 d-inline-block"></i>Quizzes</a></li>
                 <li><a href="/LearningManagement/manager/lessons"><i class="uil uil-file-landscape-alt me-2 d-inline-block"></i>Lessons</a></li>
-                 <li><a href="/LearningManagement/manager/class"><i class="uil uil-file-landscape-alt me-2 d-inline-block"></i>Class</a></li>
-                
+                <li><a href="/LearningManagement/manager/class"><i class="uil uil-users-alt me-2 d-inline-block"></i>Classes</a></li>
             </c:if>
-            
+                
+            <c:if test="${sessionScope.accountCur.role.id eq 3}">
+                <li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                
+                <li><a href="/LearningManagement/trainer/class-trainee"><i class="uil uil-users-alt me-2 d-inline-block"></i>Trainee</a></li>
+            </c:if>
         </ul>
         <!-- sidebar-menu  -->
     </div>

@@ -40,6 +40,7 @@ public class SettingDAO extends DBContext {
         }
         return null;
     }
+
     public static void main(String[] args) {
         System.out.println(new SettingDAO().getListDomain());
     }

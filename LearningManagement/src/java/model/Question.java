@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,8 @@ public class Question {
     private Chapter chapter;
     private Subject subject;
     private boolean status;
+    private List<Dimension> dimensions;
+    private List<Answer> answers;
     private String created_by;
     private String created_at;
     private String update_by;

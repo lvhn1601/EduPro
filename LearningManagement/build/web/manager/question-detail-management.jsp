@@ -28,8 +28,7 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
             />
-        <link 
-            <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
@@ -193,11 +192,11 @@
 
     <div class="page-wrapper doctris-theme toggled">
         <jsp:include page="../components/sidebar.jsp"/>
-        <main class="page-content bg-light "style="width: 100%;
-              height: 100%;">                
+        <main class="page-content bg-light ">
             <h1 style="margin: 100px 0px 0px 30px">Question List</h1>
             <div id="subjectDropdownContainer" onchange="changeSubject()">
                 <select id="subjectDropdown" >
+                    <option value="all">All</option>
                     <c:forEach items="${requestScope.subjects}" var="s">
                         <option value="${s.id}">${s.name}</option>
                     </c:forEach>
@@ -210,17 +209,21 @@
                 <!-- General Tab Content -->
                 <form id="generalTab" class="tab-content active" action="subject-detail-management?id=${subject.id}" method="post">
 
-
-
                     <form id="generalTabTab" class="tab-content active">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <h3>Question of ${subject.name}</h3>
                                     </div>
-                                    <div class="col-md-4 d-flex justify-content-end" style="height: 40px">
-                                        <button type="button" class="btn btn-primary" onclick="openAddModal(${subject.id}); event.preventDefault();">Add</button>
+                                    <div class="col-md-2 d-flex justify-content-end" style="height: 40px">
+                                        <a href="question-export?id=${subject.id}" class="btn btn-primary">Export</a>
+                                    </div>
+                                    <div class="col-md-2 d-flex justify-content-center" style="height: 40px">
+                                        <a href="question-import?id=${subject.id}" class="btn btn-primary">Import</a>
+                                    </div>
+                                    <div class="col-md-1 d-flex justify-content-end" style="height: 40px">
+                                        <a href="question-details?action=add" class="btn btn-primary">Add</a>
                                     </div>
                                 </div>
                                 <table class="chapter-table">
@@ -229,8 +232,8 @@
                                         <th>ID</th>
                                         <th>Detail</th>
                                         <th>Lesson</th>
-                                        <th>Chapter</th>
-                                        <th>Status</th>
+                                        <th style="width: 15%;text-align: center;">Chapter</th>
+                                        <th >Status</th>
                                         <th>Action</th>
                                     </tr>
 
@@ -241,22 +244,18 @@
                                                 <td>${q.detail}</td>
                                                 <td>${q.lesson.title}</td>
                                                 <td>${q.chapter.title}</td>
-                                                <td>
-                                                    <label for="active">
-                                                        <input type="radio"  disabled ${q.status eq true ? "checked" : ""}>Active
-                                                    </label>
-                                                    <label for="inactive">
-                                                        <input type="radio" disabled ${q.status eq true ? "" : "checked"}>Inactive
-                                                    </label>
+                                                <td style=text-align: center;">
+                                                    ${q.status eq true ? "Active" : "Inactive"}
                                                 </td>
-                                                <td>
+                                                <td style="text-align: center;">
                                                     <button style=" all: unset; margin-right: 15px"
-                                                            onclick="openModal('${subject.id}', '${c.id}', '${c.status}', '${c.title}', '${c.description}'); event.preventDefault();">
+                                                            type="button"
+                                                            onclick="window.location.href = 'question-details?action=update&id=${q.id}'">
                                                         <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                     </button>
-                                                    <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
+<!--                                                    <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
                                                         <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
-                                                    </a>
+                                                    </a>-->
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -266,42 +265,47 @@
                         </div>
                     </form>
                     <!-- Dimensions Tab Content -->
-
-                    </main>
+                </form>
             </div>
+        </main>
+    </div>
+
+    <!-- Add these links in the <head> section of your HTML -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
+    <!-- javascript -->
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <!-- simplebar -->
+    <script src="../assets/js/simplebar.min.js"></script>
+    <!-- Icons -->
+    <script src="../assets/js/feather.min.js"></script>
+    <!-- Main Js -->
+    <script src="../assets/js/app.js"></script>
+
+</body>
+<script>
+                                                                function changeSubject() {
+                                                                    var selectedSubjectId = document.getElementById('subjectDropdown').value;
+                                                                    // Lưu giá trị vào localStorage
+                                                                    console.log();
+                                                                    localStorage.setItem('selectedSubjectId', selectedSubjectId);
+
+                                                                    window.location.href = 'question-detail-management?id=' + selectedSubjectId;
+                                                                }
 
 
-            <!-- Add these links in the <head> section of your HTML -->
-            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 
+                                                                window.onload = function () {
+                                                                    var urlParams = new URLSearchParams(window.location.search);
+                                                                    var urlSubjectId = urlParams.get('id');
 
-            </body>
-            <script>
-                                                        function changeSubject() {
-                                                            var selectedSubjectId = document.getElementById('subjectDropdown').value;
-                                                            // Lưu giá trị vào localStorage
-                                                            console.log();
-                                                            localStorage.setItem('selectedSubjectId', selectedSubjectId);
+                                                                    document.getElementById('subjectDropdown').value = urlSubjectId;
 
-                                                            window.location.href = 'question-detail-management?id=' + selectedSubjectId;
-                                                        }
+                                                                    localStorage.setItem('selectedSubjectId', urlSubjectId);
 
 
-
-
-                                                        window.onload = function () {
-                                                            var urlParams = new URLSearchParams(window.location.search);
-                                                            var urlSubjectId = urlParams.get('id');
-
-                                                            document.getElementById('subjectDropdown').value = urlSubjectId;
-
-                                                            localStorage.setItem('selectedSubjectId', urlSubjectId);
-
-
-                                                        };
-            </script>
-            </html>
+                                                                };
+</script>
+</html>

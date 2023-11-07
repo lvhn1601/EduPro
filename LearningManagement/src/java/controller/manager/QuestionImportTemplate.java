@@ -5,6 +5,7 @@
 
 package controller.manager;
 
+import dao.ManagerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,13 +13,20 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Answer;
+import model.Question;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
- * @author lvhn1
+ * @author tango
  */
-@WebServlet(name="QuestionsServlet", urlPatterns={"/manager/questions"})
-public class QuestionsServlet extends HttpServlet {
+@WebServlet(name="QuestionImportTemplate", urlPatterns={"/manager/get-template"})
+public class QuestionImportTemplate extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +43,10 @@ public class QuestionsServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet QuestionsServlet</title>");  
+            out.println("<title>Servlet QuestionImportTemplate</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet QuestionsServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet QuestionImportTemplate at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,8 +64,23 @@ public class QuestionsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
+        // Create an Excel workbook
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Data");
         
-        request.getRequestDispatcher("questions.jsp").forward(request, response);
+        // Create a header row
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Enter question here");
+        headerRow.createCell(1).setCellValue("Enter the A answer here");
+        headerRow.createCell(2).setCellValue("Enter the B answer here");
+        headerRow.createCell(3).setCellValue("Enter the C answer here");
+        headerRow.createCell(4).setCellValue("Enter the D answer here");
+        headerRow.createCell(5).setCellValue("Enter the correct answer here (A, B, C, D)");
+        
+        // Write the Excel workbook to a file 
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
+        workbook.write(response.getOutputStream());
     } 
 
     /** 
