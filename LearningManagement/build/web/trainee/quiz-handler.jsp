@@ -69,7 +69,7 @@
                                             <c:forEach items="${question.answers}" var="a">
                                                 <tr>
                                                     <td class="p-3" style="max-width: 50px">
-                                                        <input class="form-check-input" type="checkbox" id="flexCheckChecked" ${a.choose && param.action == 'review' ? 'checked' : ''} onclick="updateChoice(this, ${a.id})" ${param.action == 'review' ? 'disabled' : ''}>
+                                                        <input class="form-check-input" type="checkbox" id="flexCheckChecked" ${a.choose && param.action == 'review' ? 'checked' : ''} ${a.choose ? 'checked' : ''} onclick="updateChoice(this, ${a.id})" ${param.action == 'review' ? 'disabled' : ''}>
                                                     </td>
                                                     <td class="p-3">
                                                         <p class="mb-0 ${a.correct && param.action == 'review' ? 'text-success' : (a.choose && param.action == 'review' ? 'text-danger' : '')}" style="font-size: large">
@@ -91,6 +91,8 @@
                                                     <a href="quiz?action=${param.action}&id=${param.id}&qnum=${i}&classid=${param.classid}" class="btn btn-icon btn-soft-primary m-1 ${param.qnum == i ? 'active' : ''}">${i}</a>
                                                 </c:forEach>
                                             </div>
+                                            
+                                            <div class="mt-4" id="timer" style="font-weight: 500">Time left: <span id="minutes">00</span>:<span id="seconds">00</span></div>
                                             
                                         </div>
                                     </div>
@@ -118,7 +120,7 @@
                                 <p>You are about to submit your quiz...</p>
                                 <p>One you press the Submit button you cannot return to your quiz</p>
                             </div>
-                            <form class="modal-footer" action="quiz?classid=${param.classid}&id=${param.id}" method="post">
+                            <form class="modal-footer" id="quizSubmit" action="quiz?classid=${param.classid}&id=${param.id}" method="post">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Save & Submit</button>
                             </form>
@@ -152,17 +154,46 @@
         <script src="/LearningManagement/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="/LearningManagement/assets/js/app.js"></script>
-        
-        <script>
-            function updateChoice(element, id) {
-                var isChecked = element.checked;
-                
-                fetch("updateAnswer?id=${param.id}&qid=${question.id}&aid=" + id + "&isChecked=" + isChecked)
-                        .then(response => response.text())
-                        .then(data => {
-                            console.log(data);
-                        });
-            }
-        </script>
+        <c:if test="${param.action == 'take'}">
+            <script>
+                function updateChoice(element, id) {
+                    var isChecked = element.checked;
+
+                    fetch("updateAnswer?id=${param.id}&qid=${question.id}&aid=" + id + "&isChecked=" + isChecked)
+                            .then(response => response.text())
+                            .then(data => {
+                                console.log(data);
+                            });
+                }
+
+                // Set the duration in seconds
+                var duration = ${timeleft};
+
+                // Function to update the timer
+                function updateTimer() {
+                    var minutesElement = document.getElementById("minutes");
+                    var secondsElement = document.getElementById("seconds");
+
+                    var minutes = Math.floor(duration / 60);
+                    var seconds = duration % 60;
+
+                    minutesElement.textContent = (minutes < 10 ? '0' : '') + minutes;
+                    secondsElement.textContent = (seconds < 10 ? '0' : '') + seconds;
+
+                    if (duration <= 0) {
+                        clearInterval(timerInterval);
+                        document.getElementById('quizSubmit').submit();
+                    } else {
+                        duration--;
+                    }
+                }
+
+                // Initial call to set the timer
+                updateTimer();
+
+                // Update the timer every second
+                var timerInterval = setInterval(updateTimer, 1000);
+            </script>
+        </c:if>
     </body>
 </html>

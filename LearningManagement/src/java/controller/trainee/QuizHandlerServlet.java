@@ -72,40 +72,47 @@ public class QuizHandlerServlet extends HttpServlet {
         }
 
         int submitId = Integer.parseInt(request.getParameter("id"));
+        String action = request.getParameter("action");
+        
+        if (action.equalsIgnoreCase("take") && sd.quizExpired(submitId)) {
+            response.sendRedirect("lesson?classid=" + request.getParameter("classid") + "&id=" + sd.getQuizLessonId(submitId));
+        } else {
+            Question question = sd.getQuestionByNum(submitId, qnum, !action.equalsIgnoreCase("take"));
+            request.setAttribute("question", question);
 
-        Question question = sd.getQuestionByNum(submitId, qnum, !request.getParameter("action").equalsIgnoreCase("take"));
-        request.setAttribute("question", question);
-        
-        String correct;
-        switch (question.getCorrect_id()) {
-            case 1:
-                correct = "one";
-                break;
-            case 2:
-                correct = "two";
-                break;
-            case 3:
-                correct = "three";
-                break;
-            case 4:
-                correct = "four";
-                break;
-            case 5:
-                correct = "five";
-                break;
-            default:
-                correct = "correct answers";
-                break;
+            String correct;
+            switch (question.getCorrect_id()) {
+                case 1:
+                    correct = "one";
+                    break;
+                case 2:
+                    correct = "two";
+                    break;
+                case 3:
+                    correct = "three";
+                    break;
+                case 4:
+                    correct = "four";
+                    break;
+                case 5:
+                    correct = "five";
+                    break;
+                default:
+                    correct = "correct answers";
+                    break;
+            }
+
+            if (acc.getRole().getId() == 4) {
+                request.setAttribute("classList", sd.getClassList(acc.getId()));
+            }
+            request.setAttribute("correctNum", correct);
+            request.setAttribute("numOfQues", sd.getNumOfQuestions(submitId));
+            request.setAttribute("lid", sd.getQuizLessonId(submitId));
+            request.setAttribute("timeleft", sd.getSecondLeft(submitId));
+
+            request.getRequestDispatcher("trainee/quiz-handler.jsp").forward(request, response);
         }
         
-        if (acc.getRole().getId() == 4) {
-            request.setAttribute("classList", sd.getClassList(acc.getId()));
-        }
-        request.setAttribute("correctNum", correct);
-        request.setAttribute("numOfQues", sd.getNumOfQuestions(submitId));
-        request.setAttribute("lid", sd.getQuizLessonId(submitId));
-        
-        request.getRequestDispatcher("trainee/quiz-handler.jsp").forward(request, response);
     } 
 
     /** 

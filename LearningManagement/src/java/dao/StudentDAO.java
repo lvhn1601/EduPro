@@ -15,6 +15,7 @@ import model.Chapter;
 import model.Class;
 import model.Config;
 import model.Dimension;
+import model.PracticeQuiz;
 import model.Question;
 import model.Quiz;
 import model.QuizResult;
@@ -206,6 +207,31 @@ public class StudentDAO extends DBContext {
         return list;
     }
 
+    public List<Question> getFixedQuestions(int quiz) {
+        String sql = "select question.question_id, question_detail from quiz_question\n"
+                + "join question on quiz_question.question_id = question.question_id\n"
+                + "where quiz_id = ?";
+
+        List<Question> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, quiz);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(Question.builder()
+                        .id(rs.getInt("question_id"))
+                        .detail(rs.getString("question_detail"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
     public void addQuestionsToQuiz(int submitId, int questionId, int quesNum) {
         String sql = "insert into quizsubmit_question values (?, ?, ?)";
 
@@ -254,7 +280,7 @@ public class StudentDAO extends DBContext {
                 return Question.builder()
                         .id(rs.getInt("question_id"))
                         .detail(rs.getString("question_detail"))
-                        .answers(getAnswersOfQuestion(rs.getInt("question_id"), getCorrect))
+                        .answers(getAnswersOfQuestion(rs.getInt("question_id"), submitId, getCorrect))
                         .correct_id(countCorrect(rs.getInt("question_id")))
                         .build();
             }
@@ -263,11 +289,8 @@ public class StudentDAO extends DBContext {
         return null;
     }
 
-    public List<Answer> getAnswersOfQuestion(int quesId, boolean getCorrect) {
-        String sql = "select answer.answer_id, answer_detail, quiz_answer.answer_id as choose_id, answer_correct from answer\n"
-                + "left join quiz_answer on answer.answer_id = quiz_answer.answer_id\n"
-                + "where answer_question_id = ?\n"
-                + "group by (answer.answer_id)";
+    public List<Answer> getAnswersOfQuestion(int quesId, int submitId, boolean getCorrect) {
+        String sql = "select * from answer where answer_question_id = ?";
 
         List<Answer> list = new ArrayList<>();
 
@@ -280,7 +303,7 @@ public class StudentDAO extends DBContext {
                 Answer answer = Answer.builder()
                         .id(rs.getInt("answer_id"))
                         .detail(rs.getString("answer_detail"))
-                        .choose(rs.getInt("choose_id") != 0)
+                        .choose(choosenAnswer(rs.getInt("answer_id"), submitId))
                         .build();
 
                 if (getCorrect) {
@@ -292,6 +315,23 @@ public class StudentDAO extends DBContext {
         } catch (SQLException e) {
         }
         return list;
+    }
+
+    public boolean choosenAnswer(int answerId, int submitId) {
+        String sql = "select * from quiz_answer where answer_id = ? and quizsubmit_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, answerId);
+            ps.setInt(2, submitId);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+        }
+        return false;
     }
 
     public int countCorrect(int quesId) {
@@ -341,14 +381,24 @@ public class StudentDAO extends DBContext {
     }
 
     public int countMark(int submitId) {
-        String sql = "select count(quiz_answer.answer_id)/count(answer.answer_id) * 100 as mark from quiz_answer\n"
-                + "right join answer on quiz_answer.answer_id = answer.answer_id\n"
-                + "right join quizsubmit_question on quizsubmit_question.question_id = answer_question_id\n"
-                + "where quizsubmit_question.quizsubmit_id = ? and answer_correct = 1;";
+        String sql = "select myVal / maxVal * 100 AS mark\n"
+                + "FROM (\n"
+                + "    SELECT COUNT(*) AS myVal\n"
+                + "    FROM quiz_answer\n"
+                + "    RIGHT JOIN answer ON quiz_answer.answer_id = answer.answer_id\n"
+                + "    WHERE quizsubmit_id = ? AND answer_correct = 1\n"
+                + ") AS subquery1\n"
+                + "CROSS JOIN (\n"
+                + "    SELECT COUNT(*) AS maxVal\n"
+                + "    FROM quizsubmit_question\n"
+                + "    JOIN answer ON answer_question_id = question_id\n"
+                + "    WHERE quizsubmit_id = ? AND answer_correct = 1\n"
+                + ") AS subquery2;";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, submitId);
+            ps.setInt(2, submitId);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -408,6 +458,7 @@ public class StudentDAO extends DBContext {
                         .status(rs.getBoolean("quizsubmit_status"))
                         .score(rs.getInt("quizsubmit_score"))
                         .submit_at(rs.getString("submit_at"))
+                        .expired(quizExpired(rs.getInt("quizsubmit_id")))
                         .build()
                 );
             }
@@ -417,11 +468,12 @@ public class StudentDAO extends DBContext {
         return list;
     }
 
-    public List<Quiz> getPracticeQuizzes(int traineeId) {
-        String sql = "select * from quiz\n"
-                + "where quiz_practice = 1 and created_by = ?";
+    public List<PracticeQuiz> getPracticeQuizzes(int traineeId) {
+        String sql = "select quiz_id, quiz_title, quiz_config_by, quiz_dimension_type, quiz_num_of_question, practice_quiz_time, practice_quiz_result from practice_quiz\n"
+                + "join quiz on practice_quiz_id = quiz_id\n"
+                + "where created_by = ?";
 
-        List<Quiz> list = new ArrayList<>();
+        List<PracticeQuiz> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -429,12 +481,14 @@ public class StudentDAO extends DBContext {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(Quiz.builder()
+                list.add(PracticeQuiz.builder()
                         .id(rs.getInt("quiz_id"))
                         .title(rs.getString("quiz_title"))
-                        .config_by(rs.getBoolean("quiz_config_by"))
-                        .dimension_type(rs.getString("quiz_dimension_type"))
-                        .num_of_question(rs.getInt("quiz_num_of_question"))
+                        .questionGroup(rs.getBoolean("quiz_config_by"))
+                        .source(rs.getString("quiz_dimension_type"))
+                        .numOfQuestion(rs.getInt("quiz_num_of_question"))
+                        .spentTime(rs.getInt("practice_quiz_time"))
+                        .result(rs.getInt("practice_quiz_result"))
                         .build()
                 );
             }
@@ -447,7 +501,7 @@ public class StudentDAO extends DBContext {
     public boolean addPracticeQuiz(String title, boolean configBy, int totalNum, String dimensionType, int creator) {
         String sql = "insert into quiz(quiz_title, quiz_config_by, quiz_num_of_question, quiz_dimension_type, quiz_practice, created_by, update_by)\n"
                 + "values (?, ?, ?, ?, 1, ?, ?)";
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, title);
@@ -464,10 +518,10 @@ public class StudentDAO extends DBContext {
             return false;
         }
     }
-    
+
     public int getQuizId(int creator) {
         String sql = "select max(quiz_id) as num from quiz where created_by = ?";
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, creator);
@@ -480,7 +534,7 @@ public class StudentDAO extends DBContext {
         }
         return 0;
     }
-    
+
     public boolean addConfig(boolean type, int config, int num_of_question, int quiz) {
         String sql;
 
@@ -505,5 +559,65 @@ public class StudentDAO extends DBContext {
         } catch (SQLException e) {
             return false;
         }
+    }
+
+    public boolean addPracticeQuiz(int quiz) {
+        String sql = "insert into practice_quiz(practice_quiz_id) values (?)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, quiz);
+
+            ps.execute();
+
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public int getSecondLeft(int submitId) {
+        String sql = "SELECT TIMESTAMPDIFF(second, NOW(), end_at) AS second_left\n"
+                + "FROM (\n"
+                + "    SELECT DATE_ADD(quiz_submit.created_at, INTERVAL quiz_lesson.quizlesson_duration MINUTE) AS end_at\n"
+                + "    FROM quiz_submit\n"
+                + "    JOIN quiz_lesson ON quiz_submit.quizlesson_id = quiz_lesson.lesson_id\n"
+                + "    WHERE quiz_submit.quizsubmit_id = ?\n"
+                + ") as subquery;";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, submitId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int s = rs.getInt("second_left");
+                return s < 0 ? 0 : s;
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
+
+    public boolean quizExpired(int submitId) {
+        String sql = "select current_timestamp() > end_at as expired \n"
+                + "FROM (\n"
+                + "    SELECT DATE_ADD(quiz_submit.created_at, INTERVAL quiz_lesson.quizlesson_duration + 1 MINUTE) AS end_at\n"
+                + "    FROM quiz_submit\n"
+                + "    JOIN quiz_lesson ON quiz_submit.quizlesson_id = quiz_lesson.lesson_id\n"
+                + "    WHERE quiz_submit.quizsubmit_id = ?\n"
+                + ") as subquery;";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, submitId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getBoolean("expired");
+            }
+        } catch (SQLException e) {
+        }
+        return true;
     }
 }

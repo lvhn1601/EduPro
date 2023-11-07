@@ -85,7 +85,7 @@
                                                                     <td class="p-3"><span class="badge rounded-md bg-${r.score >= lesson.passValue ? 'success' : 'danger'}"> ${r.status ? (r.score >= lesson.passValue ? "Finished" : "Not Pass") : "Not Submitted"} </span></td>
                                                                     <td class="p-3">${r.submit_at}</td>
                                                                     <td class="p-3">${r.score}</td>
-                                                                    <td class="p-3"><a href="quiz?action=review&id=${r.id}&qnum=1&classid=${param.classid}" class="text-info">Review</a></td>
+                                                                    <td class="p-3"><a href="quiz?action=${!r.expired && !r.status ? 'take' : 'review'}&id=${r.id}&qnum=1&classid=${param.classid}" class="text-info">${!r.expired && !r.status ? 'Continue' : 'Review'}</a></td>
                                                                 </tr>
                                                             </c:forEach>
                                                         </tbody>

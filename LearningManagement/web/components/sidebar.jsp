@@ -63,7 +63,7 @@
                     <li><a href="#"><i class="il uil-files-landscapes-alt me-2 d-inline-block"></i>Assignments</a></li>
                     <li><a href="#"><i class="uil uil-table me-2 d-inline-block"></i>Grades</a></li>
                     <li><a href="#"><i class="uil uil-comments-alt me-2 d-inline-block"></i>Discussions</a></li>
-                    <li><a href="#"><i class="uil uil-swatchbook me-2 d-inline-block"></i>Practice Quizzes</a></li></ul>
+                    <li><a href="practice-quizzes?classid=${param.classid}"><i class="uil uil-swatchbook me-2 d-inline-block"></i>Practice Quizzes</a></li></ul>
                 </c:if>
             </c:if>
         </ul>

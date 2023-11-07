@@ -567,7 +567,7 @@ public class ManagerDAO extends DBContext {
     }
 
     public List<Quiz> getListQuizzes(int subject_id) {
-        String sql = "select * from quiz where quiz_subject_id = ? and quiz_status = 1";
+        String sql = "select * from quiz where quiz_subject_id = ? and quiz_status = 1 and quiz_practice = 0";
 
         List<Quiz> list = new ArrayList<>();
 

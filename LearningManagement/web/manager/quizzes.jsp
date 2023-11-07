@@ -82,7 +82,7 @@
                         <div class="d-md-flex justify-content-between mt-4">
                             <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNew" onclick="showAddNew()"><i class="uil uil-plus"></i> New Quiz</a>
 
-                            <div class="col-sm-12 col-md-3 d-flex align-items-center">
+<!--                            <div class="col-sm-12 col-md-3 d-flex align-items-center">
                                 <h6 class="mb-0" style="padding-right: 5px">Subject: </h6>
                                 <div class="mb-0 position-relative w-100">
                                     <select class="form-control bg-white rounded-md" id="filter-subject">
@@ -92,7 +92,7 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                            </div><!--end col-->
+                            </div>-->
 
                             <div class="search-bar p-0 d-none d-lg-block ms-2">
                                 <div id="search" class="menu-search mb-0">
@@ -103,7 +103,7 @@
                             </div>
                         </div>
                                 
-                        <div class="d-flex justify-content-between" id="filter-container">
+                        <div class="d-flex justify-content-center mt-4" id="filter-container">
                             
                         </div>
 
@@ -118,7 +118,6 @@
                                                 <th class="border-bottom p-3">Subject</th>
                                                 <th class="border-bottom p-3">Chapter</th>
                                                 <th class="border-bottom p-3">Type</th>
-                                                <th class="border-bottom p-3">Created by</th>
                                                 <th class="border-bottom p-3">Status</th>
                                                 <th class="border-bottom p-3" style="min-width: 50px;"></th>
                                             </tr>
@@ -135,13 +134,7 @@
                                                     <td class="p-3">${q.subject.code}</td>
                                                     <td class="p-3">${q.chapter.title}</td>
                                                     <td class="p-3">${q.type ? "Random" : "Fixed"}</td>
-                                                    <td class="p-3">${q.created_by}</td>
-                                                    
-                                                    <td class="p-3">
-                                                        <form class="form-check form-switch">
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault ${q.id}" ${q.status ? 'checked' : ''} onchange="updateStatus(this, ${q.id})">
-                                                        </form>
-                                                    </td>
+                                                    <td class="p-3">${q.status ? 'Active' : 'Inactive'}</td>
                                                     
                                                     <td class="text-end p-3">
                                                         <a href="#"
@@ -576,18 +569,73 @@
             let table = new DataTable('#quizzes-table', {
                 scrollX: false,
                 //searching: false,
-                lengthChange: false
+                lengthChange: false,
+                initComplete: function () {
+                    this.api()
+                        .columns([2, 3, 4, 5])
+                        .every(function () {
+                            let column = this;
+
+                            // Create select element
+                            let select = document.createElement('select');
+                            select.add(new Option('All', ''));
+                            select.classList.add("form-control", "bg-white", "rounded-md");
+                            var ft = createSubjectFilter(column.header().innerHTML, select);
+                            document.getElementById('filter-container').appendChild(ft);
+
+                            // Apply listener for user change in value
+                            select.addEventListener('change', function () {
+                                var val = DataTable.util.escapeRegex(select.value);
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                            // Add list of options
+                            column
+                                .data()
+                                .unique()
+                                .sort()
+                                .each(function (d, j) {
+                                    select.add(new Option(d));
+                                });
+                        });
+                }
             });
+            
+            function createSubjectFilter(name, select) {
+                // Create the parent <div> element
+                var divElement = document.createElement("div");
+                divElement.className = "col-sm-12 col-md-2 d-flex align-items-center ms-3";
+
+                // Create the <h6> element
+                var h6Element = document.createElement("h6");
+                h6Element.className = "mb-0";
+                h6Element.style.paddingRight = "5px";
+                h6Element.textContent = name + ": ";
+
+                // Create the <div> element
+                var innerDivElement = document.createElement("div");
+                innerDivElement.className = "mb-0 position-relative w-100";
+
+                // Append elements to their respective parents
+                innerDivElement.appendChild(select);
+                divElement.appendChild(h6Element);
+                divElement.appendChild(innerDivElement);
+
+                return divElement;
+              }
             
             const ftSubject = document.getElementById('filter-subject');
             
-            ftSubject.addEventListener('change', function () {
-                var val = DataTable.util.escapeRegex(ftSubject.value);
-
-                table.column(2)
-                    .search(val ? '^' + val + '$' : '', true, false)
-                    .draw();
-            });
+//            ftSubject.addEventListener('change', function () {
+//                var val = DataTable.util.escapeRegex(ftSubject.value);
+//
+//                table.column(2)
+//                    .search(val ? '^' + val + '$' : '', true, false)
+//                    .draw();
+//            });
             
             const searchBox = document.getElementById('searchBox');
             
@@ -959,21 +1007,21 @@
             }
             // Javascript for modal addNew end
             
-            function jumpTo(page_num) {
-                let search = "${param.search eq null ? '' : param.search}";
-                let subject = ${param.subject eq null ? 0 : param.subject};
-                location.href = "./quizzes?page=" + Math.floor(page_num) + (search == "" ? "" : "&search=" + search) + (subject == 0 ? "" : "&subject=" + subject);
-            }
-            
-            function updateStatus(element, id) {
-                var isChecked = element.checked;
-                
-                fetch("../admin/updateStatus?table=quiz&id=" + id + "&isChecked=" + isChecked)
-                        .then(response => response.text())
-                        .then(data => {
-                            console.log(data);
-                        });
-            }
+//            function jumpTo(page_num) {
+//                let search = "${param.search eq null ? '' : param.search}";
+//                let subject = ${param.subject eq null ? 0 : param.subject};
+//                location.href = "./quizzes?page=" + Math.floor(page_num) + (search == "" ? "" : "&search=" + search) + (subject == 0 ? "" : "&subject=" + subject);
+//            }
+//            
+//            function updateStatus(element, id) {
+//                var isChecked = element.checked;
+//                
+//                fetch("../admin/updateStatus?table=quiz&id=" + id + "&isChecked=" + isChecked)
+//                        .then(response => response.text())
+//                        .then(data => {
+//                            console.log(data);
+//                        });
+//            }
             
             //updateDatas(null);
             switchQuizType();

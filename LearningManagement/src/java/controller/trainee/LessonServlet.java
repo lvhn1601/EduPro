@@ -120,6 +120,13 @@ public class LessonServlet extends HttpServlet {
                     i++;
                     sd.addQuestionsToQuiz(submitId, q.getId(), i);
                 }
+            } else {
+                List<Question> listQues = sd.getFixedQuestions(quiz.getId());
+                int i = 0;
+                for (Question q : listQues) {
+                    i++;
+                    sd.addQuestionsToQuiz(submitId, q.getId(), i);
+                }
             }
             
             response.sendRedirect("quiz?action=take&id=" + submitId + "&qnum=1&classid=" + request.getParameter("classid"));

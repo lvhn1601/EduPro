@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,12 +14,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class QuizResult {
+public class PracticeQuiz {
     private int id;
-    private Lesson lesson;
-    private Account submitter;
-    private boolean status;
-    private int score;
-    private String submit_at;
-    private boolean expired;
+    private String title;
+    private boolean questionGroup;
+    private String source;
+    private int numOfQuestion;
+    private int spentTime;
+    private int result;
 }

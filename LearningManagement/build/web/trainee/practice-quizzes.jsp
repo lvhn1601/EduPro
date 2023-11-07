@@ -110,11 +110,11 @@
                                                             <span class="ms-2">${q.title}</span>
                                                         </div>
                                                     </td>
-                                                    <td class="p-3">${q.config_by ? 'Chapter' : 'Dimension'}</td>
-                                                    <td class="p-3">${q.dimension_type}</td>
-                                                    <td class="p-3">${q.num_of_question}</td>
-                                                    <td class="p-3"></td>
-                                                    <td class="p-3"></td>
+                                                    <td class="p-3">${q.questionGroup ? 'Chapter' : 'Dimension'}</td>
+                                                    <td class="p-3">${q.source}</td>
+                                                    <td class="p-3">${q.numOfQuestion}</td>
+                                                    <td class="p-3">${q.spentTime == 0 ? '' : q.spentTime}</td>
+                                                    <td class="p-3">${q.result == 0 ? '' : q.result}</td>
 
                                                     <td class="p-3">
                                                         <a href="#" class="text-info">Take</a>

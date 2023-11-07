@@ -103,6 +103,7 @@ public class PracticeQuizzesServlet extends HttpServlet {
         
         success = sd.addPracticeQuiz(title, configBy, totalNum, dimensionType, acc.getId()) ? success : false;
         int id = sd.getQuizId(acc.getId());
+        success = sd.addPracticeQuiz(id) ? success : false;
         
         String[] nums = request.getParameterValues("numOfQues");
         if (configBy) {
