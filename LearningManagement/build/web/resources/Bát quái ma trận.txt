@@ -1,0 +1,33 @@
+1. barelrc
+	Quản lí đường dẫn, chuyển đổi mã Javascript ECMAScript từ đời 2015 trở lên thành các mã Javascript đời thấp hơn để có thể tương thích ngược với các trình duyệt, môi trường hiện tại hoặc cũ hơn.
+	npm init -y
+	npm install --save-dev @babel/core @babel/preset-env
+
+2. env.development
+	Định nghĩa cái biến môi trường
+
+3. gitignore
+	Bỏ qua file khi commit
+
+4. prettierrc
+	Làm đẹp, form code
+
+5. config-overrides.js
+	Lợi ích của việc sử dụng config-overrides.js là bạn có thể tùy chỉnh cấu hình của dự án mà không cần sửa đổi các tệp cấu hình gốc, điều này giúp dự án của bạn dễ bảo trì và cập nhật.
+
+6. package-lock.json
+	Package-lock.json chứa thông tin về các phiên bản cụ thể của các gói phụ thuộc của dự án cùng với các phiên bản của các gói phụ thuộc của chúng. Mục đích chính của nó là đảm bảo tính nhất quán và đáng tin cậy trong việc quản lý các gói phụ thuộc trong dự án.
+
+Các công dụng chính của package-lock.json là:
+
+Tích hợp đồng nhất: Package-lock.json đảm bảo rằng tất cả thành viên trong dự án sử dụng các phiên bản cụ thể của các gói phụ thuộc. Điều này giúp đảm bảo rằng môi trường phát triển trên máy tính cá nhân và các máy chủ thực thi là đồng nhất.
+
+Quản lý phiên bản tự động: Khi bạn cài đặt hoặc cập nhật một gói trong dự án của bạn bằng npm hoặc Yarn, tệp package-lock.json sẽ được cập nhật tự động để ghi lại phiên bản cụ thể của gói và tất cả các gói phụ thuộc của nó. Điều này giúp tránh việc xảy ra sự không nhất quán trong các phiên bản.
+
+Nâng cấp gói nhanh hơn: Với package-lock.json, npm và Yarn có thể nâng cấp gói một cách nhanh chóng và an toàn bằng cách tìm kiếm và cài đặt phiên bản mới nhất mà không cần kiểm tra tất cả các phiên bản khả dụng.
+
+Bảo mật: Package-lock.json giúp đảm bảo rằng dự án của bạn không bị ảnh hưởng bởi các lỗ hổng bảo mật trong các phiên bản cũ của các gói.
+
+7. package.json
+
+Package.json là một tệp cấu hình cho dự án JavaScript hoặc Node.js, và nó chứa thông tin về dự án, các phụ thuộc, và các tùy chọn khác liên quan đến quản lý mã nguồn và các công cụ phát triển.
