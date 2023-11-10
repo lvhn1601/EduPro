@@ -16,10 +16,14 @@ import lombok.ToString;
 public class Quiz {
     private int id;
     private String title;
+    private String description;
     private boolean type;
     private Subject subject;
     private Chapter chapter;
     private boolean status;
+    private boolean config_by;
+    private String dimension_type;
+    private int num_of_question;
     private String created_by;
     private String created_at;
     private String update_by;

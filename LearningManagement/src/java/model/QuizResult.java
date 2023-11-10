@@ -4,15 +4,6 @@
  */
 package model;
 
-/**
- *
- * @author acer
- */
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,12 +14,11 @@ import lombok.ToString;
 @Setter
 @ToString
 public class QuizResult {
-
     private int id;
     private Lesson lesson;
     private Account submitter;
     private boolean status;
-    private Float score;
+    private int score;
     private String submit_at;
-
+    private boolean expired;
 }
