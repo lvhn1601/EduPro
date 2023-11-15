@@ -5,6 +5,7 @@
 package controller;
 
 import dao.ClassDAO;
+import dao.StudentDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,9 +16,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import model.Account;
 import model.Assignment;
 import model.AssignmentSubmit;
+import model.Chapter;
 
 /**
  *
@@ -87,6 +90,31 @@ public class AssignmentDetailController extends HttpServlet {
 
         request.setAttribute("asmSub", asmSub);
         request.setAttribute("asm", asm);
+        
+        StudentDAO sd = new StudentDAO();
+        
+        // Data cho Sidebar
+        int sid = Integer.parseInt(request.getParameter("subject"));
+        List<model.Class> listClasses = sd.getClassList(accountCur.getId(), sid);
+        
+        if (accountCur.getRole().getId() == 4) {
+            request.setAttribute("classList", listClasses);
+        }
+        
+        String cid_raw = request.getParameter("classid");
+        
+        int cid = 0;
+        if (cid_raw != null) {
+            cid = Integer.parseInt(cid_raw);
+        } else {
+            cid = listClasses.get(0).getClass_id();
+        }
+        request.setAttribute("classId", cid);
+        
+        List<Chapter> listChapters = sd.getChaptersList(sid);
+        request.setAttribute("materials", listChapters);
+        // Het
+        
         request.getRequestDispatcher("assignment-detail.jsp").forward(request, response);
     }
 

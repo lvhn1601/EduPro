@@ -58,7 +58,7 @@ public class SignInController extends HttpServlet {
             if (account != null) {
                 session.setAttribute("accountCur", account);
                 if (account.getRole().getId() == 4) {
-                    response.sendRedirect("/LearningManagement/assignment-detail?id=35");
+                    response.sendRedirect("dashboard");
                 }
                 if (account.getRole().getId() == 1) {
                     response.sendRedirect("admin/users");

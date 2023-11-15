@@ -39,28 +39,28 @@
             </c:if>
                 
             <c:if test="${sessionScope.accountCur.role.id eq 4}">
-                <li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                <li><a href="dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                 <c:if test="${classList != null}">
                     <div class="mb-0 position-relative w-75 ms-4">
-                        <select class="form-control bg-white rounded-md" onchange="">
+                        <select class="form-control bg-white rounded-md">
                                 <c:forEach items="${classList}" var="c">
-                                    <option value="${c.class_id}" ${c.class_id == param.classid ? 'selected' : ''}>${c.class_name}</option>
+                                    <option value="${c.class_id}" ${c.class_id == classId ? 'selected' : ''}>${c.class_name}</option>
                                 </c:forEach>
                         </select>
                     </div>
                 </c:if>
-                <c:if test="${param.classid != null}">
+                <c:if test="${classId != null}">
                     <li class="sidebar-dropdown active">
                         <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Class Materials</a>
                         <div class="sidebar-submenu d-block">
                             <ul>
-                                <li><a href="#">Chapter 1</a></li>
-                                <li><a href="#">Chapter 2</a></li>
-                                <li><a href="#">Chapter 3</a></li>
+                                <c:forEach items="${materials}" var="m">
+                                    <li><a href="class-dashboard?subject=${param.subject}&classid=${classId}&chapter=${m.display_order}">${m.title}</a></li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </li>
-                    <li><a href="#"><i class="il uil-files-landscapes-alt me-2 d-inline-block"></i>Assignments</a></li>
+                    <li><a href="assignment?subject=${param.subject}&classId=${classId}"><i class="il uil-files-landscapes-alt me-2 d-inline-block"></i>Assignments</a></li>
                     <li><a href="#"><i class="uil uil-table me-2 d-inline-block"></i>Grades</a></li>
                     <li><a href="#"><i class="uil uil-comments-alt me-2 d-inline-block"></i>Discussions</a></li>
                     <li><a href="practice-quizzes?classid=${param.classid}"><i class="uil uil-swatchbook me-2 d-inline-block"></i>Practice Quizzes</a></li></ul>

@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import model.Account;
+import model.Chapter;
 import model.Config;
 import model.Lesson;
 import model.Question;
@@ -72,7 +73,25 @@ public class LessonServlet extends HttpServlet {
         Lesson lesson = md.getLessonWithId(id);
         
         if (acc.getRole().getId() == 4) {
-            request.setAttribute("classList", sd.getClassList(acc.getId()));
+            // Data cho Sidebar
+            int sid = Integer.parseInt(request.getParameter("subject"));
+            List<model.Class> listClasses = sd.getClassList(acc.getId(), sid);
+
+            request.setAttribute("classList", listClasses);
+
+            String cid_raw = request.getParameter("classid");
+
+            int cid = 0;
+            if (cid_raw != null) {
+                cid = Integer.parseInt(cid_raw);
+            } else {
+                cid = listClasses.get(0).getClass_id();
+            }
+            request.setAttribute("classId", cid);
+
+            List<Chapter> listChapters = sd.getChaptersList(sid);
+            request.setAttribute("materials", listChapters);
+            // Het
         }
         
         if (lesson.getType().equalsIgnoreCase("quiz")) {

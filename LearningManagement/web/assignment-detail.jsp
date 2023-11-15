@@ -53,16 +53,6 @@
             font-weight: bold;
         }
 
-        nav a {
-            padding: 5px 10px;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        nav a:hover {
-            background-color: #333;
-        }
-
         main {
             padding: 20px;
         }
@@ -139,16 +129,6 @@
 
     </style>
     <body>
-        <!-- Loader -->
-        <div id="preloader">
-            <div id="status">
-                <div class="spinner">
-                    <div class="double-bounce1"></div>
-                    <div class="double-bounce2"></div>
-                </div>
-            </div>
-        </div>
-        <!-- Loader -->
 
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="components/sidebar.jsp"/>

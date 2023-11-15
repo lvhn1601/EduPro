@@ -15,10 +15,12 @@ import model.Chapter;
 import model.Class;
 import model.Config;
 import model.Dimension;
+import model.Lesson;
 import model.PracticeQuiz;
 import model.Question;
 import model.Quiz;
 import model.QuizResult;
+import model.Subject;
 
 /**
  *
@@ -26,6 +28,60 @@ import model.QuizResult;
  */
 public class StudentDAO extends DBContext {
 
+    public List<Subject> getSubjectList(int user_id) {
+        String sql = "select subject_id, subject_code, subject_name from subject\n"
+                + "join class on class_subject_id = subject_id\n"
+                + "join class_trainee on class.class_id = class_trainee.class_id\n"
+                + "where class_trainee.trainee_id = ? and subject_status = 1";
+
+        List<Subject> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, user_id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Subject.builder()
+                        .id(rs.getInt("subject_id"))
+                        .code(rs.getString("subject_code"))
+                        .name(rs.getString("subject_name"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public List<Class> getClassList(int user_id, int sid) {
+        String sql = "select class.class_id, class_name from class\n"
+                + "join class_trainee on class.class_id = class_trainee.class_id\n"
+                + "where class_trainee.trainee_id = ? and class_subject_id = ? and class_status = 1 and class_end >= curdate()";
+
+        List<Class> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, user_id);
+            ps.setInt(2, sid);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Class.builder()
+                        .class_id(rs.getInt("class_id"))
+                        .class_name(rs.getString("class_name"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    // Xoa
     public List<Class> getClassList(int user_id) {
         String sql = "select * from class \n"
                 + "join class_trainee on class.class_id = class_trainee.class_id\n"
@@ -49,6 +105,82 @@ public class StudentDAO extends DBContext {
         }
 
         return list;
+    }
+
+    public List<Chapter> getChaptersList(int subject_id) {
+        String sql = "select * from chapter where chapter_subject_id = ? and chapter_status = 1\n"
+                + "order by chapter_display_order";
+
+        List<Chapter> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, subject_id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Chapter.builder()
+                        .id(rs.getInt("chapter_id"))
+                        .title(rs.getString("chapter_title"))
+                        .description(rs.getString("chapter_description"))
+                        .display_order(rs.getInt("chapter_display_order"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public List<Lesson> getLessonsList(int chapter_id) {
+        String sql = "select * from lesson where lesson_chapter_id = ? and lesson_status = 1\n"
+                + "order by lesson_display_order";
+
+        List<Lesson> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, chapter_id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Lesson.builder()
+                        .id(rs.getInt("lesson_id"))
+                        .type(rs.getString("lesson_type"))
+                        .title(rs.getString("lesson_title"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public Class getClassWithId(int classId) {
+        String sql = "select class_id, class_name, class_start, class_end, account_name from class\n"
+                + "join account on class_trainer_id = account_id \n"
+                + "where class_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, classId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return Class.builder()
+                        .class_id(rs.getInt("class_id"))
+                        .class_name(rs.getString("class_name"))
+                        .class_trainer_name(rs.getString("account_name"))
+                        .class_start(rs.getDate("class_start"))
+                        .class_end(rs.getDate("class_end"))
+                        .build();
+            }
+        } catch (SQLException e) {
+        }
+        
+        return null;
     }
 
     public int getSubjectId(int classId) {
