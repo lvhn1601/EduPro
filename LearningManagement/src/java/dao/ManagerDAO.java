@@ -807,7 +807,7 @@ public class ManagerDAO extends DBContext {
             return false;
         }
     }
-    
+
     public boolean deleteAllQuestion(int quiz_id) {
         String sql = "delete from quiz_question WHERE quiz_id = ?";
 
@@ -1584,6 +1584,64 @@ public class ManagerDAO extends DBContext {
             e.printStackTrace(System.out);
         }
         return listClass;
+    }
+
+    public boolean updateClass(String class_name, int class_subject_id, int class_semester_id,
+            int class_trainer_id, Boolean class_status, Date class_start, Date class_end,
+            int update_by, LocalDateTime update_at, int class_id) {
+        int check = 0;
+        String sql = "UPDATE edupro.class\n"
+                + "SET class_name = ?,\n"
+                + "    class_subject_id = ?,\n"
+                + "    class_semester_id = ?,\n"
+                + "    class_trainer_id = ?,\n"
+                + "    class_status = ?,\n"
+                + "    class_start = ?,\n"
+                + "    class_end = ?,\n"
+                + "    update_by = ?,\n"
+                + "    update_at = ?\n"
+                + "WHERE class_id = ?;";
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setObject(1, class_name);
+            ps.setObject(2, class_subject_id);
+            ps.setObject(3, class_semester_id);
+            ps.setObject(4, class_trainer_id);
+            ps.setObject(5, class_status);
+            ps.setObject(6, class_start);
+            ps.setObject(7, class_end);
+            ps.setObject(8, update_by);
+            ps.setObject(9, update_at);
+            ps.setObject(10, class_id);
+            check = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return check > 0;
+    }
+
+    public List<Account> getTrainee(int classDetailId) {
+        String sql = "SELECT account_id,account_email,account_name, account_phone FROM edupro.account Join class_trainee ON class_trainee.trainee_id = account.account_id where class_id = ?";
+
+        List<Account> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setObject(1, classDetailId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Account.builder()
+                        .id(rs.getInt("account_id"))
+                        .email(rs.getString("account_email"))
+                        .name(rs.getString("account_name"))
+                        .phone(rs.getString("account_phone"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
     }
 
     public static void main(String[] args) {
