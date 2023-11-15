@@ -67,7 +67,7 @@ public class SignInController extends HttpServlet {
                     response.sendRedirect("manager/subject-list");
                 }
                 if (account.getRole().getId() == 3) {
-                    response.sendRedirect("assignment?classId=1");
+                    response.sendRedirect("dashboard");
                 }
                 return;
             }
@@ -99,7 +99,7 @@ public class SignInController extends HttpServlet {
                         response.sendRedirect("manager/subject-list");
                     }
                     if (account.getRole().getId() == 3) {
-                        response.sendRedirect("/LearningManagement");
+                        response.sendRedirect("dashboard");
                     }
                     foundMatch = true;
                     return;

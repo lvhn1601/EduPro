@@ -75,8 +75,8 @@ public class LessonServlet extends HttpServlet {
         if (acc.getRole().getId() == 4) {
             // Data cho Sidebar
             int sid = Integer.parseInt(request.getParameter("subject"));
-            List<model.Class> listClasses = sd.getClassList(acc.getId(), sid);
-
+            List<model.Class> listClasses = sd.getClassList(acc.getId(), sid, acc.getRole().getId());
+        
             request.setAttribute("classList", listClasses);
 
             String cid_raw = request.getParameter("classid");

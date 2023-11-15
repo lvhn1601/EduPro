@@ -65,11 +65,9 @@ public class ClassDashboardServlet extends HttpServlet {
         
         // Data cho Sidebar
         int sid = Integer.parseInt(request.getParameter("subject"));
-        List<Class> listClasses = sd.getClassList(acc.getId(), sid);
+        List<Class> listClasses = sd.getClassList(acc.getId(), sid, acc.getRole().getId());
         
-        if (acc.getRole().getId() == 4) {
-            request.setAttribute("classList", listClasses);
-        }
+        request.setAttribute("classList", listClasses);
         
         String cid_raw = request.getParameter("classid");
         

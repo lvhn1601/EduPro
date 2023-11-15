@@ -62,6 +62,8 @@ public class UserDashboardServlet extends HttpServlet {
         
         if (acc.getRole().getId() == 4) {
             request.setAttribute("subjects", sd.getSubjectList(acc.getId()));
+        } else if (acc.getRole().getId() == 3) {
+            request.setAttribute("subjects", sd.getSubjectsListOfTrainer(acc.getId()));
         }
         
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);

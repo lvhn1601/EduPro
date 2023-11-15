@@ -95,11 +95,9 @@ public class AssignmentDetailController extends HttpServlet {
         
         // Data cho Sidebar
         int sid = Integer.parseInt(request.getParameter("subject"));
-        List<model.Class> listClasses = sd.getClassList(accountCur.getId(), sid);
+        List<model.Class> listClasses = sd.getClassList(accountCur.getId(), sid, accountCur.getRole().getId());
         
-        if (accountCur.getRole().getId() == 4) {
-            request.setAttribute("classList", listClasses);
-        }
+        request.setAttribute("classList", listClasses);
         
         String cid_raw = request.getParameter("classid");
         
