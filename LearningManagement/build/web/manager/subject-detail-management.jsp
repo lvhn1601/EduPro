@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Users Manager - LMS</title>
+        <title>Subject - Manager</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -21,6 +21,9 @@
         <!-- simplebar -->
         <link href="../assets/css/simplebar.css" rel="stylesheet" type="text/css" />
         <!-- Icons -->
+        <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
+        <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
@@ -28,14 +31,11 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
             />
-        <link 
-            <link href="../assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/css/remixicon.css" rel="stylesheet" type="text/css" />
-        <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css"  rel="stylesheet">
         <!-- Css -->
         <link href="../assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <!-- Icon Font Stylesheet -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
+        <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     </head>
     <style>
         .page-wrapper .sidebar-wrapper {
@@ -146,13 +146,6 @@
 
 
 
-
-        /* Áp dụng khi modal và overlay được kích hoạt */
-
-
-
-
-        /* Áp dụng khi modal và overlay được kích hoạt */
         #dimensionModal.active,
         .overlay.active {
             display: block;
@@ -202,12 +195,13 @@
 
     <div class="page-wrapper doctris-theme toggled">
         <jsp:include page="../components/sidebar.jsp"/>
-        <main class="page-content bg-light ">                
+        <main class="page-content bg-light "style="width: 100%;
+              height: 100%;">                
             <h1 style="margin: 100px 0px 0px 30px">Subject detail</h1>
             <div id="subjectDropdownContainer" onchange="changeSubject()">
                 <select id="subjectDropdown" >
                     <c:forEach items="${requestScope.subjects}" var="s">
-                        <option value="${s.id}">${s.name}</option>
+                        <option value="${s.id}">${s.code}</option>
                     </c:forEach>
                     <!-- Thêm các môn học khác nếu cần -->
                 </select>
@@ -227,26 +221,20 @@
 
                         <div class="col-md-4">
                             <label for="code">Subject Code</label>
-                            <input id="code" type="text" placeholder="${subject.code}" readonly=""/>
+                            <input id="code" type="text" placeholder="${subject.code}" disabled/>
                         </div>
                         <div class="col-md-8">
                             <label for="subject">Subject Name</label>
-                            <input id="subject" type="text" placeholder="${subject.name}" readonly=""/>
+                            <input id="subject" type="text" placeholder="${subject.name}" disabled/>
                         </div>
                         <div class="col-md-12">
                             <label for="manager">Manager</label>
-                            <input id="manager" type="text"  placeholder="${subject.manager.name}" readonly=""/>
+                            <input id="manager" type="text"  placeholder="${subject.manager.name}" disabled=""/>
                         </div>
                         <div class="col-md-6">
                             <label>Status</label>
                             <div class="radio-group">
-
-                                <label for="active">
-                                    <input type="radio" id="active" name="status" value="active" disabled ${subject.status eq true ? "checked" : ""}>Active
-                                </label>
-                                <label for="inactive">
-                                    <input type="radio" id="inactive" name="status" value="inactive" disabled ${subject.status eq true ? "" : "checked"}>Inactive
-                                </label>
+                                <input type="text" id="active" name="status" value="${subject.status eq true ? "Active" : "Inactive"}" disabled >
                             </div>
                         </div>
 
@@ -281,21 +269,19 @@
                                             <td>${c.title}</td>
                                             <td>${c.description}</td>
                                             <td>
-                                                <label for="active">
-                                                    <input type="radio"  disabled ${c.status eq true ? "checked" : ""}>Active
-                                                </label>
-                                                <label for="inactive">
-                                                    <input type="radio" disabled ${c.status eq true ? "" : "checked"}>Inactive
-                                                </label>
+                                                ${c.status eq true ? "Active" : "Inactive"} 
+<!--                                                <form class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" ${c.status == true ? 'checked' : ''} onchange="updateStatus(this,${u.id})">
+                                                </form>-->
                                             </td>
                                             <td style="text-align: center;">
                                                 <button style=" all: unset;"
                                                         onclick="openModal('${subject.id}', '${c.id}', '${c.status}', '${c.title}', '${c.description}'); event.preventDefault();">
                                                     <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                 </button>
-                                                <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
+<!--                                                <a href="#" onclick="confirmDeleteChapter('${subject.id}', '${c.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
-                                                </a>
+                                                </a>-->
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -320,9 +306,10 @@
 
                                 <tr>
                                     <th style="width: 3%; text-align: center;">ID</th>
-                                    <th style="width: 20%;text-align: center;">Type</th>
+                                    <th style="width: 10%;text-align: center;">Type</th>
                                     <th style="width: 25%;text-align: center;">Name</th>
-                                    <th style="width: 10%;text-align: center;">Status</th>
+                                    <th style="width: 25%;text-align: center;">Description</th>
+                                    <th style="width: 15%;text-align: center;">Status</th>
                                     <th style="width: 5%;text-align: center;">Action</th>
                                 </tr>
 
@@ -332,22 +319,24 @@
                                             <td>${loop.index + 1}</td>
                                             <td>${d.type}</td>
                                             <td>${d.name}</td>
-                                            <td>
-                                            <label for="active">
+                                            <td style="text-align: left;">${d.description}</td>
+                                            <td style="text-align: center;">
+                                                ${d.status eq true ? "Active" : "Inactive"} 
+<!--                                                <label for="active">
                                                     <input type="radio"  disabled ${d.status eq true ? "checked" : ""}>Active
                                                 </label>
                                                 <label for="inactive">
                                                     <input type="radio" disabled ${d.status eq true ? "" : "checked"}>Inactive
-                                                </label>
+                                                </label>-->
                                             </td>
                                             <td style="text-align: center;">
                                                 <button style=" all: unset;  "
-                                                        onclick="openModalx('${subject.id}', '${d.id}', '${d.status}', '${d.type}', '${d.name}'); event.preventDefault();">
+                                                        onclick="openModalx('${subject.id}', '${d.id}', '${d.status}', '${d.type}', '${d.name}', '${d.description}'); event.preventDefault();">
                                                     <i class="fa-solid fa-pen-to-square" style="color: #41d3e6;"></i>
                                                 </button>
-                                                <a href="#" onclick="confirmDeleteDimension('${subject.id}', '${d.id}')">
+<!--                                                <a href="#" onclick="confirmDeleteDimension('${subject.id}', '${d.id}')">
                                                     <i class="fa-solid fa-ban" style="color: #df2a2a;"></i>
-                                                </a>
+                                                </a>-->
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -362,36 +351,14 @@
     <%@include file="../modal/modal-update-subject-detail.jsp" %>
     <%@include file="../modal/modal-add-subject-detail.jsp" %>
 
-    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
 
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <p>Modal content goes here.</p>
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Add these links in the <head> section of your HTML -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <!-- javascript -->
     <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <!-- simplebar -->
     <script src="../assets/js/simplebar.min.js"></script>
@@ -399,163 +366,183 @@
     <script src="../assets/js/feather.min.js"></script>
     <!-- Main Js -->
     <script src="../assets/js/app.js"></script>
-
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 </body>
 <script>
-                                                    function openAddModal(subjectId) {
-                                                        console.log(subjectId);
-                                                        $('#subjectIdadd').val(subjectId);
-                                                        $('#chapterAddModal').modal('show');
-                                                    }
-                                                    function openAddModalx(subjectId) {
-                                                        console.log(subjectId);
-                                                        $('#subjectIdaddx').val(subjectId);
-                                                        $('#dimensionAddModal').modal('show');
-                                                    }
+                                                            function updateStatus(element, id) {
+                                                                var radioName = "status" + id;
+                                                                var radios = document.getElementsByName(radioName);
 
-                                                    function openModal(subjectId, id, status, title, description) {
-                                                        console.log(subjectId);
-                                                        $('#activeChapter').prop('checked', status === "true");
-                                                        $('#inactiveChapter').prop('checked', status === "false");
-                                                        $('#chapterId').val(id);
-                                                        $('#chapterTitle').val(title);
-                                                        $('#subjectId').val(subjectId);
-                                                        $('#chapterTitleh3').text(title);
-                                                        $('#chapterDescription').val(description);
+                                                                var isChecked = false;
+                                                                for (var i = 0; i < radios.length; i++) {
+                                                                    if (radios[i].checked) {
+                                                                        isChecked = true;
+                                                                        break;
+                                                                    }
+                                                                }
 
-                                                        // Show the modal
-                                                        $('#chapterModal').modal('show');
-                                                    }
-                                                    function openModalx(subjectId, id, status, title, description) {
-                                                        console.log(status);
-                                                        $('#subjectIdx').val(subjectId);
-                                                        $('#dimensionId').val(id);
-                                                        $('#dimensionTitle').val(title);
-                                                        $('#dimensionDescription').val(description);
-                                                        $('#activeDimension').prop('checked', status === "true");
-                                                        $('#inactiveDimension').prop('checked', status === "false");
-                                                        $('#dimensionModal').modal('show');
-                                                    }
-                                                    function confirmDeleteChapter(subjectId, chapterId) {
-                                                        console.log(subjectId);
-                                                        var result = confirm("Bạn có chắc muốn xóa?");
-                                                        if (result) {
-                                                            // Nếu người dùng chọn OK, chuyển hướng đến URL xóa
-                                                            window.location.href = `subject-detail-management?id=` + subjectId + `&action=delete-chapter&cid=` + chapterId;
-                                                        } else {
-                                                            // Nếu người dùng chọn Cancel, không làm gì cả
-                                                        }
-                                                    }
-                                                    function confirmDeleteDimension(subjectId, dimensionId) {
-                                                        console.log(subjectId);
-                                                        var result = confirm("Bạn có chắc muốn xóa?");
-                                                        if (result) {
-                                                            // Nếu người dùng chọn OK, chuyển hướng đến URL xóa
-                                                            window.location.href = `subject-detail-management?id=` + subjectId + `&action=delete-dimension&did=` + dimensionId;
-                                                        } else {
-                                                            // Nếu người dùng chọn Cancel, không làm gì cả
-                                                        }
-                                                    }
+                                                                fetch("../admin/updateStatus?table=chapter&id=" + id + "&isChecked=" + isChecked)
+                                                                        .then(response => response.text())
+                                                                        .then(data => {
+                                                                            console.log(data);
+                                                                        });
+                                                            }
+
+                                                            function openAddModal(subjectId) {
+                                                                console.log(subjectId);
+                                                                $('#subjectIdadd').val(subjectId);
+                                                                $('#chapterAddModal').modal('show');
+                                                            }
+                                                            function openAddModalx(subjectId) {
+                                                                console.log(subjectId);
+                                                                $('#subjectIdaddx').val(subjectId);
+                                                                $('#dimensionAddModal').modal('show');
+                                                            }
+
+                                                            function openModal(subjectId, id, status, title, description) {
+                                                                console.log(subjectId);
+                                                                $('#activeChapter').prop('checked', status === "true");
+                                                                $('#inactiveChapter').prop('checked', status === "false");
+                                                                $('#chapterId').val(id);
+                                                                $('#chapterTitle').val(title);
+                                                                $('#subjectId').val(subjectId);
+                                                                $('#chapterTitleh3').text(title);
+                                                                $('#chapterDescription').val(description);
+
+                                                                // Show the modal
+                                                                $('#chapterModal').modal('show');
+                                                            }
+                                                            function openModalx(subjectId, id, status, title, name, description) {
+                                                                console.log(status);
+                                                                $('#subjectIdx').val(subjectId);
+                                                                $('#dimensionId').val(id);
+                                                                $('#dimensionTitle').val(title);
+                                                                $('#dimensionName').val(name);
+                                                                $('#dimensionDescription').val(description);
+                                                                $('#activeDimension').prop('checked', status === "true");
+                                                                $('#inactiveDimension').prop('checked', status === "false");
+                                                                $('#dimensionModal').modal('show');
+                                                            }
+                                                            function confirmDeleteChapter(subjectId, chapterId) {
+                                                                console.log(subjectId);
+                                                                var result = confirm("Bạn có chắc muốn xóa?");
+                                                                if (result) {
+                                                                    // Nếu người dùng chọn OK, chuyển hướng đến URL xóa
+                                                                    window.location.href = `subject-detail-management?id=` + subjectId + `&action=delete-chapter&cid=` + chapterId;
+                                                                } else {
+                                                                    // Nếu người dùng chọn Cancel, không làm gì cả
+                                                                }
+                                                            }
+                                                            function confirmDeleteDimension(subjectId, dimensionId) {
+                                                                console.log(subjectId);
+                                                                var result = confirm("Bạn có chắc muốn xóa?");
+                                                                if (result) {
+                                                                    // Nếu người dùng chọn OK, chuyển hướng đến URL xóa
+                                                                    window.location.href = `subject-detail-management?id=` + subjectId + `&action=delete-dimension&did=` + dimensionId;
+                                                                } else {
+                                                                    // Nếu người dùng chọn Cancel, không làm gì cả
+                                                                }
+                                                            }
 
 
-                                                    function changeSubject() {
-                                                        var selectedSubjectId = document.getElementById('subjectDropdown').value;
-                                                        // Lưu giá trị vào localStorage
-                                                        console.log();
-                                                        localStorage.setItem('selectedSubjectId', selectedSubjectId);
+                                                            function changeSubject() {
+                                                                var selectedSubjectId = document.getElementById('subjectDropdown').value;
+                                                                // Lưu giá trị vào localStorage
+                                                                console.log();
+                                                                localStorage.setItem('selectedSubjectId', selectedSubjectId);
 
-                                                        window.location.href = 'subject-detail-management?id=' + selectedSubjectId;
-                                                    }
+                                                                window.location.href = 'subject-detail-management?id=' + selectedSubjectId;
+                                                            }
 
-                                                    function openTab(tabId, showAlert) {
-                                                        // Hide all tab contents
-                                                        var tabs = document.getElementsByClassName('tab-content');
-                                                        for (var i = 0; i < tabs.length; i++) {
-                                                            tabs[i].classList.remove('active');
-                                                        }
+                                                            function openTab(tabId, showAlert) {
+                                                                // Hide all tab contents
+                                                                var tabs = document.getElementsByClassName('tab-content');
+                                                                for (var i = 0; i < tabs.length; i++) {
+                                                                    tabs[i].classList.remove('active');
+                                                                }
 
-                                                        // Remove 'active' class from all tabs
-                                                        var tabButtons = document.getElementsByClassName('tab');
-                                                        for (var i = 0; i < tabButtons.length; i++) {
-                                                            tabButtons[i].classList.remove('active');
-                                                        }
+                                                                // Remove 'active' class from all tabs
+                                                                var tabButtons = document.getElementsByClassName('tab');
+                                                                for (var i = 0; i < tabButtons.length; i++) {
+                                                                    tabButtons[i].classList.remove('active');
+                                                                }
 
-                                                        // Show the selected tab content
-                                                        document.getElementById(tabId).classList.add('active');
+                                                                // Show the selected tab content
+                                                                document.getElementById(tabId).classList.add('active');
 
-                                                        // Check if showAlert is true and show alert
-                                                        if (showAlert) {
-                                                            alert('Update successful!');
-                                                        }
-                                                    }
-                                                    function openTabDeleted(tabId, showAlert) {
-                                                        // Hide all tab contents
-                                                        var tabs = document.getElementsByClassName('tab-content');
-                                                        for (var i = 0; i < tabs.length; i++) {
-                                                            tabs[i].classList.remove('active');
-                                                        }
+                                                                // Check if showAlert is true and show alert
+                                                                if (showAlert) {
+                                                                    alert('Update successful!');
+                                                                }
+                                                            }
+                                                            function openTabDeleted(tabId, showAlert) {
+                                                                // Hide all tab contents
+                                                                var tabs = document.getElementsByClassName('tab-content');
+                                                                for (var i = 0; i < tabs.length; i++) {
+                                                                    tabs[i].classList.remove('active');
+                                                                }
 
-                                                        // Remove 'active' class from all tabs
-                                                        var tabButtons = document.getElementsByClassName('tab');
-                                                        for (var i = 0; i < tabButtons.length; i++) {
-                                                            tabButtons[i].classList.remove('active');
-                                                        }
+                                                                // Remove 'active' class from all tabs
+                                                                var tabButtons = document.getElementsByClassName('tab');
+                                                                for (var i = 0; i < tabButtons.length; i++) {
+                                                                    tabButtons[i].classList.remove('active');
+                                                                }
 
-                                                        // Show the selected tab content
-                                                        document.getElementById(tabId).classList.add('active');
+                                                                // Show the selected tab content
+                                                                document.getElementById(tabId).classList.add('active');
 
-                                                        // Check if showAlert is true and show alert
-                                                        if (showAlert) {
-                                                            alert('Delete successful!');
-                                                        }
-                                                    }
-                                                    function openTabAdded(tabId, showAlert) {
-                                                        // Hide all tab contents
-                                                        var tabs = document.getElementsByClassName('tab-content');
-                                                        for (var i = 0; i < tabs.length; i++) {
-                                                            tabs[i].classList.remove('active');
-                                                        }
+                                                                // Check if showAlert is true and show alert
+                                                                if (showAlert) {
+                                                                    alert('Delete successful!');
+                                                                }
+                                                            }
+                                                            function openTabAdded(tabId, showAlert) {
+                                                                // Hide all tab contents
+                                                                var tabs = document.getElementsByClassName('tab-content');
+                                                                for (var i = 0; i < tabs.length; i++) {
+                                                                    tabs[i].classList.remove('active');
+                                                                }
 
-                                                        // Remove 'active' class from all tabs
-                                                        var tabButtons = document.getElementsByClassName('tab');
-                                                        for (var i = 0; i < tabButtons.length; i++) {
-                                                            tabButtons[i].classList.remove('active');
-                                                        }
+                                                                // Remove 'active' class from all tabs
+                                                                var tabButtons = document.getElementsByClassName('tab');
+                                                                for (var i = 0; i < tabButtons.length; i++) {
+                                                                    tabButtons[i].classList.remove('active');
+                                                                }
 
-                                                        // Show the selected tab content
-                                                        document.getElementById(tabId).classList.add('active');
+                                                                // Show the selected tab content
+                                                                document.getElementById(tabId).classList.add('active');
 
-                                                        // Check if showAlert is true and show alert
-                                                        if (showAlert) {
-                                                            alert('Add successful!');
-                                                        }
-                                                    }
-                                                    window.onload = function () {
-                                                        var urlParams = new URLSearchParams(window.location.search);
-                                                        var urlSubjectId = urlParams.get('id');
-                                                        var updateType = urlParams.get('updateType');
-                                                        var deleteType = urlParams.get('deleteType');
-                                                        var addType = urlParams.get('addType');
-                                                        document.getElementById('subjectDropdown').value = urlSubjectId;
+                                                                // Check if showAlert is true and show alert
+                                                                if (showAlert) {
+                                                                    alert('Add successful!');
+                                                                }
+                                                            }
+                                                            window.onload = function () {
+                                                                var urlParams = new URLSearchParams(window.location.search);
+                                                                var urlSubjectId = urlParams.get('id');
+                                                                var updateType = urlParams.get('updateType');
+                                                                var deleteType = urlParams.get('deleteType');
+                                                                var addType = urlParams.get('addType');
+                                                                document.getElementById('subjectDropdown').value = urlSubjectId;
 
-                                                        localStorage.setItem('selectedSubjectId', urlSubjectId);
+                                                                localStorage.setItem('selectedSubjectId', urlSubjectId);
 
-                                                        if (updateType === 'chapter') {
-                                                            openTab('chapterTab', true);
-                                                        } else if (updateType === 'dimension') {
-                                                            openTab('dimensionsTab', true);
-                                                        }
-                                                        if (deleteType === 'chapter') {
-                                                            openTabDeleted('chapterTab', true);
-                                                        } else if (deleteType === 'dimension') {
-                                                            openTabDeleted('dimensionsTab', true);
-                                                        }
-                                                        if (addType === 'chapter') {
-                                                            openTabAdded('chapterTab', true);
-                                                        } else if (addType === 'dimension') {
-                                                            openTabAdded('dimensionsTab', true);
-                                                        }
-                                                    };
+                                                                if (updateType === 'chapter') {
+                                                                    openTab('chapterTab', true);
+                                                                } else if (updateType === 'dimension') {
+                                                                    openTab('dimensionsTab', true);
+                                                                }
+                                                                if (deleteType === 'chapter') {
+                                                                    openTabDeleted('chapterTab', true);
+                                                                } else if (deleteType === 'dimension') {
+                                                                    openTabDeleted('dimensionsTab', true);
+                                                                }
+                                                                if (addType === 'chapter') {
+                                                                    openTabAdded('chapterTab', true);
+                                                                } else if (addType === 'dimension') {
+                                                                    openTabAdded('dimensionsTab', true);
+                                                                }
+                                                            };
 
 </script>
 </html>

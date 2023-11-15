@@ -1,6 +1,6 @@
 <style>
-    
-    
+
+
     .modal-content {
         padding: 20px;
     }
@@ -45,16 +45,16 @@
     button:hover {
         background-color: #007A8D;
     }
-.custom-modal {
-    
-    width: 2000px;
-    margin: auto;
-}
+    .custom-modal {
 
-.custom-modal .modal-content {
-    max-height: 600px;
-    width: 1000px;
-}
+        width: 2000px;
+        margin: auto;
+    }
+
+    .custom-modal .modal-content {
+        max-height: 600px;
+        width: 1000px;
+    }
 </style>
 
 
@@ -80,7 +80,7 @@
                         <label for="chapterDescription">Description:</label>
                         <textarea class="form-control" id="chapterDescription" name="description" rows="3" placeholder="Description"></textarea>
                     </div>
-<!--                    <div class="form-group">
+                    <div class="form-group">
                         <label>Status:</label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="status" id="activeChapter" value="active">
@@ -90,7 +90,7 @@
                             <input class="form-check-input" type="radio" name="status" id="inactiveChapter" value="inactive">
                             <label class="form-check-label" for="inactiveChapter">Inactive</label>
                         </div>
-                    </div>-->
+                    </div>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
@@ -116,10 +116,14 @@
                         <input type="text" class="form-control" id="dimensionTitle" name="title" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label for="dimensionDescription">Name:</label>
+                        <label for="dimensionName">Name:</label>
+                        <input type="text"  class="form-control" id="dimensionName" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="dimensionDescription">Description:</label>
                         <textarea class="form-control" id="dimensionDescription" name="description"></textarea>
                     </div>
-<!--                    <div class="form-group">
+                    <div class="form-group">
                         <label>Status:</label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" id="activeDimension" name="status" value="active">
@@ -129,7 +133,7 @@
                             <input class="form-check-input" type="radio" id="inactiveDimension" name="status" value="inactive">
                             <label class="form-check-label" for="inactiveDimension">Inactive</label>
                         </div>
-                    </div>-->
+                    </div>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>

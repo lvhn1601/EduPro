@@ -1,11 +1,40 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<style>
+    .slide-in {
+        animation: slideIn 0.5s forwards;
+    }
+
+    .slide-out {
+        animation: slideOut 0.5s forwards;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(100%);
+        }
+    }
+</style>
+
 <div class="top-header">
     <div class="header-bar d-flex justify-content-between border-bottom">
         <c:if test="${sessionScope.accountCur == null}">
             <h4 class="m-0 text-primary"><a href="/LearningManagement/"><img src="/LearningManagement/assets/img/logo.png" class="img-fluid avatar avatar-md-sm rounded"> EduPro</a></h4>
             <a href="sign-in" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
-        </c:if>
-        
+            </c:if>
+
         <c:if test="${sessionScope.accountCur != null}">
             <div class="d-flex align-items-center">
                 <h4 class="m-0 text-primary"><a href="/LearningManagement/"><img src="/LearningManagement/assets/img/logo.png" class="img-fluid avatar avatar-md-sm rounded"> EduPro</a></h4>
@@ -13,7 +42,7 @@
                     <i class="uil uil-bars"></i>
                 </a>
             </div>
-            
+
             <ul class="list-unstyled mb-0">
                 <li class="list-inline-item mb-0 ms-1">
                     <div class="dropdown dropdown-primary">
@@ -34,4 +63,24 @@
             </ul>
         </c:if>
     </div>
+    
+    <c:if test="${alert != null}">
+        <div class="alert alert-${alert.type ? 'success' : 'danger'} alert-dismissible fade show slide-in position-absolute end-0 mt-3 me-2 h-75" id="auto-close-alert" role="alert">
+            <div class="pe-3"><strong>${alert.type ? 'Success' : 'Fail'}!</strong> ${alert.message}</div>
+            <button type="button" class="btn-close btn-sm p-2" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </c:if>
 </div>
+
+<script>
+    setTimeout(function() {
+            var alert = document.getElementById('auto-close-alert');
+            if (alert != undefined) {
+                alert.classList.remove('slide-in');
+                alert.classList.add('slide-out');
+                setTimeout(function() {
+                    alert.remove();
+                }, 1000);
+            }
+        }, 3000);
+</script>

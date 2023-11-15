@@ -127,7 +127,8 @@ public class SubjectDetailManagementController extends HttpServlet {
                 int idD = Integer.parseInt(request.getParameter("id"));
                 Dimension dimension = Dimension.builder()
                         .type(request.getParameter("title"))
-                        .name(request.getParameter("description"))
+                        .name(request.getParameter("name"))
+                        .description(request.getParameter("description"))
                         .status("active".equals(request.getParameter("status")))
                         .build();
                 managerDAO.updateDimension(dimension, idD, accountCur.getId());
@@ -137,6 +138,7 @@ public class SubjectDetailManagementController extends HttpServlet {
                 Chapter chapterAdd = Chapter.builder()
                         .title(request.getParameter("title"))
                         .description(request.getParameter("description"))
+                        .status("active".equals(request.getParameter("status")))
                         .build();
                 managerDAO.addChapter(chapterAdd, accountCur.getId(), subjectId);
                 response.sendRedirect("subject-detail-management?id=" + subjectId + "&addType=" + "chapter");
@@ -144,7 +146,8 @@ public class SubjectDetailManagementController extends HttpServlet {
             case "add-dimension":
                 Dimension dimensionAdd = Dimension.builder()
                         .type(request.getParameter("title"))
-                        .name(request.getParameter("description"))
+                        .name(request.getParameter("name"))
+                        .description(request.getParameter("description"))
                         .build();
                 managerDAO.addDimension(dimensionAdd, accountCur.getId(), subjectId);
                 response.sendRedirect("subject-detail-management?id=" + subjectId + "&addType=" + "dimension");

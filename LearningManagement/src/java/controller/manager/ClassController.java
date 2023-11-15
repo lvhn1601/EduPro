@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Account;
 import model.Class;
+import model.ClassTrainee;
 import model.Setting;
 import model.Subject;
 
@@ -70,41 +71,17 @@ public class ClassController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         ManagerDAO managerDAO = new ManagerDAO();
+
         List<Subject> listSubject = managerDAO.getSubject();
         List<Account> listTrainer = managerDAO.getTrainer();
         List<Setting> listSemester = managerDAO.getSemester();
 
-        // Trang hiện tại (lấy từ tham số truy vấn "page")
-        int curPage = 1;
-        int pageSize = 8;
-        String pageParam = request.getParameter("page");
-        if (pageParam != null) {
-            curPage = Integer.parseInt(pageParam);
-        }
-        int start = (curPage - 1) * pageSize;
-
-        String searchKeyword = request.getParameter("search");
-        List<Class> listClass = new ArrayList<>();
-        int totalClasses;
-        int totalPages;
-
-        if (searchKeyword != null && !searchKeyword.isEmpty()) {
-            listClass = managerDAO.searchClasses(searchKeyword);
-        } else {
-            // Nếu không có tìm kiếm, hiển thị tất cả các lớp
-            listClass = managerDAO.getClassesForPage(start, pageSize);
-        }
-
-        totalClasses = managerDAO.getTotalClasses();
-        totalPages = (int) Math.ceil((double) totalClasses / pageSize);
-
-        Account account = (Account) session.getAttribute("accountCur");
-
+        List<Class> listClass =managerDAO.getAllClass();
+  
         request.setAttribute("listClass", listClass);
         request.setAttribute("listSubject", listSubject);
         request.setAttribute("listTrainer", listTrainer);
         request.setAttribute("listSemester", listSemester);
-        request.setAttribute("totalPages", totalPages);
 
         request.getRequestDispatcher("list-class.jsp").forward(request, response);
     }
@@ -122,8 +99,6 @@ public class ClassController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        AccountDAO accountDAO = new AccountDAO();
-        AdminDAO adminDAO = new AdminDAO();
         ManagerDAO managerDAO = new ManagerDAO();
 
         List<Class> listClass = (List<Class>) session.getAttribute("listClass");
@@ -133,21 +108,13 @@ public class ClassController extends HttpServlet {
         String type = request.getParameter("type");
         switch (type) {
             case "addClass": {
-                List<Subject> listSubject = (List<Subject>) session.getAttribute("listSubject");
-                List<Account> listTrainer = (List<Account>) session.getAttribute("listTrainer");
-                List<Setting> listSemester = (List<Setting>) session.getAttribute("listSemester");
-
                 String className = request.getParameter("className");
                 int subjectId = Integer.parseInt(request.getParameter("classSubject"));
                 int semesterId = Integer.parseInt(request.getParameter("classSemester"));
                 int trainerId = Integer.parseInt(request.getParameter("classTrainer"));
                 Date dateStart = request.getParameter("dateStart").equals("") ? null : Date.valueOf(request.getParameter("dateStart"));
                 Date dateEnd = request.getParameter("dateEnd").equals("") ? null : Date.valueOf(request.getParameter("dateEnd"));
-                String classStatusString = request.getParameter("status");
-                boolean classStatus = false;
-                if (classStatusString != null && classStatusString.equals("active")) {
-                    classStatus = true;
-                }
+               Boolean classStatus = Boolean.parseBoolean(request.getParameter("classStatus"));
                 LocalDateTime currentTime = LocalDateTime.now();
 
                 boolean addClassSuccess = managerDAO.addClass(className, subjectId, semesterId, trainerId, classStatus, dateStart, dateEnd, account.getId(), currentTime);
@@ -161,10 +128,24 @@ public class ClassController extends HttpServlet {
                 break;
             }
             case "updateClassDetail": {
-                List<Subject> listSubject = (List<Subject>) session.getAttribute("listSubject");
-                List<Account> listTrainer = (List<Account>) session.getAttribute("listTrainer");
-                List<Setting> listSemester = (List<Setting>) session.getAttribute("listSemester");
-
+                int classId = Integer.parseInt(request.getParameter("classId"));
+                 String className = request.getParameter("className");
+                int subjectId = Integer.parseInt(request.getParameter("classSubject"));
+                int semesterId = Integer.parseInt(request.getParameter("classSemester"));
+                int trainerId = Integer.parseInt(request.getParameter("classTrainer"));
+                Date classStart = request.getParameter("classStart").equals("") ? null : Date.valueOf(request.getParameter("classStart"));
+                Date classEnd = request.getParameter("classEnd").equals("") ? null : Date.valueOf(request.getParameter("classEnd"));
+               Boolean classStatus = Boolean.parseBoolean(request.getParameter("classStatus"));
+                LocalDateTime currentTime = LocalDateTime.now();
+                
+                boolean updateClassSuccess = managerDAO.updateClass(className, subjectId, semesterId, trainerId, classStatus, classStart, classEnd, account.getId(), currentTime, classId);
+                  session.setAttribute("listClass", listClass);
+                if (updateClassSuccess) {
+                    session.setAttribute("msgUpdateClass", "Update Class Success");
+                } else {
+                    session.setAttribute("msgUpdateClass", "Update Class Fail");
+                }
+            
                 break;
             }
 

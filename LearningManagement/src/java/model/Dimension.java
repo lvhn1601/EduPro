@@ -17,6 +17,7 @@ public class Dimension {
     private int id;
     private String type;
     private String name;
+    private String description;
     private boolean status;
     private Subject subject;
     private String created_by;

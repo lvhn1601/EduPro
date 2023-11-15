@@ -13,7 +13,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Account;
+import model.Alert;
 
 /**
  *
@@ -60,19 +62,23 @@ public class QuizzesServlet extends HttpServlet {
         Account acc = (Account) request.getSession().getAttribute("accountCur");
         ManagerDAO db = new ManagerDAO();
         
+        HttpSession session = request.getSession();
+        
+        request.setAttribute("alert", session.getAttribute("alert"));
+        session.removeAttribute("alert");
+        
         request.setAttribute("subjects", db.getListSubjects(acc.getId()));
-        //request.setAttribute("chapters", db.getListChapter(acc.getId()));
         
-        int page_num;
-        try {
-            page_num = Integer.parseInt(request.getParameter("page"));
-        } catch (NumberFormatException | NullPointerException e) {
-            page_num = 1;
-        }
-        
-        String search = request.getParameter("search");
-        if (search == null)
-            search = "";
+//        int page_num;
+//        try {
+//            page_num = Integer.parseInt(request.getParameter("page"));
+//        } catch (NumberFormatException | NullPointerException e) {
+//            page_num = 1;
+//        }
+//        
+//        String search = request.getParameter("search");
+//        if (search == null)
+//            search = "";
         
         int subject_id;
         try {
@@ -81,10 +87,10 @@ public class QuizzesServlet extends HttpServlet {
             subject_id = 0;
         }
         
-        int num_of_quizzes = db.countQuizzes(acc.getId(), search, subject_id);
-        request.setAttribute("count", num_of_quizzes);
-        request.setAttribute("pages", Math.round(num_of_quizzes / 8) + (num_of_quizzes % 8 == 0 ? 0 : 1));
-        request.setAttribute("quizzes", db.getQuizzes(acc.getId(), search, page_num, subject_id));
+//        int num_of_quizzes = db.countQuizzes(acc.getId(), search, subject_id);
+//        request.setAttribute("count", num_of_quizzes);
+//        request.setAttribute("pages", Math.round(num_of_quizzes / 8) + (num_of_quizzes % 8 == 0 ? 0 : 1));
+        request.setAttribute("quizzes", db.getQuizzes(acc.getId(), subject_id));
         
         request.getRequestDispatcher("quizzes.jsp").forward(request, response);
         
@@ -103,12 +109,66 @@ public class QuizzesServlet extends HttpServlet {
         Account acc = (Account) request.getSession().getAttribute("accountCur");
         ManagerDAO db = new ManagerDAO();
         
+        HttpSession session = request.getSession();
+        
         String action = request.getParameter("action");
         int id, subject, chapter, quiz;
-        String title;
+        String title, description;
         boolean type, status;
         
+        boolean success = true;
+        
         switch (action) {
+            case "updateQuiz":
+                id = Integer.parseInt(request.getParameter("id"));
+                title = request.getParameter("title");
+                description = request.getParameter("description");
+                chapter = Integer.parseInt(request.getParameter("chapter"));
+                type = request.getParameter("type").equals("1");
+                status = request.getParameter("status") != null;
+                
+                boolean cfType = request.getParameter("config-type").equals("1");
+                int totalNum = Integer.parseInt(request.getParameter("totalNum"));
+                String dimensionType = request.getParameter("dimensionType");
+                
+                success = db.updateQuiz(id, title, description, chapter, type, status, cfType, dimensionType, totalNum, acc.getId()) ? success : false;
+                
+                if (type) {
+                    success = db.deleteAllConfig(id) ? success : false;
+                    String[] nums = request.getParameterValues("numOfQues");
+                    if (cfType) {
+                        String[] cds = request.getParameterValues("config-dimension");
+                        if (cds != null)
+                            for (int i=0; i<cds.length; i++)
+                                success = db.addConfig(cfType, Integer.parseInt(cds[i]), Integer.parseInt(nums[i]), id) ? success : false;
+                    } else {
+                        String[] ccs = request.getParameterValues("config-chapter");
+                        if (ccs != null)
+                            for (int i=0; i<ccs.length; i++)
+                                success = db.addConfig(cfType, Integer.parseInt(ccs[i]), Integer.parseInt(nums[i]), id) ? success : false;
+                    }
+                } else {
+                    success = db.deleteAllQuestion(id);
+                    String[] quesID = request.getParameterValues("question-id");
+                    if (quesID != null)
+                        for (String q : quesID)
+                            success = db.addQuizQuestion(id, Integer.parseInt(q));
+                }
+                
+                if (success)
+                    session.setAttribute("alert", Alert.builder()
+                            .type(true)
+                            .message("You have updated quiz " + id + " successfully!")
+                            .build()
+                    );
+                else
+                    session.setAttribute("alert", Alert.builder()
+                            .type(false)
+                            .message("Update quiz " + id + " failed! Please try again!")
+                            .build()
+                    );
+                
+                break;
             case "addNewGeneral":
                 title = request.getParameter("title");
                 subject = Integer.parseInt(request.getParameter("subject"));
@@ -116,60 +176,113 @@ public class QuizzesServlet extends HttpServlet {
                 type = request.getParameter("type").equals("1");
                 status = request.getParameter("status") != null;
                 
-                db.addQuiz(title, subject, chapter, type, status, acc.getId());
+                if (db.addQuiz(title, subject, chapter, type, status, acc.getId()))
+                    session.setAttribute("alert", Alert.builder()
+                            .type(true)
+                            .message("You have added new quiz successfully!")
+                            .build()
+                    );
+                else
+                    session.setAttribute("alert", Alert.builder()
+                            .type(false)
+                            .message("Add new quiz failed! Please try again!")
+                            .build()
+                    );
                 break;
-            case "updateGeneral":
-                id = Integer.parseInt(request.getParameter("id"));
-                title = request.getParameter("title");
-                chapter = Integer.parseInt(request.getParameter("chapter"));
-                type = request.getParameter("type").equals("1");
-                status = request.getParameter("status") != null;
-
-                db.updateQuiz(id, title, chapter, type, status, acc.getId());
-                break;
-            case "updateConfig":
-                String[] ids = request.getParameterValues("id");
-                String[] dimensions = request.getParameterValues("dimension");
-                String[] chapters = request.getParameterValues("chapter");
-                String[] numOfQues = request.getParameterValues("numOfQues");
-                String[] removes = request.getParameterValues("remove");
-                quiz = Integer.parseInt(request.getParameter("quiz"));
-                
-                for (int i=0; i<ids.length; i++) {
-                    if (ids[i].equals("0") && !removes[i].equals("yes")) {
-                        int dim = Integer.parseInt(dimensions[i]);
-                        int chap = Integer.parseInt(chapters[i]);
-                        int num = Integer.parseInt(numOfQues[i]);
-                        db.addConfig(dim, chap, num, quiz);
-                    } else if (!ids[i].equals("0")) {
-                        if (removes[i].equals("yes")) {
-                            db.deleteConfig(Integer.parseInt(ids[i]));
-                        } else {
-                            int dim = Integer.parseInt(dimensions[i]);
-                            int chap = Integer.parseInt(chapters[i]);
-                            int num = Integer.parseInt(numOfQues[i]);
-                            
-                            db.updateConfig(Integer.parseInt(ids[i]), dim, chap, num);
-                        }
-                    }
-                }
-                break;
-            case "updateQuestions":
-                String[] quesID = request.getParameterValues("question-id");
-                String[] quesStatus = request.getParameterValues("status");
-                String[] quesRemove = request.getParameterValues("remove");
-                quiz = Integer.parseInt(request.getParameter("quiz"));
-                
-                for (int i=0; i<quesID.length; i++) {
-                    int ques = Integer.parseInt(quesID[i]);
-                    
-                    if (quesStatus[i].equals("new") && !quesRemove[i].equals("yes"))
-                        db.addQuizQuestion(quiz, ques);
-                    else
-                        if (quesStatus[i].equals("old") && quesRemove[i].equals("yes"))
-                            db.deleteQuizQuestion(quiz, ques);
-                }
-                break;
+//            case "updateGeneral":
+//                id = Integer.parseInt(request.getParameter("id"));
+//                title = request.getParameter("title");
+//                chapter = Integer.parseInt(request.getParameter("chapter"));
+//                type = request.getParameter("type").equals("1");
+//                status = request.getParameter("status") != null;
+//
+//                if (db.updateQuiz(id, title, chapter, type, status, acc.getId()))
+//                    session.setAttribute("alert", Alert.builder()
+//                            .type(true)
+//                            .message("You have updated quiz " + id + " successfully!")
+//                            .build()
+//                    );
+//                else
+//                    session.setAttribute("alert", Alert.builder()
+//                            .type(false)
+//                            .message("Update quiz " + id + " failed! Please try again!")
+//                            .build()
+//                    );
+//                break;
+//            case "updateConfig":
+//                String[] ids = request.getParameterValues("id");
+//                String[] dimensions = request.getParameterValues("dimension");
+//                String[] chapters = request.getParameterValues("chapter");
+//                String[] numOfQues = request.getParameterValues("numOfQues");
+//                String[] removes = request.getParameterValues("remove");
+//                quiz = Integer.parseInt(request.getParameter("quiz"));
+//                
+//                for (int i=0; i<ids.length; i++) {
+//                    if (ids[i].equals("0") && !removes[i].equals("yes")) {
+//                        int dim = Integer.parseInt(dimensions[i]);
+//                        int chap = Integer.parseInt(chapters[i]);
+//                        int num = Integer.parseInt(numOfQues[i]);
+//                        if (!db.addConfig(dim, chap, num, quiz))
+//                            success = false;
+//                    } else if (!ids[i].equals("0")) {
+//                        if (removes[i].equals("yes")) {
+//                            if (!db.deleteConfig(Integer.parseInt(ids[i])))
+//                                success = false;
+//                        } else {
+//                            int dim = Integer.parseInt(dimensions[i]);
+//                            int chap = Integer.parseInt(chapters[i]);
+//                            int num = Integer.parseInt(numOfQues[i]);
+//                            
+//                            if (!db.updateConfig(Integer.parseInt(ids[i]), dim, chap, num))
+//                                success = false;
+//                        }
+//                    }
+//                }
+//                
+//                if (success)
+//                    session.setAttribute("alert", Alert.builder()
+//                            .type(true)
+//                            .message("You have updated list configs of quiz " + quiz + " successfully!")
+//                            .build()
+//                    );
+//                else
+//                    session.setAttribute("alert", Alert.builder()
+//                            .type(false)
+//                            .message("Update list configs of quiz " + quiz + " failed! Please try again!")
+//                            .build()
+//                    );
+//                break;
+//            case "updateQuestions":
+//                String[] quesID = request.getParameterValues("question-id");
+//                String[] quesStatus = request.getParameterValues("status");
+//                String[] quesRemove = request.getParameterValues("remove");
+//                quiz = Integer.parseInt(request.getParameter("quiz"));
+//                
+//                for (int i=0; i<quesID.length; i++) {
+//                    int ques = Integer.parseInt(quesID[i]);
+//                    
+//                    if (quesStatus[i].equals("new") && !quesRemove[i].equals("yes"))
+//                        if (!db.addQuizQuestion(quiz, ques))
+//                            success = false;
+//                    else
+//                        if (quesStatus[i].equals("old") && quesRemove[i].equals("yes"))
+//                            if (!db.deleteQuizQuestion(quiz, ques))
+//                                success = false;
+//                }
+//                
+//                if (success)
+//                    session.setAttribute("alert", Alert.builder()
+//                            .type(true)
+//                            .message("You have updated list questions of quiz " + quiz + " successfully!")
+//                            .build()
+//                    );
+//                else
+//                    session.setAttribute("alert", Alert.builder()
+//                            .type(false)
+//                            .message("Update list questions of quiz " + quiz + " failed! Please try again!")
+//                            .build()
+//                    );
+//                break;
         }
         
         response.sendRedirect("quizzes");
@@ -183,5 +296,5 @@ public class QuizzesServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
 }
