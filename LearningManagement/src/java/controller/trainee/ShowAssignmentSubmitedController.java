@@ -75,11 +75,9 @@ public class ShowAssignmentSubmitedController extends HttpServlet {
         StudentDAO sd = new StudentDAO();
         // Data cho Sidebar
         int sid = Integer.parseInt(request.getParameter("subject"));
-        List<model.Class> listClasses = sd.getClassList(account.getId(), sid);
+        List<model.Class> listClasses = sd.getClassList(account.getId(), sid, account.getRole().getId());
         
-        if (account.getRole().getId() == 4) {
-            request.setAttribute("classList", listClasses);
-        }
+        request.setAttribute("classList", listClasses);
         
         String cid_raw = request.getParameter("classid");
         

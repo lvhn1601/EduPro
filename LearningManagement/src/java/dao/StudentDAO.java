@@ -55,10 +55,47 @@ public class StudentDAO extends DBContext {
         return list;
     }
 
-    public List<Class> getClassList(int user_id, int sid) {
-        String sql = "select class.class_id, class_name from class\n"
-                + "join class_trainee on class.class_id = class_trainee.class_id\n"
-                + "where class_trainee.trainee_id = ? and class_subject_id = ? and class_status = 1 and class_end >= curdate()";
+    public List<Subject> getSubjectsListOfTrainer(int user_id) {
+        String sql = "select subject.subject_id, subject_code, subject_name, count(class.class_subject_id) as count_class from subject\n"
+                + "join class on class_subject_id = subject_id\n"
+                + "where class.class_trainer_id = ? and class_status = 1\n"
+                + "GROUP BY subject_id, subject_code, subject_name";
+
+        List<Subject> list = new ArrayList<>();
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, user_id);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(Subject.builder()
+                        .id(rs.getInt("subject_id"))
+                        .code(rs.getString("subject_code"))
+                        .name(rs.getString("subject_name"))
+                        .countClass(rs.getInt("count_class"))
+                        .build()
+                );
+            }
+        } catch (SQLException e) {
+        }
+
+        return list;
+    }
+
+    public List<Class> getClassList(int user_id, int sid, int role) {
+        String sql = "";
+
+        if (role == 4) {
+            sql = "select class.class_id, class_name from class\n"
+                    + "join class_trainee on class.class_id = class_trainee.class_id\n"
+                    + "where class_trainee.trainee_id = ? and class_subject_id = ? and class_status = 1\n"
+                    + "order by class_end DESC";
+        } else if (role == 3) {
+            sql = "select class.class_id, class_name from class\n"
+                    + "where class_trainer_id = ? and class_subject_id = ? and class_status = 1\n"
+                    + "order by class_end DESC";
+        }
 
         List<Class> list = new ArrayList<>();
 
@@ -179,7 +216,7 @@ public class StudentDAO extends DBContext {
             }
         } catch (SQLException e) {
         }
-        
+
         return null;
     }
 

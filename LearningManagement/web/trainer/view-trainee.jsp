@@ -38,16 +38,6 @@
                     String action =(String) request.getAttribute("action"); 
                     int class_id = (int) request.getAttribute("class_id"); 
                 %>
-                    <!-- Loader -->
-                    <div id="preloader">
-                        <div id="status">
-                            <div class="spinner">
-                                <div class="double-bounce1"></div>
-                                <div class="double-bounce2"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Loader -->
 
                     <div class="page-wrapper doctris-theme toggled">
                         <jsp:include page="../components/sidebar.jsp" />

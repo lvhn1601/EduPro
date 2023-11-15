@@ -31,4 +31,6 @@ public class Subject {
     private String created_at;
     private String update_by;
     private String update_at;
+    
+    private int countClass;
 }

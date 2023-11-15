@@ -72,7 +72,7 @@
                                         <div class="card-body p-4">
                                             <a href="/LearningManagement/class-dashboard?subject=${s.id}" class="text-dark title h5">${s.code}_${s.name}</a>
                                             <ul class="list-unstyled mb-2 mt-3">
-                                                <li class="text-muted small"><i class="uil uil-users-alt text-dark h6 me-1"></i>Number of classes: 1</li>
+                                                <li class="text-muted small"><i class="uil uil-users-alt text-dark h6 me-1"></i>Number of classes: ${s.countClass}</li>
                                             </ul>
                                             <div class="post-meta d-flex justify-content-end">
                                                 <a href="/LearningManagement/class-dashboard?subject=${s.id}" class="link">Go to class <i class="mdi mdi-chevron-right align-middle"></i></a>
