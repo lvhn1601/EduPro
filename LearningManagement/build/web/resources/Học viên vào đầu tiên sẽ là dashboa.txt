@@ -1,3 +1,0 @@
-Học viên vào đầu tiên sẽ là dashboard (edunext)
-Class db -> Coursera
-Online learning: 

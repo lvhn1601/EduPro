@@ -115,9 +115,10 @@ public class LessonServlet extends HttpServlet {
         Account acc = (Account) request.getSession().getAttribute("accountCur");
         StudentDAO sd = new StudentDAO();
         String type = request.getParameter("type");
+        int classId = Integer.parseInt(request.getParameter("classid"));
         if (type.equalsIgnoreCase("quiz")) {
             int lesson_id = Integer.parseInt(request.getParameter("id"));
-            sd.createQuizSubmit(lesson_id, acc.getId());
+            sd.createQuizSubmit(lesson_id, acc.getId(), classId);
             
             int submitId = sd.getNewSubmitId(acc.getId());
             Quiz quiz = sd.getQuizBySubmitId(submitId);
@@ -148,7 +149,7 @@ public class LessonServlet extends HttpServlet {
                 }
             }
             
-            response.sendRedirect("quiz?action=take&id=" + submitId + "&qnum=1&classid=" + request.getParameter("classid"));
+            response.sendRedirect("quiz?action=take&id=" + submitId + "&qnum=1&classid=" + classId);
         }
     }
 

@@ -5,6 +5,7 @@
 package controller.trainee;
 
 import dao.ShowAssigmentSubmitDAO;
+import dao.StudentDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Account;
 import model.AssignmentSubmit;
+import model.Chapter;
 import model.QuizResult;
 
 /**
@@ -42,7 +44,7 @@ public class ShowAssignmentSubmitedController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ShowAssignmentSubmitedController</title>");            
+            out.println("<title>Servlet ShowAssignmentSubmitedController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ShowAssignmentSubmitedController at " + request.getContextPath() + "</h1>");
@@ -63,16 +65,40 @@ public class ShowAssignmentSubmitedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       HttpSession session = request.getSession();
-       ShowAssigmentSubmitDAO showAssigmentSubmitDAO = new ShowAssigmentSubmitDAO();
-         Account account = (Account) session.getAttribute("accountCur");
-          List<AssignmentSubmit> listAssignmentSubmitted = showAssigmentSubmitDAO.getSubmitAssignmentByAccountId(account.getId());
-         List<QuizResult> listQuizzSubmitted = showAssigmentSubmitDAO.getSubmitQuizzByAccountId(account.getId());
-         
-         request.setAttribute("listAssignmentSubmitted", listAssignmentSubmitted);
-          request.setAttribute("listQuizzSubmitted", listQuizzSubmitted);
-          
-           request.getRequestDispatcher("show-assignment-submited.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        ShowAssigmentSubmitDAO showAssigmentSubmitDAO = new ShowAssigmentSubmitDAO();
+        Account account = (Account) session.getAttribute("accountCur");
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        List<AssignmentSubmit> listAssignmentSubmitted = showAssigmentSubmitDAO.getSubmitAssignmentByAccountId(account.getId(), classId);
+        List<QuizResult> listQuizzSubmitted = showAssigmentSubmitDAO.getSubmitQuizzByAccountId(account.getId(), classId);
+        
+        StudentDAO sd = new StudentDAO();
+        // Data cho Sidebar
+        int sid = Integer.parseInt(request.getParameter("subject"));
+        List<model.Class> listClasses = sd.getClassList(account.getId(), sid);
+        
+        if (account.getRole().getId() == 4) {
+            request.setAttribute("classList", listClasses);
+        }
+        
+        String cid_raw = request.getParameter("classid");
+        
+        int cid = 0;
+        if (cid_raw != null) {
+            cid = Integer.parseInt(cid_raw);
+        } else {
+            cid = listClasses.get(0).getClass_id();
+        }
+        request.setAttribute("classId", cid);
+        
+        List<Chapter> listChapters = sd.getChaptersList(sid);
+        request.setAttribute("materials", listChapters);
+        // Het
+
+        request.setAttribute("listAssignmentSubmitted", listAssignmentSubmitted);
+        request.setAttribute("listQuizzSubmitted", listQuizzSubmitted);
+
+        request.getRequestDispatcher("show-assignment-submited.jsp").forward(request, response);
     }
 
     /**

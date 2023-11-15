@@ -90,7 +90,7 @@ public class SignInController extends HttpServlet {
 //                    accountDAO.updateGoogleAcc(user.getName(), user.getPicture(), user.getId(), user.getEmail());
                     session.setAttribute("accountCur", accountDAO.getOneByEmail(user.getEmail()));
                     if (account.getRole().getId() == 4) {
-                        response.sendRedirect("/LearningManagement");
+                        response.sendRedirect("dashboard");
                     }
                     if (account.getRole().getId() == 1) {
                         response.sendRedirect("admin/users");
@@ -163,7 +163,7 @@ public class SignInController extends HttpServlet {
                 response.addCookie(cookiePassword);
             }
             if (account.getRole().getId() == 4) {
-                response.sendRedirect("/LearningManagement");
+                response.sendRedirect("dashboard");
             }
             if (account.getRole().getId() == 1) {
                 response.sendRedirect("admin/users");
@@ -172,7 +172,7 @@ public class SignInController extends HttpServlet {
                 response.sendRedirect("manager/subject-list");
             }
             if (account.getRole().getId() == 3) {
-                response.sendRedirect("/LearningManagement");
+                response.sendRedirect("dashboard");
             }
         }
     }

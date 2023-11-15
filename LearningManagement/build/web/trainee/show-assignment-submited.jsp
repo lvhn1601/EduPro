@@ -45,7 +45,7 @@
                         <div class="d-md-flex justify-content-between">
                             <h5 class="mb-0">Assignment & Quizzes</h5>
                         </div>
-                        <ul class="nav nav-tabs" id="myTabs">
+                        <ul class="nav nav-tabs mt-4" id="myTabs">
                             <li class="nav-item">
                                 <a class="nav-link active" id="assignmentDetailTab" data-toggle="tab" href="#assignmentDetail" role="tab" aria-controls="assignmentDetail" aria-selected="true">Assignment</a>
                             </li>
@@ -133,12 +133,7 @@
                                                                          
                                                                                 <td class="p-3">${d.lesson.title}</td>
                                                                                 <td class="p-3">${d.submit_at}</td>
-                                                                                <c:if test="${d.score != '0.0'}">
                                                                                 <td class="p-3 text-success">${d.score}</td>
-                                                                                </c:if>
-                                                                                <c:if test="${d.score == '0.0'}">
-                                                                                    <td class="p-3 text-danger" >not grade</td>
-                                                                                </c:if>
                                                                             </tr>
                                                                         </c:forEach>
                                                                     </tbody>

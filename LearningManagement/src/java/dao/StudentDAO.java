@@ -200,14 +200,15 @@ public class StudentDAO extends DBContext {
         return 0;
     }
 
-    public void createQuizSubmit(int quiz_lesson, int submitter) {
-        String sql = "insert into quiz_submit(quizlesson_id, submitter_id)\n"
-                + "values (?, ?)";
+    public void createQuizSubmit(int quiz_lesson, int submitter, int classId) {
+        String sql = "insert into quiz_submit(quizlesson_id, submitter_id, quizsubmit_class_id)\n"
+                + "values (?, ?, ?)";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, quiz_lesson);
             ps.setInt(2, submitter);
+            ps.setInt(3, classId);
 
             ps.execute();
         } catch (SQLException e) {
