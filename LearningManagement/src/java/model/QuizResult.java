@@ -18,7 +18,7 @@ public class QuizResult {
     private Lesson lesson;
     private Account submitter;
     private boolean status;
-    private int score;
+    private Float score;
     private String submit_at;
     private boolean expired;
 }

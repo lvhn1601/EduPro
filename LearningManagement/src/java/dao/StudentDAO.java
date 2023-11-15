@@ -456,7 +456,7 @@ public class StudentDAO extends DBContext {
                 list.add(QuizResult.builder()
                         .id(rs.getInt("quizsubmit_id"))
                         .status(rs.getBoolean("quizsubmit_status"))
-                        .score(rs.getInt("quizsubmit_score"))
+                        .score(rs.getFloat("quizsubmit_score"))
                         .submit_at(rs.getString("submit_at"))
                         .expired(quizExpired(rs.getInt("quizsubmit_id")))
                         .build()
