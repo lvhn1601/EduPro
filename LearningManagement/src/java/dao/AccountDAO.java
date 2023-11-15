@@ -33,7 +33,8 @@ public class AccountDAO extends DBContext {
                 + "account_role_id, "
                 + "account_avatar_url, "
                 + "account_name, "
-                + "s.setting_id "
+                + "s.setting_id, "
+                + "s.setting_title "
                 + "FROM account a "
                 + "INNER JOIN setting s ON a.account_role_id = s.setting_id "
                 + "WHERE (account_password = ?) "
@@ -57,6 +58,7 @@ public class AccountDAO extends DBContext {
                         .name(rs.getString("account_name"))
                         .role(Setting.builder()
                                 .id(rs.getInt("account_role_id"))
+                                .title(rs.getString("setting_title"))
                                 .build())
                         .build();
                 return a;
