@@ -12,6 +12,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import model.Class;
+import model.Lesson;
 
 @Builder
 @Getter

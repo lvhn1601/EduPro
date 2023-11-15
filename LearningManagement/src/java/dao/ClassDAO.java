@@ -227,6 +227,6 @@ public class ClassDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        System.out.println(new ClassDAO().deleteSubmit(35, 2));
+        System.out.println(new ClassDAO().getAsmById(35));
     }
 }

@@ -21,6 +21,7 @@
                             name="className"
                             value=""
                             required=""
+                            pattern="^[A-Z]{2}\d{4}$"
                             />
                     </div>
                     <div class="form-group mt-4">
@@ -73,11 +74,11 @@
                     <div class="form-group mt-4">
 
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="classStatus" id="classStatus" value="active" checked="">
+                            <input class="form-check-input" type="radio" name="classStatus" id="classStatus" value="true" checked="">
                             <label class="form-check-label" for="active">Active</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="classStatus" id="classStatus" value="inactive" >
+                            <input class="form-check-input" type="radio" name="classStatus" id="classStatus" value="false" >
                             <label class="form-check-label" for="inactive">Inactive</label>
                         </div>
                     </div>
