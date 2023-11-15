@@ -29,10 +29,11 @@ import model.Subject;
 public class StudentDAO extends DBContext {
 
     public List<Subject> getSubjectList(int user_id) {
-        String sql = "select subject_id, subject_code, subject_name from subject\n"
+        String sql = "select subject_id, subject_code, subject_name, count(class.class_subject_id) as count_class from subject\n"
                 + "join class on class_subject_id = subject_id\n"
                 + "join class_trainee on class.class_id = class_trainee.class_id\n"
-                + "where class_trainee.trainee_id = ? and subject_status = 1";
+                + "where class_trainee.trainee_id = ? and subject_status = 1\n"
+                + "GROUP BY subject_id, subject_code, subject_name";
 
         List<Subject> list = new ArrayList<>();
 
@@ -46,6 +47,7 @@ public class StudentDAO extends DBContext {
                         .id(rs.getInt("subject_id"))
                         .code(rs.getString("subject_code"))
                         .name(rs.getString("subject_name"))
+                        .countClass(rs.getInt("count_class"))
                         .build()
                 );
             }
@@ -58,7 +60,7 @@ public class StudentDAO extends DBContext {
     public List<Subject> getSubjectsListOfTrainer(int user_id) {
         String sql = "select subject.subject_id, subject_code, subject_name, count(class.class_subject_id) as count_class from subject\n"
                 + "join class on class_subject_id = subject_id\n"
-                + "where class.class_trainer_id = ? and class_status = 1\n"
+                + "where class.class_trainer_id = ? and subject_status = 1\n"
                 + "GROUP BY subject_id, subject_code, subject_name";
 
         List<Subject> list = new ArrayList<>();
