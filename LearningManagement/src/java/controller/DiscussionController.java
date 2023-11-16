@@ -23,8 +23,8 @@ import model.Chapter;
  *
  * @author dell
  */
-@WebServlet(name = "AssignmentSubmitController", urlPatterns = {"/assignment-submit"})
-public class AssignmentSubmitController extends HttpServlet {
+@WebServlet(name = "DiscussionController", urlPatterns = {"/discussion"})
+public class DiscussionController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +43,10 @@ public class AssignmentSubmitController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AssignmentEvaluationController</title>");
+            out.println("<title>Servlet DiscussionController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AssignmentEvaluationController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DiscussionController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,7 +64,7 @@ public class AssignmentSubmitController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ClassDAO db = new ClassDAO();
+        
         HttpSession session = request.getSession();
         ClassDAO classDAO = new ClassDAO();
         Account acc = (Account) session.getAttribute("accountCur");
@@ -72,15 +72,15 @@ public class AssignmentSubmitController extends HttpServlet {
         List<Assignment> listAsm = classDAO.getAllAsmByClass(classId);
         model.Class c = classDAO.getClassById(classId);
         StudentDAO sd = new StudentDAO();
-
+        
         // Data cho Sidebar
         int sid = Integer.parseInt(request.getParameter("subject"));
         List<model.Class> listClasses = sd.getClassList(acc.getId(), sid, acc.getRole().getId());
-
+        
         request.setAttribute("classList", listClasses);
-
+        
         String cid_raw = request.getParameter("classid");
-
+        
         int cid = 0;
         if (cid_raw != null) {
             cid = Integer.parseInt(cid_raw);
@@ -88,27 +88,14 @@ public class AssignmentSubmitController extends HttpServlet {
             cid = listClasses.get(0).getClass_id();
         }
         request.setAttribute("classId", cid);
-
+        
         List<Chapter> listChapters = sd.getChaptersList(sid);
         request.setAttribute("materials", listChapters);
         // Het
-        int page_num;
-
-        try {
-            page_num = Integer.parseInt(request.getParameter("page"));
-        } catch (NumberFormatException | NullPointerException e) {
-            page_num = 1;
-        }
-        int asmId = Integer.parseInt(request.getParameter("id"));
-        Assignment asm = db.getAsmById(asmId);
-
-        int num_of_users = db.countSubmit(asmId);
-        request.setAttribute("asm", asm);
-        request.setAttribute("count", num_of_users);
-        request.setAttribute("pages", Math.round(num_of_users / 8) + (num_of_users % 8 == 0 ? 0 : 1));
-        request.setAttribute("data", db.getSubmitInPage(page_num, asmId));
-        request.setAttribute("asmId", asmId);
-        request.getRequestDispatcher("assignment-submit-list.jsp").forward(request, response);
+        
+        request.setAttribute("listAsm", listAsm);
+        request.setAttribute("c", c);
+        request.getRequestDispatcher("discussion.jsp").forward(request, response);
     }
 
     /**
@@ -122,14 +109,7 @@ public class AssignmentSubmitController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ClassDAO classDAO = new ClassDAO();
-        int classId = Integer.parseInt(request.getParameter("classId"));
-        int subject = Integer.parseInt(request.getParameter("subject"));
-        float score = Float.parseFloat(request.getParameter("score")); // Điểm mới
-        int asmId = Integer.parseInt(request.getParameter("asmId")); // ID của bài tập
-        int accId = Integer.parseInt(request.getParameter("accId"));
-        classDAO.updateScore(score, asmId, accId);
-        response.sendRedirect("assignment-submit?id=" + asmId + "&subject=" + subject + "&classId=" + classId);
+        processRequest(request, response);
     }
 
     /**

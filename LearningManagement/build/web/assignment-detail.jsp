@@ -251,6 +251,8 @@
             <div class="modal-dialog" role="document">
                 <form class="modal-content" action="upload-asm" method="post" enctype="multipart/form-data">
                     <input type="text" hidden="" value="${asm.lessonId.id}" name="asmId"/>
+                    <input type="text" hidden="" value="${param.classid}" name="classid"/>
+                    <input type="text" hidden="" value="${param.subject}" name="subject"/>
                     <input type="text" hidden="" value="${accountCur.id}" name="accId"/>
                     <div class="modal-header">
                         <h5 class="modal-title" id="submitAssignmentModalLabel">SUBMISSION</h5>

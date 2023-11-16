@@ -225,9 +225,9 @@ public class AccountDAO extends DBContext {
         int check = 0;
         String sql = "";
         if (obj.getEmail() != null) {
-            sql = "INSERT INTO Account(account_email, account_password, account_name, account_role_id, account_avatar_url) VALUES (?, ?, ?, 4, 'https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg')";
+            sql = "INSERT INTO Account(account_email, account_password, account_name, account_role_id, account_avatar_url, account_active) VALUES (?, ?, ?, 4, 'https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg', 1)";
         } else if (obj.getPhone() != null) {
-            sql = "INSERT INTO Account(account_phone, account_password, account_name, account_role_id, account_avatar_url) VALUES (?, ?, ?, 4, 'https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg')";
+            sql = "INSERT INTO Account(account_phone, account_password, account_name, account_role_id, account_avatar_url, account_active) VALUES (?, ?, ?, 4, 'https://img.myloview.com/stickers/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg', 1)";
         }
         if (sql.isEmpty()) {
             return 0;

@@ -61,13 +61,15 @@
                         <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
                             <div id="commentContent"></div>
                             <form action="assignment-discussion" method="post">
+                                <input type="text" hidden="" value="${param.classId}" name="classid"/>
+                                <input type="text" hidden="" value="${param.subject}" name="subject"/>
                                 <input type="hidden" name="accountId" value="${sessionScope.accountCur.id}"/>
                                 <input type="hidden" name="lessonId" value="${requestScope.asm.lessonId.id}"/>
                                 <input type="hidden" id="commentValue" name="commentValue"/>
                                 <button onclick="editRecruitment()" class="btn- btn-primary mt-2">Submit</button>
                             </form>
                         </div>
-                       <c:forEach items="${requestScope.listAssignmentDiscussion}" var="c">
+                        <c:forEach items="${requestScope.listAssignmentDiscussion}" var="c">
                             <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
                                 <div class="d-flex">
                                     <img width="50" height="50" class="rounded-circle" src="${c.account.avatar_url}" alt="alt"/>

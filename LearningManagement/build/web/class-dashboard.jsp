@@ -170,7 +170,7 @@
             <!--End page-content" -->
         </div>
         <!-- page-wrapper -->
-<%@include file="modal/modal-add-lesson.jsp"%>
+        <%@include file="modal/modal-add-lesson.jsp"%>
         <!-- javascript -->
         <script src="/LearningManagement/assets/js/bootstrap.bundle.min.js"></script>
         <!-- simplebar -->

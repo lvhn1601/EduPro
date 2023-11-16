@@ -44,11 +44,11 @@
                         <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                             <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                 <li class="breadcrumb-item"><a href="index.html">Class</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Assignment</li>
+                                <li class="breadcrumb-item active" aria-current="page">Discussion</li>
                             </ul>
                         </nav>
                         <div class="d-md-flex justify-content-between">
-                            <h5 class="mb-0">Assignment of ${c.class_name}</h5>
+                            <h5 class="mb-0">Discussion of ${c.class_name}</h5>
                         </div>
 
                         <div class="row">
@@ -57,10 +57,9 @@
                                     <table class="table table-center bg-white mb-0">
                                         <thead>
                                             <tr>
-                                                <th class="border-bottom p-3" style="min-width: 50px;">NAME</th>
-                                                <th class="border-bottom p-3" style="min-width: 240px;">DUE DATE</th>
-                                                <th class="border-bottom p-3">STATUS</th>
-                                                   
+                                                <th class="border-bottom p-3" style="min-width: 50px;">TOPIC NAME</th>
+                                                <th class="border-bottom p-3 end-0"></th>
+
 
                                             </tr>
                                         </thead>
@@ -73,17 +72,18 @@
                                                                 <a href="assignment-detail?subject=${param.subject}&classid=${classId}&id=${asm.lessonId.id}">${asm.lessonId.title}</a>
                                                             </c:when>
                                                             <c:when test="${sessionScope.accountCur.role.id == 3}">
-                                                                <a href="assignment-submit?subject=${param.subject}&classId=${classId}&id=${asm.lessonId.id}">${asm.lessonId.title}</a>
+                                                                <a href="assignment-submit?id=${asm.lessonId.id}">${asm.lessonId.title}</a>
                                                             </c:when>
                                                         </c:choose>
                                                     </th>
 
                                                     <td class="py-3">
-                                                        ${asm.dueDate}
+                                                        <a 
+
+                                                            href="trainee/assignment-discussion?id=${asm.lessonId.id}&subject=${param.subject}&classId=${classId}"
+                                                            class="btn btn-primary">Discussion</a>
                                                     </td>
-                                                    <td class="p-3">
-                                                        ${asm.lessonId.status == true ? 'On Going' : 'Expired'}
-                                                    </td>
+
 
                                                     <c:choose>
                                                         <c:when test="${sessionScope.accountCur.role.id == 4}">
