@@ -1366,7 +1366,7 @@ public class ManagerDAO extends DBContext {
             int class_trainer_id, Boolean class_status, Date class_start, Date class_end,
             int created_by, LocalDateTime created_at) {
         int check = 0;
-        String sql = "INSERT INTO edupro.class (class_name,class_subject_id,class_semester_id,"
+        String sql = "INSERT INTO class (class_name,class_subject_id,class_semester_id,"
                 + "class_trainer_id,class_status,class_start,class_end,created_by,created_at) \n"
                 + "VALUES (?,?,?,?,?,?,?,?,?);";
         try ( PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -1406,7 +1406,7 @@ public class ManagerDAO extends DBContext {
     }
 
     public List<Subject> getSubject() {
-        String sql = "SELECT subject_id,subject_name FROM edupro.subject where subject_status =1;";
+        String sql = "SELECT subject_id,subject_name FROM subject where subject_status =1;";
 
         List<Subject> list = new ArrayList<>();
 
@@ -1428,7 +1428,7 @@ public class ManagerDAO extends DBContext {
     }
 
     public List<Account> getTrainer() {
-        String sql = "SELECT account_id,account_email,account_name FROM edupro.account where account_role_id = 3;";
+        String sql = "SELECT account_id,account_email,account_name FROM account where account_role_id = 3;";
 
         List<Account> list = new ArrayList<>();
 
@@ -1451,7 +1451,7 @@ public class ManagerDAO extends DBContext {
     }
 
     public List<Setting> getSemester() {
-        String sql = "SELECT setting_id,setting_title FROM edupro.setting where setting_key = 2 AND setting_status = 1;";
+        String sql = "SELECT setting_id,setting_title FROM setting where setting_key = 2 AND setting_status = 1;";
 
         List<Setting> list = new ArrayList<>();
 
@@ -1590,7 +1590,7 @@ public class ManagerDAO extends DBContext {
             int class_trainer_id, Boolean class_status, Date class_start, Date class_end,
             int update_by, LocalDateTime update_at, int class_id) {
         int check = 0;
-        String sql = "UPDATE edupro.class\n"
+        String sql = "UPDATE class\n"
                 + "SET class_name = ?,\n"
                 + "    class_subject_id = ?,\n"
                 + "    class_semester_id = ?,\n"
@@ -1620,7 +1620,7 @@ public class ManagerDAO extends DBContext {
     }
 
     public List<Account> getTrainee(int classDetailId) {
-        String sql = "SELECT account_id,account_email,account_name, account_phone FROM edupro.account Join class_trainee ON class_trainee.trainee_id = account.account_id where class_id = ?";
+        String sql = "SELECT account_id,account_email,account_name, account_phone FROM account Join class_trainee ON class_trainee.trainee_id = account.account_id where class_id = ?";
 
         List<Account> list = new ArrayList<>();
 
