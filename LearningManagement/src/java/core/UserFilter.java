@@ -108,7 +108,6 @@ public class UserFilter implements Filter {
         HttpSession session = req.getSession();
         Account account = (Account) session.getAttribute("accountCur");
         if (account != null) {
-
                 chain.doFilter(request, response);
             } else {
                 resp.sendRedirect("error");

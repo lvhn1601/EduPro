@@ -196,7 +196,6 @@
             <h1 style="margin: 100px 0px 0px 30px">Question List</h1>
             <div id="subjectDropdownContainer" onchange="changeSubject()">
                 <select id="subjectDropdown" >
-                    <option value="all">All</option>
                     <c:forEach items="${requestScope.subjects}" var="s">
                         <option value="${s.id}">${s.name}</option>
                     </c:forEach>
