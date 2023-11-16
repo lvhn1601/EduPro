@@ -1,8 +1,4 @@
-<%-- 
-    Document   : edit-user
-    Created on : Sep 21, 2023, 5:43:11 PM
-    Author     : lvhn1
---%>
+
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

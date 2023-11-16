@@ -98,7 +98,7 @@
                                                 </div>
                                             </div><!--end col-->
                                             
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="display: none;">
                                                 <div class="mb-3">
                                                     <label class="form-label">Lesson:</label>
                                                     <select name="lesson" id="lesson" class="form-control department-name select2input bg-white" ${param.action eq 'update' ? 'disabled' : ''}>

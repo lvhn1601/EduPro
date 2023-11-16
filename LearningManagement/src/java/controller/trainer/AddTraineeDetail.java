@@ -5,6 +5,7 @@
 
 package controller.trainer;
 
+import com.google.gson.Gson;
 import dao.TrainerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,15 +60,21 @@ public class AddTraineeDetail extends HttpServlet {
         TrainerDAO dao = new TrainerDAO();
         int trainee_id = Integer.parseInt(request.getParameter("id"));
         int class_id = Integer.parseInt(request.getParameter("classId"));
-        
+        String message = "";
         if(dao.checkDupplicateTrainee(class_id, trainee_id) == 1) {
-            request.setAttribute("error", "Add fail! This trainee is in the class already!");
+//            request.setAttribute("message", "Add fail! This trainee was in the class already!");
+            message = "Add fail! This trainee was in the class already!";
         } else {
             // add trainee to class
             dao.addTraineeToClass(trainee_id, class_id);
-            request.setAttribute("message", "Add successfull");
+//            request.setAttribute("message", "Added trainee to class");
+            message = "Added trainee to class";
         }
-        request.getRequestDispatcher("add-trainee").forward(request, response);
+        // Send JSON response back to the frontend
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new Gson().toJson(message));
+//        request.getRequestDispatcher("add-trainee").forward(request, response);
     } 
 
     /** 

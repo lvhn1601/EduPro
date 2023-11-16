@@ -153,7 +153,7 @@ public class TrainerDAO extends DBContext {
         }
         return 0;
     }
-    
+    // lay danh sach trainee trong 1 lop + phan trang
     public List<Account> getTraineeInAClass(int class_id, String email, int page) {
         List<Account> trainees = new ArrayList<>();
         String sql = "select a.account_id, a.account_name, a.account_email, a.account_phone, a.account_active from class_trainee c \n" +
@@ -164,6 +164,31 @@ public class TrainerDAO extends DBContext {
         try (PreparedStatement stm = connection.prepareStatement(sql)) {
             stm.setInt(1, class_id);
             stm.setInt(2, (page-1)*8);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()) {
+                Account acc = Account.builder()
+                        .id(rs.getInt("account_id"))
+                        .name(rs.getString("account_name"))
+                        .email(rs.getString("account_email"))
+                        .phone(rs.getString("account_phone"))
+                        .active(rs.getInt("account_active"))
+                        .build();
+                trainees.add(acc);
+            }
+        } catch(SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return trainees;
+    }
+    // lay danh sach trainee trong 1 lop de export
+    public List<Account> getTraineeInAClass(int class_id, String email) {
+        List<Account> trainees = new ArrayList<>();
+        String sql = "select a.account_id, a.account_name, a.account_email, a.account_phone, a.account_active from class_trainee c \n" +
+                        "inner join account a on c.trainee_id = a.account_id\n" +
+                        "where account_email like '%"+ email +"%'\n" +
+                        "and c.class_id = ?";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setInt(1, class_id);
             ResultSet rs = stm.executeQuery();
             while(rs.next()) {
                 Account acc = Account.builder()
@@ -233,7 +258,19 @@ public class TrainerDAO extends DBContext {
             e.printStackTrace(System.out);
         }
     }
-    
+    // tao moi 1 trainee
+    public void createNewTrainee(String email, String name, int trainer_id) {
+        String sql = "insert into account (account_email, account_password, account_active, account_name, account_role_id, created_by)\n" +
+                    "values (?, '123456', 1, ?, 4, ?)";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            stm.setString(1, email);
+            stm.setString(2, name);
+            stm.setInt(3, trainer_id);
+            stm.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace(System.out);
+        }
+    }
     // select chapter by subjectId for fetch data
     public List<Chapter> getChapterBySubject(int subject_id) {
         List<Chapter> list = new ArrayList();
@@ -399,6 +436,17 @@ public class TrainerDAO extends DBContext {
         }
         return 0;
     }
+    public int getTopTraineeId() {
+        String sql = "select account_id from account order by account_id desc limit 1";
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            ResultSet rs = stm.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+        return 0;
+    }
     // delete an extra lesson from a class
     public void deleteExtraLesson(int lesson_id) {
         String sql = "delete from extra_lesson where lesson_id = ?";
@@ -464,7 +512,7 @@ public class TrainerDAO extends DBContext {
             
     public static void main(String[] args) {    
         TrainerDAO dao = new TrainerDAO();
-        List<Account> acc = dao.getTraineeByEmail("duytn@gmail.com");
+        List<Account> acc = dao.getTraineeByEmail("trantib@gmail.com");
         
         System.out.println(acc.get(0).getId());
     }

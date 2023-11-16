@@ -75,6 +75,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-2 d-flex justify-content-end" style="height: 40px">
+                                            <a href="trainee-export?classId=${class_id}" class="btn btn-primary">Export</a>
+                                        </div>
                                     </form>
 
                                     <div class="row" style="margin: 10px 0; justify-content: center">
@@ -104,7 +107,7 @@
                                                         <c:forEach items="${trainees}" var="tr">
                                                             <c:set var="number" value="${number+1}"></c:set>
                                                             <tr>
-                                                                <th class="p-3">${number}</th>
+                                                                <th class="p-3">${tr.id}</th>
                                                                 <td class="py-3">
                                                                     <div class="d-flex align-items-center">
                                                                         <span class="ms-2">${tr.name}</span>
@@ -116,12 +119,14 @@
                                                                     <input name="action" style="display: none"
                                                                         value="${action}" />
                                                                     <a style="display: ${action eq 'view' ? '' : 'none'}"
-                                                                        href="remove-trainee?id=${tr.id}&class_id=${class_id}"
+                                                                        href="#"
+                                                                        onclick="removeTrainee(${tr.id}, ${class_id})"
                                                                         class="">
                                                                         Remove
                                                                     </a>
                                                                     <a style="display: ${action eq 'view' ? 'none' : ''}"
-                                                                        href="add-trainee-detail?id=${tr.id}&classId=${class_id}"
+                                                                        href="#"
+                                                                        onclick="addTrainee(${tr.id}, ${class_id})"
                                                                         class="">
                                                                         Add to Class
                                                                     </a>
@@ -130,8 +135,8 @@
                                                                 <td class="p-3">
                                                                     <form class="form-check form-switch">
                                                                         <input class="form-check-input" type="checkbox"
-                                                                            id="flexSwitchCheckDefault" ${l.status
-                                                                            ? 'checked' : '' }>
+                                                                            id="flexSwitchCheckDefault" ${tr.active eq 1
+                                                                                ? 'checked' : '' } disabled="">
                                                                     </form>
                                                                 </td>
                                                             </tr>
@@ -244,31 +249,23 @@
                                 window.location.href = servletUrl;
                             };
                         }
-//                        function importTrainee() {
-//                            const form = document.getElementById("#traineeForm");                          
-//                            const inputTag = document.getElementById("class_id");
-//                            const class_id = inputTag.value;
-//                            
-//                            const xhr = new XMLHttpRequest();
-//                            
-//                            xhr.open('POST', 'http://localhost:9999/LearningManagement/trainer/import-trainee')
-//                            
-//                            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-//                            
-//                            const formData = new FormData();
-//                            
-//                            formData.append('class', class_id);
-//                            
-//                            xhr.send(formData);
-//                            
-//                            xhr.onload = function() {
-//                                if (xhr.status === 200) {
-//                                  // Success!
-//                                } else {
-//                                  // Error!
-//                                }
-//                            };
-//                        }
+                        function removeTrainee(trainee_id, class_id) {
+                            if(confirm("Are you sure to remove this trainee?")) {
+                                fetch("remove-trainee?id="+trainee_id+"&class_id="+class_id)
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            window.location.replace("http://localhost:9999/LearningManagement/trainer/view-trainee?classId="+class_id);
+                                        });
+                            }
+                        };
+                        function addTrainee(trainee_id, class_id) {
+                            console.log(trainee_id+" "+class_id);
+                            fetch("add-trainee-detail?id="+trainee_id+"&classId="+class_id)
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            window.alert(data);
+                                        });
+                        };
                         function jumpTo(page_num) {
                             let action = "${param.action}";          
                             let search = "${param.search eq null ? '' : param.search}";
@@ -277,7 +274,7 @@
                                 location.href = "./view-trainee?page=" + Math.floor(page_num) + ("&search=" + search);
                             } else location.href = "./search-trainee?page=" + Math.floor(page_num) + ("&search=" + search) + ("&classId=" + class_id);
 
-                        }
+                        };
                     </script>
             </body>
 
