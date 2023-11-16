@@ -172,15 +172,24 @@ public class StudentDAO extends DBContext {
         return list;
     }
 
-    public List<Lesson> getLessonsList(int chapter_id) {
-        String sql = "select * from lesson where lesson_chapter_id = ? and lesson_status = 1\n"
-                + "order by lesson_display_order";
+    public List<Lesson> getLessonsList(int chapter_id, int classid) {
+        String sql = "(select lesson_id, lesson_title, lesson_type, lesson_description, lesson_chapter_id, lesson_extra from lesson where lesson_chapter_id = ? and lesson_status = 1\n"
+                + "order by lesson_display_order)\n"
+                + "union\n"
+                + "(select lesson.lesson_id, lesson_title, lesson_type, lesson_description, lesson_chapter_id, lesson_extra from lesson\n"
+                + "right join extra_lesson on extra_lesson.lesson_id = lesson.lesson_id \n"
+                + "where lesson_chapter_id = ? and extra_lesson.class_id = ?)";
 
         List<Lesson> list = new ArrayList<>();
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, chapter_id);
+            ps.setInt(2, chapter_id);
+            ps.setInt(3, classid);
+
+            System.out.println(ps.toString());
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -188,6 +197,7 @@ public class StudentDAO extends DBContext {
                         .id(rs.getInt("lesson_id"))
                         .type(rs.getString("lesson_type"))
                         .title(rs.getString("lesson_title"))
+                        .extra(rs.getBoolean("lesson_extra"))
                         .build()
                 );
             }

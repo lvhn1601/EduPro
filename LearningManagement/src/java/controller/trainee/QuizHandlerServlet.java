@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import model.Account;
+import model.Chapter;
 import model.Config;
 import model.Question;
 import model.Quiz;
@@ -109,6 +110,26 @@ public class QuizHandlerServlet extends HttpServlet {
             request.setAttribute("numOfQues", sd.getNumOfQuestions(submitId));
             request.setAttribute("lid", sd.getQuizLessonId(submitId));
             request.setAttribute("timeleft", sd.getSecondLeft(submitId));
+            
+            // Data cho Sidebar
+            int sid = Integer.parseInt(request.getParameter("subject"));
+            List<model.Class> listClasses = sd.getClassList(acc.getId(), sid, acc.getRole().getId());
+
+            request.setAttribute("classList", listClasses);
+
+            String cid_raw = request.getParameter("classid");
+
+            int cid = 0;
+            if (cid_raw != null) {
+                cid = Integer.parseInt(cid_raw);
+            } else {
+                cid = listClasses.get(0).getClass_id();
+            }
+            request.setAttribute("classId", cid);
+
+            List<Chapter> listChapters = sd.getChaptersList(sid);
+            request.setAttribute("materials", listChapters);
+            // Het
 
             request.getRequestDispatcher("trainee/quiz-handler.jsp").forward(request, response);
         }
@@ -129,7 +150,7 @@ public class QuizHandlerServlet extends HttpServlet {
         int submitId = Integer.parseInt(request.getParameter("id"));
         sd.submitQuiz(submitId);
         
-        response.sendRedirect("lesson?classid=" + request.getParameter("classid") + "&id=" + sd.getQuizLessonId(submitId));
+        response.sendRedirect("lesson?subject=" + request.getParameter("subject") + "&classid=" + request.getParameter("classid") + "&id=" + sd.getQuizLessonId(submitId));
     }
 
     /** 

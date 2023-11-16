@@ -61,10 +61,13 @@
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button border-0 bg-light h5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                             <div style="margin-right:200px">${chapter.title}</div>
-                                            <a data-bs-toggle="modal"
-                                               data-bs-target="#addLessonModal"
-                                               href="javascript:void(0"
-                                               class="btn btn-primary">Add lesson</a>
+                                            <c:if test="${sessionScope.accountCur.role.id == 3}">
+                                                <a data-bs-toggle="modal"
+                                                    data-bs-target="#addLessonModal"
+                                                    href="javascript:void(0"
+                                                    class="btn btn-primary">Add lesson</a>
+                                            </c:if>
+                                            
 
                                         </button>
                                     </h2>
@@ -78,33 +81,54 @@
                                             <ul class="list-group-flush">
                                                 <c:forEach items="${lessons}" var="l">
                                                     <c:if test="${l.type eq 'Video'}">
-                                                        <a class="d-flex list-group-item border-0" href="#">
-                                                            <i class="uil uil-play-circle me-2" style="font-size: 22px"></i>
-                                                            <div>
-                                                                <h6 class="m-0">${l.title}</h6>
-                                                                <p class="text-muted small mb-0">${l.type}</p>
-                                                            </div>
-                                                        </a>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <a class="d-flex list-group-item border-0" href="#">
+                                                                <i class="uil uil-play-circle me-2" style="font-size: 22px"></i>
+                                                                <div>
+                                                                    <h6 class="m-0">${l.title}</h6>
+                                                                    <p class="text-muted small mb-0">${l.type}</p>
+                                                                </div>
+                                                            </a>
+                                                            <c:if test="${l.extra && sessionScope.accountCur.role.id == 3}">
+                                                                <div>
+                                                                    <a href="#" class="me-4" onclick="confirmDelete(${l.id})">Remove</a>
+                                                                </div>
+                                                            </c:if>
+                                                        </div>
                                                     </c:if>
 
                                                     <c:if test="${l.type eq 'Quiz'}">
-                                                        <a class="d-flex list-group-item border-0" href="/LearningManagement/lesson?subject=${param.subject}&classid=${classId}&id=${l.id}">
-                                                            <i class="uil uil-question-circle me-2" style="font-size: 22px"></i>
-                                                            <div>
-                                                                <h6 class="m-0">${l.title}</h6>
-                                                                <p class="text-muted small mb-0">${l.type}</p>
-                                                            </div>
-                                                        </a>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <a class="d-flex list-group-item border-0" href="/LearningManagement/lesson?subject=${param.subject}&classid=${classId}&id=${l.id}">
+                                                                <i class="uil uil-question-circle me-2" style="font-size: 22px"></i>
+                                                                <div>
+                                                                    <h6 class="m-0">${l.title}</h6>
+                                                                    <p class="text-muted small mb-0">${l.type}</p>
+                                                                </div>
+                                                            </a>
+                                                            <c:if test="${l.extra && sessionScope.accountCur.role.id == 3}">
+                                                                <div>
+                                                                    <a href="#" class="me-4" class="me-4" onclick="confirmDelete(${l.id})">Remove</a>
+                                                                </div>
+                                                            </c:if>
+                                                        </div>
                                                     </c:if>
 
                                                     <c:if test="${l.type eq 'Assignment'}">
-                                                        <a class="d-flex list-group-item border-0" href="/LearningManagement/assignment-detail?subject=${param.subject}&classid=${classId}&id=${l.id}">
-                                                            <i class="uil uil-file-question-alt me-2" style="font-size: 22px"></i>
-                                                            <div>
-                                                                <h6 class="m-0">${l.title}</h6>
-                                                                <p class="text-muted small mb-0">${l.type}</p>
-                                                            </div>
-                                                        </a>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <a class="d-flex list-group-item border-0" href="/LearningManagement/assignment-detail?subject=${param.subject}&classid=${classId}&id=${l.id}">
+                                                                <i class="uil uil-file-question-alt me-2" style="font-size: 22px"></i>
+                                                                <div>
+                                                                    <h6 class="m-0">${l.title}</h6>
+                                                                    <p class="text-muted small mb-0">${l.type}</p>
+                                                                </div>
+                                                            </a>
+                                                            <c:if test="${l.extra && sessionScope.accountCur.role.id == 3}">
+                                                                <div>
+                                                                    <a href="#" class="me-4" class="me-4" onclick="confirmDelete(${l.id})">Remove</a>
+                                                                </div>
+                                                            </c:if>
+                                                        </div>
                                                     </c:if>
                                                 </c:forEach>
                                             </ul>
@@ -155,5 +179,11 @@
         <script src="/LearningManagement/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="/LearningManagement/assets/js/app.js"></script>
+        <script>
+            function confirmDelete(lessonid) {
+                if (confirm("Are you sure you want to delete this lesson in this class?"))
+                    window.location.href = "/LearningManagement/delete-extra?subject=${param.subject}&classid=${classId}&chapter=${param.chapter == null ? 1 : param.chapter}&lessonid=" + lessonid;
+            }
+        </script>
     </body>
 </html>

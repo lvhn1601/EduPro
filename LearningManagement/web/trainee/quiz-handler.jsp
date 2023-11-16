@@ -36,7 +36,9 @@
     <body>
 
         <div class="page-wrapper doctris-theme toggled">
-            <jsp:include page="../components/sidebar.jsp"/>
+            <c:if test="${param.action != 'take'}">
+                <jsp:include page="../components/sidebar.jsp"/>
+            </c:if>
 
             <!-- Start Page Content -->
             <main class="page-content bg-light">
@@ -88,7 +90,7 @@
                                             <h5>Questions:</h5>
                                             <div>
                                                 <c:forEach begin="1" end="${numOfQues}" var="i">
-                                                    <a href="quiz?action=${param.action}&id=${param.id}&qnum=${i}&classid=${param.classid}" class="btn btn-icon btn-soft-primary m-1 ${param.qnum == i ? 'active' : ''}">${i}</a>
+                                                    <a href="quiz?action=${param.action}&id=${param.id}&qnum=${i}&subject=${param.subject}&classid=${param.classid}" class="btn btn-icon btn-soft-primary m-1 ${param.qnum == i ? 'active' : ''}">${i}</a>
                                                 </c:forEach>
                                             </div>
                                             

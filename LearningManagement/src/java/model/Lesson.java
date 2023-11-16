@@ -27,6 +27,7 @@ public class Lesson {
     private int duration;
     private int passValue;
     private int maxAttempt;
+    private boolean extra;
     private String created_by;
     private String created_at;
     private String update_by;

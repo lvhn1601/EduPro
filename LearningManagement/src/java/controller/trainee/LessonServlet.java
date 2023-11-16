@@ -72,27 +72,25 @@ public class LessonServlet extends HttpServlet {
         StudentDAO sd = new StudentDAO();
         Lesson lesson = md.getLessonWithId(id);
         
-        if (acc.getRole().getId() == 4) {
-            // Data cho Sidebar
-            int sid = Integer.parseInt(request.getParameter("subject"));
-            List<model.Class> listClasses = sd.getClassList(acc.getId(), sid, acc.getRole().getId());
+        // Data cho Sidebar
+        int sid = Integer.parseInt(request.getParameter("subject"));
+        List<model.Class> listClasses = sd.getClassList(acc.getId(), sid, acc.getRole().getId());
         
-            request.setAttribute("classList", listClasses);
-
-            String cid_raw = request.getParameter("classid");
-
-            int cid = 0;
-            if (cid_raw != null) {
-                cid = Integer.parseInt(cid_raw);
-            } else {
-                cid = listClasses.get(0).getClass_id();
-            }
-            request.setAttribute("classId", cid);
-
-            List<Chapter> listChapters = sd.getChaptersList(sid);
-            request.setAttribute("materials", listChapters);
-            // Het
+        request.setAttribute("classList", listClasses);
+        
+        String cid_raw = request.getParameter("classid");
+        
+        int cid = 0;
+        if (cid_raw != null) {
+            cid = Integer.parseInt(cid_raw);
+        } else {
+            cid = listClasses.get(0).getClass_id();
         }
+        request.setAttribute("classId", cid);
+        
+        List<Chapter> listChapters = sd.getChaptersList(sid);
+        request.setAttribute("materials", listChapters);
+        // Het
         
         if (lesson.getType().equalsIgnoreCase("quiz")) {
             request.setAttribute("lesson", lesson);
@@ -149,7 +147,7 @@ public class LessonServlet extends HttpServlet {
                 }
             }
             
-            response.sendRedirect("quiz?action=take&id=" + submitId + "&qnum=1&classid=" + classId);
+            response.sendRedirect("quiz?action=take&id=" + submitId + "&qnum=1&subject=" + request.getParameter("subject") + "&classid=" + classId);
         }
     }
 

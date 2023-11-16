@@ -5,7 +5,9 @@
 
 package controller;
 
+import dao.ManagerDAO;
 import dao.StudentDAO;
+import dao.TrainerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,8 +15,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Account;
+import model.Alert;
 import model.Chapter;
 import model.Class;
 
@@ -93,7 +97,10 @@ public class ClassDashboardServlet extends HttpServlet {
         
         request.setAttribute("chapter", chapter);
         
-        request.setAttribute("lessons", sd.getLessonsList(chapter.getId()));
+        request.setAttribute("lessons", sd.getLessonsList(chapter.getId(), cid));
+        
+        HttpSession session = request.getSession();
+        session.removeAttribute("alert");
         
         request.getRequestDispatcher("class-dashboard.jsp").forward(request, response);
     } 
@@ -108,7 +115,61 @@ public class ClassDashboardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        Account acc = (Account) request.getSession().getAttribute("accountCur");
+        
+        TrainerDAO td = new TrainerDAO();
+        ManagerDAO db = new ManagerDAO();
+        
+        String action = request.getParameter("action");
+        String title = request.getParameter("title");
+        String type = request.getParameter("type");
+        boolean status = request.getParameter("status") != null;
+        String video = request.getParameter("video");
+        String description = request.getParameter("description");
+        
+        HttpSession session = request.getSession();
+        int chapter = Integer.parseInt(request.getParameter("chapter"));
+        int classid = Integer.parseInt(request.getParameter("classid"));
+        
+        if (action.equals("add")) {
+            if (td.addLesson(title, chapter, type, status, video, description, acc.getId()))
+                session.setAttribute("alert", Alert.builder()
+                        .type(true)
+                        .message("You have added new lesson succesfully!")
+                        .build()
+                );
+            else
+                session.setAttribute("alert", Alert.builder()
+                        .type(false)
+                        .message("Add new lesson failed! Please try again...")
+                        .build()
+                );
+            
+            int lesson = db.getId("lesson");
+            
+            td.addExtraLessonForClass(classid, lesson);
+            
+            if (type.equals("Quiz")) {
+                int quiz = Integer.parseInt(request.getParameter("quiz"));
+                int duration = Integer.parseInt(request.getParameter("duration"));
+                int passVal = Integer.parseInt(request.getParameter("pass-val"));
+                int maxAttempt = Integer.parseInt(request.getParameter("max-attempt"));
+                
+                response.getWriter().println(request.getParameter("quiz"));
+                response.getWriter().println(request.getParameter("duration"));
+                response.getWriter().println(request.getParameter("pass-val"));
+                response.getWriter().println(request.getParameter("max-attempt"));
+                
+                db.addQuizLesson(lesson, quiz, duration, passVal, maxAttempt);
+            } else if (type.equals("Assignment")) {
+                String duedate = request.getParameter("due-date");
+                
+                response.getWriter().println(duedate);
+                td.addAssignment(lesson, classid, duedate);
+            }
+        }
+        
+        response.sendRedirect("class-dashboard?subject=" + request.getParameter("subject") + "&classid=" + classid + "&chapter=" + request.getParameter("chapternum"));
     }
 
     /** 

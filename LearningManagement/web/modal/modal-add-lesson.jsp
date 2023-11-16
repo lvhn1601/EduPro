@@ -3,7 +3,7 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Add Lesson</h4>
+                <h4 class="modal-title">Add Extra Lesson</h4>
                 <a  style="cursor: pointer"
                     data-bs-dismiss="modal"
                     ><i class="fa-solid fa-xmark"></i></a>
@@ -13,135 +13,129 @@
                     <div class="layout-specing">                        
                         <div class="row">
                             <div class="col-lg-12 mt-4">
-                                <div class="card border-0 p-4 rounded shadow">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                            <h4 class="">Lesson Details</h4>
+                                <div class="row align-items-center">
+                                    <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                        <h4 class="">Lesson Details</h4>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+
+                                <form class="mt-4" action="class-dashboard?subject=${param.subject}&chapternum=${param.chapter == null ? 1 : param.chapter}" method="post" onsubmit="return checkEmpty();">
+                                    <input type="hidden" name="action" value="add"/>
+                                    <input type="number" name="lesson-id" value="${lesson.id}" style="display: none"/>
+                                    <input type="hidden" name="chapter" value="${materials[param.chapter == null ? 0 : param.chapter-1].id}"/>
+                                    <input type="hidden" name="classid" value="${classId}"/>
+                                    <div class="row">                                                                                       
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Title:</label>
+                                                <input name="title" id="title" type="text" class="form-control" placeholder="Lesson title..." value="${lesson.title}">
+                                            </div>
                                         </div><!--end col-->
+
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Description:</label>
+                                                <textarea name="description" id="description" class="form-control" placeholder="Description" rows="5">${lesson.description}</textarea>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Lesson Type:</label>
+                                                <div class="d-flex ms-4">
+                                                    <div class="form-check pe-4">
+                                                        <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2 type-video" value="Video" checked ${lesson.type eq 'Video' ? 'checked' : ''} onchange="switchLessonType()">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            Video
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-check pe-4">
+                                                        <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2 type-quiz" value="Quiz" ${lesson.type eq 'Quiz' ? 'checked' : ''} onchange="switchLessonType()">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            Quiz
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check pe-4">
+                                                        <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2 type-assignment" value="Assignment" ${lesson.type eq 'Assigment' ? 'checked' : ''} onchange="switchLessonType()">
+                                                        <label class="form-check-label" for="flexRadioDefault2">
+                                                            Assignment
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->                                           
                                     </div><!--end row-->
 
-                                    <form class="mt-4" action="lesson-details?action=${param.action}" method="post" onsubmit="return checkEmpty();">
-                                        <input type="number" name="lesson-id" value="${lesson.id}" style="display: none"/>
-                                        <div class="row">                                                                                       
+                                    <div class="tab-content mt-2 m-4" id="pills-tabContent">
+                                        <!--assignment tab start-->
+                                        <div class="tab-pane fade show" id="tab-assignment" role="tabpanel">
                                             <div class="col-md-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Title:</label>
-                                                    <input name="title" id="title" type="text" class="form-control" placeholder="Lesson title..." value="${lesson.title}">
+                                                    <label class="form-label">Due date:</label>
+                                                    <input name="due-date" id="due-date" type="date" class="form-control" placeholder="">
                                                 </div>
                                             </div><!--end col-->
-
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Lesson Type:</label>
-                                                    <div class="d-flex ms-4">
-                                                        <div class="form-check pe-4">
-                                                            <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2 type-video" value="Video" checked ${lesson.type eq 'Video' ? 'checked' : ''} onchange="switchLessonType()">
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Video
-                                                            </label>
-                                                        </div>
-
-                                                        <div class="form-check pe-4">
-                                                            <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2 type-quiz" value="Quiz" ${lesson.type eq 'Quiz' ? 'checked' : ''} onchange="switchLessonType()">
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Quiz
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check pe-4">
-                                                            <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2 type-assignment" value="Quiz" ${lesson.type eq 'Assigment' ? 'checked' : ''} onchange="switchLessonType()">
-                                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                                Assignment
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div><!--end col-->                                           
-                                        </div><!--end row-->
-
-                                        <div class="tab-content mt-2 m-4" id="pills-tabContent">
-                                            <!--assignment tab start-->
-                                            <div class="tab-pane fade show" id="tab-assignment" role="tabpanel">
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Title:</label>
-                                                        <input name="video" id="video" type="text" class="form-control" placeholder="" value="${lesson.video_link}">
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Description:</label>
-                                                        <textarea name="description" id="description" class="form-control" placeholder="Description" rows="5">${lesson.description}</textarea>
-                                                    </div>
-                                                </div><!--end col-->
-                                            </div>
-                                            <!--assignment tab end-->
-                                            <!--video tab start-->
-                                            <div class="tab-pane fade show active" id="tab-video" role="tabpanel">
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Video link:</label>
-                                                        <input name="video" id="video" type="text" class="form-control" placeholder="https://www.youtube.com/..." value="${lesson.video_link}">
-                                                    </div>
-                                                </div><!--end col-->
-
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Description:</label>
-                                                        <textarea name="description" id="description" class="form-control" placeholder="Description" rows="5">${lesson.description}</textarea>
-                                                    </div>
-                                                </div><!--end col-->
-                                            </div>
-                                            <!--video tab end-->
-
-                                            <!--quiz tab start-->
-                                            <div class="tab-pane fade show" id="tab-quiz" role="tabpanel">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Parent Quiz:</label>
-                                                            <select name="quiz" id="quiz" class="form-control department-name select2input bg-white">
-
-                                                            </select>
-                                                        </div>
-                                                    </div><!--end col-->
-
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Duration:</label>
-                                                            <select name="duration" class="form-control department-name select2input bg-white">
-                                                                <option value="90" ${lesson.duration == 90 ? 'selected' : ''}>90 mins</option>
-                                                                <option value="60" ${lesson.duration == 60 ? 'selected' : ''}>60 mins</option>
-                                                                <option value="45" ${lesson.duration == 45 ? 'selected' : ''}>45 mins</option>
-                                                                <option value="30" ${lesson.duration == 30 ? 'selected' : ''}>30 mins</option>
-                                                                <option value="15" ${lesson.duration == 15 ? 'selected' : ''}>15 mins</option>
-                                                            </select>
-                                                        </div>
-                                                    </div><!--end col-->
-
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Value to Pass:</label>
-                                                            <input name="pass-val" id="pass-val" type="number" class="form-control" value="${lesson.passValue}">
-                                                        </div>
-                                                    </div><!--end col-->
-
-                                                    <div class="col-md-6">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Max. Attempt:</label>
-                                                            <input name="max-attempt" id="max-attempt" type="number" class="form-control" value="${lesson.maxAttempt}">
-                                                        </div>
-                                                    </div><!--end col-->
-                                                </div>
-                                            </div>
-                                            <!--quiz tab end-->
                                         </div>
+                                        <!--assignment tab end-->
+                                        <!--video tab start-->
+                                        <div class="tab-pane fade show active" id="tab-video" role="tabpanel">
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Video link:</label>
+                                                    <input name="video" id="video" type="text" class="form-control" placeholder="https://www.youtube.com/..." value="${lesson.video_link}">
+                                                </div>
+                                            </div><!--end col-->
+                                        </div>
+                                        <!--video tab end-->
 
-                                        <div id="error-mess" style="color: red">${error}</div>
+                                        <!--quiz tab start-->
+                                        <div class="tab-pane fade show" id="tab-quiz" role="tabpanel">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Parent Quiz:</label>
+                                                        <select name="quiz" id="quiz" class="form-control department-name select2input bg-white">
 
-                                        <button type="submit" id="submit-btn" class="btn btn-primary mt-4">${param.action eq 'add' ? 'Add' : 'Save'}</button>
-                                    </form>
-                                </div>
+                                                        </select>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Duration:</label>
+                                                        <select name="duration" class="form-control department-name select2input bg-white">
+                                                            <option value="90" ${lesson.duration == 90 ? 'selected' : ''}>90 mins</option>
+                                                            <option value="60" ${lesson.duration == 60 ? 'selected' : ''}>60 mins</option>
+                                                            <option value="45" ${lesson.duration == 45 ? 'selected' : ''}>45 mins</option>
+                                                            <option value="30" ${lesson.duration == 30 ? 'selected' : ''}>30 mins</option>
+                                                            <option value="15" ${lesson.duration == 15 ? 'selected' : ''}>15 mins</option>
+                                                        </select>
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Value to Pass:</label>
+                                                        <input name="pass-val" id="pass-val" type="number" class="form-control" value="${lesson.passValue}">
+                                                    </div>
+                                                </div><!--end col-->
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Max. Attempt:</label>
+                                                        <input name="max-attempt" id="max-attempt" type="number" class="form-control" value="${lesson.maxAttempt}">
+                                                    </div>
+                                                </div><!--end col-->
+                                            </div>
+                                        </div>
+                                        <!--quiz tab end-->
+                                    </div>
+
+                                    <div id="error-mess" style="color: red">${error}</div>
+
+                                    <button type="submit" id="submit-btn" class="btn btn-primary mt-4">${param.action eq 'add' ? 'Add' : 'Save'}</button>
+                                </form>
                             </div><!--end col-->
                         </div><!--end row-->
 
@@ -153,37 +147,12 @@
     </div>
 </div>
 <script>
-    let subid = document.getElementById('subject').value;
+    let subid = ${param.subject};
     updateDatas(subid);
     switchLessonType();
 
     function updateDatas(sid) {
-        updateListChapters(sid);
         updateListQuizzes(sid);
-    }
-
-    function updateListChapters(sid) {
-        let chapterSelect = document.getElementById('chapter');
-
-        chapterSelect.innerHTML = "";
-
-        fetch('getDatas?table=chapter&subject=' + sid)
-                .then(response => {
-                    if (response.ok)
-                        return response.json();
-                })
-                .then(data => {
-                    data.forEach(item => {
-                        var option = document.createElement("option");
-                        option.value = item.id;
-                        option.text = item.title;
-                        option.selected = (item.id == ${lesson.chapter.id eq null ? 0 : lesson.chapter.id});
-                        chapterSelect.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.log('Error: ' + error);
-                });
     }
 
     function updateListQuizzes(sid) {
@@ -191,7 +160,7 @@
 
         quizSelect.innerHTML = "";
 
-        fetch('getDatas?table=quiz&subject=' + sid)
+        fetch('/LearningManagement/manager/getDatas?table=quiz&subject=' + sid)
                 .then(response => {
                     if (response.ok)
                         return response.json();
@@ -246,11 +215,13 @@
 
     const title_box = document.getElementById('title');
     const video_check = document.getElementById('flexRadioDefault2 type-video');
+    const quiz_check = document.getElementById('flexRadioDefault2 type-quiz');
     const error_text = document.getElementById('error-mess');
 
     function checkEmpty() {
         let title = title_box.value;
         let video = video_check.checked;
+        let quiz = quiz_check.checked;
 
         if (title.trim() == '') {
             error_text.textContent = "You must input Title!";
@@ -264,7 +235,7 @@
                 error_text.textContent = "You must input video link for lesson!";
                 return false;
             }
-        } else {
+        } else if (quiz) {
             var passVal = document.getElementById("pass-val").value;
             if (passVal.trim() == '') {
                 error_text.textContent = "You must input Value to Pass!";
@@ -276,8 +247,15 @@
                 error_text.textContent = "You must input Max. Attempt!";
                 return false;
             }
-        }
+        } else {
+            let duedate = document.getElementById('due-date').value;
 
+            if (duedate == '') {
+                error_text.textContent = "You must due-date for lesson!";
+                return false;
+            }
+        }
+        
         error_text.textContent = "";
         return true;
     }
