@@ -3,33 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/SignInController.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/trainer/AddTrainee.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/trainee/show-assignment-submited.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/trainee/LessonServlet.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/trainer/success.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/trainer/class-trainee.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/trainer/view-trainee.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/dao/ClassDAO.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/components/sidebar.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/dashboard.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/trainee/ShowAssignmentSubmitedController.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/UserDashboardServlet.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/assignment-detail.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/components/header.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/manager/quizzes.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/trainee/AssignmentDiscussionController.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/manager/QuizzesServlet.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/dao/ShowAssigmentSubmitDAO.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/AssignmentController.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/connection/DBContext.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/dao/TrainerDAO.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/dao/StudentDAO.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/trainee/QuizHandlerServlet.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/web/sign-in.jsp</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/AssignmentDetailController.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/controller/ClassDashboardServlet.java</file>
-            <file>file:/C:/Users/lvhn1/OneDrive/Documents/EduPRO/g5/LearningManagement/src/java/model/Subject.java</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/web/dashboard.jsp</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/src/java/controller/SignInController.java</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/web/manager/modal/modal-add-class.jsp</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/web/trainee/assignment-discussion.jsp</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/web/components/sidebar.jsp</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/web/manager/list-class.jsp</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/web/assignment-detail.jsp</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/web/class-dashboard.jsp</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/src/java/controller/AssignmentDetailController.java</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/src/java/controller/manager/SubjectDetailManagementController.java</file>
+            <file>file:/D:/Code/Presentation/g5/LearningManagement/web/manager/lesson-details.jsp</file>
         </group>
     </open-files>
 </project-private>

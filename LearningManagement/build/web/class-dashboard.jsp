@@ -61,11 +61,11 @@
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button border-0 bg-light h5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                             <div style="margin-right:200px">${chapter.title}</div>
-                                            <a data-bs-toggle="modal"
+                                            <c:if test="${sessionScope.accountCur.role.id == 3}"><a data-bs-toggle="modal"
                                                data-bs-target="#addLessonModal"
                                                href="javascript:void(0"
                                                class="btn btn-primary">Add lesson</a>
-
+                                            </c:if>
                                         </button>
                                     </h2>
 
@@ -146,7 +146,7 @@
             <!--End page-content" -->
         </div>
         <!-- page-wrapper -->
-<%@include file="modal/modal-add-lesson.jsp"%>
+        <%@include file="modal/modal-add-lesson.jsp"%>
         <!-- javascript -->
         <script src="/LearningManagement/assets/js/bootstrap.bundle.min.js"></script>
         <!-- simplebar -->

@@ -99,13 +99,13 @@
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <span class="text-muted me-3">Showing ${(cur - 1) * 8 + 1} - ${(cur * 8) > requestScope.count ? requestScope.count : (cur * 8)} out of ${requestScope.count}</span>
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(1,${requestScope.asmId})" aria-label="Previous">First</a></li>
+                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(1,${requestScope.asmId},${param.classId},${param.subject})" aria-label="Previous">First</a></li>
                                             <c:forEach begin="${cur > 1 ? (cur + 3 > pages ? (pages - 4 < 1 ? 1 : pages - 4) : cur - 1) : 1}" end="${cur > 1 ? (cur + 3 > pages ? pages : cur + 3) : (5 > pages ? pages : 5)}" var="i">
                                             <li class="page-item ${(param.page == i || (i==1 && param.page==null)) ? 'active' : ''}">
-                                                <a class="page-link" href="javascript:jumpTo(${i},${requestScope.asmId})">${i}</a>
+                                                <a class="page-link" href="javascript:jumpTo(${i},${requestScope.asmId},${param.classId},${param.subject})">${i}</a>
                                             </li>
                                         </c:forEach>
-                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(${pages},${requestScope.asmId})" aria-label="Next">Last</a></li>
+                                        <li class="page-item"><a class="page-link" href="javascript:jumpTo(${pages},${requestScope.asmId},${param.classId},${param.subject})" aria-label="Next">Last</a></li>
 
                                     </ul>
                                 </div>
@@ -153,6 +153,8 @@
                                 <ul class="list-unstyled mb-0">
                                     <li class="d-flex" style="display: flex;">
                                         <form action="assignment-submit" method="post">
+                                            <input type="text" hidden="" value="${param.classId}" name="classId"/>
+                                            <input type="text" hidden="" value="${param.subject}" name="subject"/>
                                             <input id="asmId" hidden="" value="" name="asmId"/>
                                             <input id="accId" hidden="" value="" name="accId"/>
                                             <h6 style="font-size: 1rem; margin-right: 0.5rem;">Score:</h6>
@@ -191,8 +193,8 @@
         <script src="assets/js/app.js"></script>
 
         <script>
-                                        function jumpTo(page_num, asmId) {
-                                            location.href = "./assignment-submit?id=" + asmId + "&page=" + Math.floor(page_num);
+                                        function jumpTo(page_num, asmId, subject, classId) {
+                                            location.href = "./assignment-submit?subject="+subject+"&classId="+classId+"&id=" + asmId + "&page=" + Math.floor(page_num);
                                         }
                                         function showUserInfo(fileName, submitterId, asmId, score) {
                                             console.log(fileName);

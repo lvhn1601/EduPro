@@ -38,8 +38,10 @@ public class UploadAsmController extends HttpServlet {
 
         int asmId = Integer.parseInt(request.getParameter("asmId"));
         int accId = Integer.parseInt(request.getParameter("accId"));
+        int classid = Integer.parseInt(request.getParameter("classid"));
+        int subject = Integer.parseInt(request.getParameter("subject"));
         AssignmentSubmit asmSub = classDAO.getAsmSubmitted(asmId, accId);
-        if(asmSub != null){
+        if (asmSub != null) {
             classDAO.deleteSubmit(asmId, accId);
         }
         System.out.println(asmId);
@@ -69,7 +71,7 @@ public class UploadAsmController extends HttpServlet {
         session.setAttribute("fileName", fileName);
 //        String msg = "" + fileName + " File uploaded successfully...";
 //        request.setAttribute("msg", msg);
-        response.sendRedirect("assignment-detail?id=" + asmId);
+        response.sendRedirect("assignment-detail?id=" + asmId + "&subject=" + subject + "&classid=" + classid);
 
     }
 

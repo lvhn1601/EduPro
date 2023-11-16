@@ -73,7 +73,7 @@
                                                                 <a href="assignment-detail?subject=${param.subject}&classid=${classId}&id=${asm.lessonId.id}">${asm.lessonId.title}</a>
                                                             </c:when>
                                                             <c:when test="${sessionScope.accountCur.role.id == 3}">
-                                                                <a href="assignment-submit?id=${asm.lessonId.id}">${asm.lessonId.title}</a>
+                                                                <a href="assignment-submit?subject=${param.subject}&classId=${classId}&id=${asm.lessonId.id}">${asm.lessonId.title}</a>
                                                             </c:when>
                                                         </c:choose>
                                                     </th>

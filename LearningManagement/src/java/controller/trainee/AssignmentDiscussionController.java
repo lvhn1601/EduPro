@@ -6,6 +6,7 @@ package controller.trainee;
 
 import dao.AssignmentDiscussionDAO;
 import dao.ClassDAO;
+import dao.StudentDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,6 +19,7 @@ import java.util.List;
 import model.Account;
 import model.Assignment;
 import model.AssignmentDiscussion;
+import model.Chapter;
 
 /**
  *
@@ -64,10 +66,32 @@ public class AssignmentDiscussionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         ClassDAO classDAO = new ClassDAO();
+        Account acc = (Account) session.getAttribute("accountCur");
         int asmId = Integer.parseInt(request.getParameter("id"));
-    
 
+        StudentDAO sd = new StudentDAO();
+
+        // Data cho Sidebar
+        int sid = Integer.parseInt(request.getParameter("subject"));
+        List<model.Class> listClasses = sd.getClassList(acc.getId(), sid, acc.getRole().getId());
+
+        request.setAttribute("classList", listClasses);
+
+        String cid_raw = request.getParameter("classid");
+
+        int cid = 0;
+        if (cid_raw != null) {
+            cid = Integer.parseInt(cid_raw);
+        } else {
+            cid = listClasses.get(0).getClass_id();
+        }
+        request.setAttribute("classId", cid);
+
+        List<Chapter> listChapters = sd.getChaptersList(sid);
+        request.setAttribute("materials", listChapters);
+        // Het
         Assignment asm = classDAO.getAsmById(asmId);
         System.out.println(asm);
         List<AssignmentDiscussion> listAssignmentDiscussion = new AssignmentDiscussionDAO().getAllAssignmentDiscussionByLessonId(asmId);
@@ -88,7 +112,8 @@ public class AssignmentDiscussionController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-
+        int classid = Integer.parseInt(request.getParameter("classid"));
+        int subject = Integer.parseInt(request.getParameter("subject"));
         int accountId = Integer.parseInt(request.getParameter("accountId"));
         int lessonId = Integer.parseInt(request.getParameter("lessonId"));
         String commentValue = request.getParameter("commentValue");
@@ -103,7 +128,7 @@ public class AssignmentDiscussionController extends HttpServlet {
 
         session.setAttribute("listAssignmentDiscussion", listAssignmentDiscussion);
 
-        response.sendRedirect("assignment-discussion?id=" + lessonId);
+        response.sendRedirect("assignment-discussion?id=" + lessonId + "&subject=" + subject + "&classid=" + classid);
     }
 
     /**
