@@ -62,14 +62,14 @@
                                             <div class="col-md-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Subject Name</label>
-                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Subject Name :" value="${subject.name}">
+                                                    <input name="name" id="name" type="text" class="form-control" placeholder="Subject Name :" value="${subject.name}" required="">
                                                 </div>
                                             </div><!--end col-->
             
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">Subject Code</label>
-                                                    <input name="code" id="code" type="text" class="form-control" placeholder="Subject Code :" value="${subject.code}">
+                                                    <input name="code" id="code" type="text" class="form-control" placeholder="Subject Code :" value="${subject.code}" required="">
                                                 </div>
                                             </div><!--end col-->
             

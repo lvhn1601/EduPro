@@ -148,6 +148,7 @@ public class SubjectDetailManagementController extends HttpServlet {
                         .type(request.getParameter("title"))
                         .name(request.getParameter("name"))
                         .description(request.getParameter("description"))
+                        .status("active".equals(request.getParameter("status")))
                         .build();
                 managerDAO.addDimension(dimensionAdd, accountCur.getId(), subjectId);
                 response.sendRedirect("subject-detail-management?id=" + subjectId + "&addType=" + "dimension");

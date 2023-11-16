@@ -31,16 +31,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
     </head>
     <body>
-        <!-- Loader -->
-        <div id="preloader">
-            <div id="status">
-                <div class="spinner">
-                    <div class="double-bounce1"></div>
-                    <div class="double-bounce2"></div>
-                </div>
-            </div>
-        </div>
-        <!-- Loader -->
+        
 
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="../components/sidebar.jsp"/>
@@ -93,15 +84,6 @@
                                                         <c:forEach items="${chapters}" var="c">
                                                             <option value="${c.id}">${c.title}</option>
                                                         </c:forEach>
-                                                    </select>
-                                                </div>
-                                            </div><!--end col-->
-                                            
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Lesson:</label>
-                                                    <select name="lesson" id="lesson" class="form-control department-name select2input bg-white" ${param.action eq 'update' ? 'disabled' : ''}>
-                                                        <option value="0">Lesson 1</option>
                                                     </select>
                                                 </div>
                                             </div><!--end col-->
@@ -250,8 +232,8 @@
             async function updateDatas(sid) {
                 await updateListChapters(sid);
                 updateListDimensions(sid);
-                let cid = document.getElementById('chapter').value;
-                updateListLessons(cid);
+                //let cid = document.getElementById('chapter').value;
+                //updateListLessons(cid);
             }
             
             async function updateListChapters(sid) {

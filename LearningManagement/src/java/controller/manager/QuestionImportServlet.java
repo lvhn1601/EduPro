@@ -95,7 +95,7 @@ public class QuestionImportServlet extends HttpServlet {
         boolean status = true;
         int subject = Integer.parseInt(request.getParameter("subject"));
         int chapter = Integer.parseInt(request.getParameter("chapter"));
-        int lesson = Integer.parseInt(request.getParameter("lesson"));
+//        int lesson = Integer.parseInt(request.getParameter("lesson"));
         int dimension = Integer.parseInt(request.getParameter("dimension"));
 
         // Get the file upload part
@@ -138,7 +138,7 @@ public class QuestionImportServlet extends HttpServlet {
                     break;
                 }
             } 
-            db.addQuestion(subject, chapter, lesson, detail, status, acc.getId());
+            db.addQuestion(subject, chapter, 0, detail, status, acc.getId());
             int questionId = db.getTopQuestionId();
             db.addQuestionDimension(questionId, dimension);
             for(int i=0; i<adetails.length; i++) {

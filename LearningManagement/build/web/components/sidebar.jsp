@@ -7,7 +7,7 @@
 
         <ul class="sidebar-menu pt-3">
             <c:if test="${sessionScope.accountCur.role.id eq 1}">
-                <li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+                <!--<li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>-->
                 <li><a href="/LearningManagement/admin/users"><i class="uil uil-user me-2 d-inline-block"></i>Users</a></li>
                 <li><a href="/LearningManagement/admin/subjects"><i class="uil uil-file me-2 d-inline-block"></i>Subjects</a></li>
 
