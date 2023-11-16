@@ -258,7 +258,7 @@
                     
                     <div class="modal-body col-12">
                         <div class="card border-0 rounded-0 p-4 pt-0">
-                            <form class="tab-content mt-2" id="quizForm" action="quizzes?action=updateQuiz" method="post">
+                            <form class="tab-content mt-2" id="quizForm" action="quizzes?action=updateQuiz" method="post" onsubmit="return false;">
                                 <div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="general-tab">
                                     <div class="row align-items-center">
                                         <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
@@ -374,6 +374,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">Total number of questions</label>
                                                         <input name="totalNum" id="totalNum" type="number" class="form-control" placeholder="Number of question..." required="">
+                                                        <p class="text-danger small" id="totalNumError"></p>
                                                     </div>
                                                 </div><!--end col-->
                                                 
@@ -415,6 +416,10 @@
                                         </div>
                                         
                                         <div class="tab-pane fade show" id="tab-fixed" role="tabpanel">
+                                            <div class="d-flex justify-content-end align-items-center mb-3">
+                                                <label class="form-label pe-2">Number of Questions:</label>
+                                                <input class="form-control" style="width: 15%" id="questionCounter" type="number" readonly value="0"/>
+                                            </div>
                                             
                                             <div class="table-responsive shadow rounded">
                                                 <table class="table table-center bg-white mb-0">
@@ -453,7 +458,7 @@
                     </div><!--end col-->
                     
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-primary" onclick="document.getElementById('quizForm').submit()">Save</button>
+                        <button type="submit" class="btn btn-primary" form="quizForm">Save</button>
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
                     </div>
                 </div>
@@ -564,6 +569,37 @@
         
 
         <script>
+            let quesContain = document.getElementById('quiz-question-container');
+            let quesCounter = document.getElementById('questionCounter');
+            
+            function countQuestions() {
+                const rowCount = quesContain.getElementsByTagName('tr').length;
+                quesCounter.value = rowCount;
+            }
+            
+            function countQuestionConfig() {
+                let sum = 0;
+                let quesNums = document.querySelectorAll('#numOfQues');
+                
+                quesNums.forEach(function(quesNum) {
+                    sum += parseInt(quesNum.value) || 0;
+                });
+                
+                return sum;
+            }
+            
+            document.getElementById('quizForm').addEventListener('submit', function (event) {
+                const sum = countQuestionConfig();
+                const total = parseInt(document.getElementById('totalNum').value);
+
+                if (sum != total) {
+                    document.getElementById('totalNumError').innerHTML = "Invalid total number of questions";
+                    event.preventDefault(); // Prevent form submission
+                } else {
+                    this.submit();
+                }
+            });
+            
             //$('#quizzes-table').dataTable();
             let fContainer = document.getElementById('filter-container');
             let table = new DataTable('#quizzes-table', {
@@ -867,6 +903,7 @@
         
                 const container = document.getElementById((type ? 'dimension' : 'chapter') + '-container');
                 container.appendChild(newRow);
+                countQuestionConfig();
             }
             
             function setConfig(type, dimension, chapter, num_of_ques) {
@@ -935,6 +972,7 @@
                 `;
                 
                 container.appendChild(newRow);
+                countQuestions();
             }
             
             function statusLabel(checkbox) {
