@@ -160,69 +160,69 @@
                                             <h6>DUE DATE:  ${asm.dueDate}</h6>
                                         </section>
                                         <div class="mg-b-30"><hr class="MuiDivider-root MuiDivider-fullWidth css-39bbo6"></div>
-                                        <div id="submit">
-                                            <div class="mg-b-30">
-                                                <div class="mg-b-10 table-responsive shadow rounded">
-                                                    <div style="margin-top: 5px">
-                                                        <span style="margin: 10px"  title="SUBMISSION STATUS" value="SUBMISSION STATUS" class="top text-lightbold">SUBMISSION STATUS</span>
-                                                    </div>
-                                                    <div style="margin-top: 5px">
-                                                        <span style="margin: 10px" title="${requestScope.msg}" value="${requestScope.msg}" 
-                                                              <c:choose>
-                                                                  <c:when test="${requestScope.msg == 'Late'}">
-                                                                      class="red"
-                                                                  </c:when>
-                                                                  <c:when test="${requestScope.msg == 'Submitted'}">
-                                                                      class="green"
-                                                                  </c:when>
-                                                                  <c:when test="${requestScope.msg == 'Missing'}">
-                                                                      class="yellow"
-                                                                  </c:when>
-                                                                  <c:otherwise>
-                                                                      class="black"
-                                                                  </c:otherwise>
-                                                              </c:choose>
-                                                              >
-                                                            ${requestScope.msg}
-                                                        </span>
-                                                    </div>
-
-                                                </div>
-                                                <div class="mg-b-10 table-responsive shadow rounded">
-                                                    <div style="margin-top: 5px">
-                                                        <span style="margin: 10px" title="SUBMISSION TIME" value="SUBMISSION TIME" class="top text-lightbold">SUBMISSION TIME</span>
-                                                    </div>
-                                                    <div style="margin-top: 5px">
-                                                        <span style="margin: 10px" title="2023-11-02 21:00:44 (GMT+07)" value="2023-11-02 21:00:44 (GMT+07)">${asmSub.submitTime}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="mg-b-10 table-responsive shadow rounded">
-                                                    <div style="margin-top: 5px">
-                                                        <span style="margin: 10px" title="LINK/FILE ASSIGNMENT" value="LINK/FILE ASSIGNMENT" class="top text-lightbold">LINK/FILE ASSIGNMENT</span>
-                                                    </div>
-                                                    <c:if test="${not empty asmSub}">
-                                                        <div>
-                                                            <button style="margin: 10px" class="btn btn-primary"><a href="download-asm?fileName=${asmSub.submitUrl.substring(10)}" style="color: white;">GET MY FILE</a></button>
+                                            <c:if test="${sessionScope.accountCur.role.id == 4}">
+                                            <div id="submit">
+                                                <div class="mg-b-30">
+                                                    <div class="mg-b-10 table-responsive shadow rounded">
+                                                        <div style="margin-top: 5px">
+                                                            <span style="margin: 10px"  title="SUBMISSION STATUS" value="SUBMISSION STATUS" class="top text-lightbold">SUBMISSION STATUS</span>
                                                         </div>
-                                                    </c:if>
+                                                        <div style="margin-top: 5px">
+                                                            <span style="margin: 10px" title="${requestScope.msg}" value="${requestScope.msg}" 
+                                                                  <c:choose>
+                                                                      <c:when test="${requestScope.msg == 'Late'}">
+                                                                          class="red"
+                                                                      </c:when>
+                                                                      <c:when test="${requestScope.msg == 'Submitted'}">
+                                                                          class="green"
+                                                                      </c:when>
+                                                                      <c:when test="${requestScope.msg == 'Missing'}">
+                                                                          class="yellow"
+                                                                      </c:when>
+                                                                      <c:otherwise>
+                                                                          class="black"
+                                                                      </c:otherwise>
+                                                                  </c:choose>
+                                                                  >
+                                                                ${requestScope.msg}
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="mg-b-10 table-responsive shadow rounded">
+                                                        <div style="margin-top: 5px">
+                                                            <span style="margin: 10px" title="SUBMISSION TIME" value="SUBMISSION TIME" class="top text-lightbold">SUBMISSION TIME</span>
+                                                        </div>
+                                                        <div style="margin-top: 5px">
+                                                            <span style="margin: 10px" title="2023-11-02 21:00:44 (GMT+07)" value="2023-11-02 21:00:44 (GMT+07)">${asmSub.submitTime}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mg-b-10 table-responsive shadow rounded">
+                                                        <div style="margin-top: 5px">
+                                                            <span style="margin: 10px" title="LINK/FILE ASSIGNMENT" value="LINK/FILE ASSIGNMENT" class="top text-lightbold">LINK/FILE ASSIGNMENT</span>
+                                                        </div>
+                                                        <c:if test="${not empty asmSub}">
+                                                            <div>
+                                                                <button style="margin: 10px" class="btn btn-primary"><a href="download-asm?fileName=${asmSub.submitUrl.substring(10)}" style="color: white;">GET MY FILE</a></button>
+                                                            </div>
+                                                        </c:if>
+                                                    </div>
                                                 </div>
+                                                <c:if test="${empty asmSub}">
+                                                    <button style="margin: 16px 10px 0px 0px" type="button" class="btn btn-primary" onclick="openModal()">SUBMIT ASSIGNMENT</button>
+                                                </c:if>
+
+                                                <c:if test="${not empty asmSub}">
+                                                    <button style="margin: 16px 10px 0px 0px" type="button" class="btn btn-primary" onclick="openModal()">RESUBMIT</button>
+                                                </c:if>
                                             </div>
-                                            <c:if test="${empty asmSub}">
-                                                <button style="margin: 16px 10px 0px 0px" type="button" class="btn btn-primary" onclick="openModal()">SUBMIT ASSIGNMENT</button>
-                                            </c:if>
-
-                                            <c:if test="${not empty asmSub}">
-                                                <button style="margin: 16px 10px 0px 0px" type="button" class="btn btn-primary" onclick="openModal()">RESUBMIT</button>
-                                            </c:if>
-                                            
-                                        </div>
-
+                                        </c:if>
                                     </main>
                                 </div>
                             </div>
                         </div><!--end row-->
-<!--                        <button onclick="showToast()">Hiển thị Toast</button>
-                        <div id="toast" class="hidden">Nội dung toast ở đây</div>-->
+                        <!--                        <button onclick="showToast()">Hiển thị Toast</button>
+                                                <div id="toast" class="hidden">Nội dung toast ở đây</div>-->
 
                     </div>
                 </div><!--end container-->

@@ -60,14 +60,20 @@
                                 <div class="accordion-item border shadow rounded">
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button border-0 bg-light h5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            ${chapter.title}
+                                            <div style="margin-right:200px">${chapter.title}</div>
+                                            <a data-bs-toggle="modal"
+                                               data-bs-target="#addLessonModal"
+                                               href="javascript:void(0"
+                                               class="btn btn-primary">Add lesson</a>
+
                                         </button>
                                     </h2>
+
                                     <div id="collapseOne" class="accordion-collapse border-0 collapse show pb-4" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body text-muted">
                                             ${chapter.description}
                                         </div>
-                                        
+
                                         <div class="m-3">
                                             <ul class="list-group-flush">
                                                 <c:forEach items="${lessons}" var="l">
@@ -80,7 +86,7 @@
                                                             </div>
                                                         </a>
                                                     </c:if>
-                                                    
+
                                                     <c:if test="${l.type eq 'Quiz'}">
                                                         <a class="d-flex list-group-item border-0" href="/LearningManagement/lesson?subject=${param.subject}&classid=${classId}&id=${l.id}">
                                                             <i class="uil uil-question-circle me-2" style="font-size: 22px"></i>
@@ -90,7 +96,7 @@
                                                             </div>
                                                         </a>
                                                     </c:if>
-                                                    
+
                                                     <c:if test="${l.type eq 'Assignment'}">
                                                         <a class="d-flex list-group-item border-0" href="/LearningManagement/assignment-detail?subject=${param.subject}&classid=${classId}&id=${l.id}">
                                                             <i class="uil uil-file-question-alt me-2" style="font-size: 22px"></i>
@@ -106,7 +112,7 @@
                                     </div>
                                 </div>
                             </div><!--end col-->
-                            
+
                             <div class="col-lg-4 mt-4">
                                 <div class="card shadow rounded border-0 py-3">
                                     <div class="m-3">
@@ -140,7 +146,7 @@
             <!--End page-content" -->
         </div>
         <!-- page-wrapper -->
-
+<%@include file="modal/modal-add-lesson.jsp"%>
         <!-- javascript -->
         <script src="/LearningManagement/assets/js/bootstrap.bundle.min.js"></script>
         <!-- simplebar -->
