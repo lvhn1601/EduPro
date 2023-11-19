@@ -66,7 +66,7 @@
                 <li><a href="/LearningManagement/dashboard"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                     <c:if test="${classList != null}">
                     <div class="mb-0 position-relative w-75 ms-4">
-                        <select class="form-control bg-white rounded-md">
+                        <select class="form-control bg-white rounded-md" onchange="changeClass(this.value)">
                             <c:forEach items="${classList}" var="c">
                                 <option value="${c.class_id}" ${c.class_id == classId ? 'selected' : ''}>${c.class_name}</option>
                             </c:forEach>

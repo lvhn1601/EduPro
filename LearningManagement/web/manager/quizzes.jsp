@@ -258,7 +258,7 @@
                     
                     <div class="modal-body col-12">
                         <div class="card border-0 rounded-0 p-4 pt-0">
-                            <form class="tab-content mt-2" id="quizForm" action="quizzes?action=updateQuiz" method="post" onsubmit="return false;">
+                            <form class="tab-content mt-2" id="quizForm" action="quizzes?action=updateQuiz" method="post">
                                 <div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="general-tab">
                                     <div class="row align-items-center">
                                         <div class="col-md-8 text-center text-md-start mt-4 mt-sm-0">
@@ -588,17 +588,17 @@
                 return sum;
             }
             
-            document.getElementById('quizForm').addEventListener('submit', function (event) {
-                const sum = countQuestionConfig();
-                const total = parseInt(document.getElementById('totalNum').value);
-
-                if (sum != total) {
-                    document.getElementById('totalNumError').innerHTML = "Invalid total number of questions";
-                    event.preventDefault(); // Prevent form submission
-                } else {
-                    this.submit();
-                }
-            });
+//            document.getElementById('quizForm').addEventListener('submit', function (event) {
+//                const sum = countQuestionConfig();
+//                const total = parseInt(document.getElementById('totalNum').value);
+//
+//                if (sum != total) {
+//                    document.getElementById('totalNumError').innerHTML = "Invalid total number of questions";
+//                    event.preventDefault(); // Prevent form submission
+//                } else {
+//                    this.submit();
+//                }
+//            });
             
             //$('#quizzes-table').dataTable();
             let fContainer = document.getElementById('filter-container');

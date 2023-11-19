@@ -60,7 +60,7 @@
 
 
 
-                                <div class="file btn btn-lg btn-primary">  
+                                <div class="file btn btn-primary">  
                                     <a class="profile-edit-btn"
                                        data-bs-toggle="modal"
                                        data-bs-target="#changeAvatarModal"
@@ -112,31 +112,7 @@
                                             aria-selected="true"
                                             >About</a
                                         >
-                                    </li>
-                                    <li class="nav-item">
-                                        <a
-                                            class="nav-link"
-                                            id="class-join-tab"
-                                            data-bs-toggle="tab"
-                                            href="#class-join"
-                                            role="tab"
-                                            aria-controls="address"
-                                            aria-selected="false"
-                                            >Class join</a
-                                        >
-                                    </li>
-                                    <li class="nav-item">
-                                        <a
-                                            class="nav-link"
-                                            id="my-certificate-tab"
-                                            data-bs-toggle="tab"
-                                            href="#my-certificate"
-                                            role="tab"
-                                            aria-controls="delivering"
-                                            aria-selected="false"
-                                            >My certificate</a
-                                        >
-                                    </li>
+                                    </li>                                
                                 </ul>
                             </div>
                         </div>
@@ -195,7 +171,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label><i class="fa-solid fa-lock icon"></i> Pass Word</label>
+                                            <label><i class="fa-solid fa-lock icon"></i> Password</label>
                                         </div>
                                         <div class="col-md-6">
                                             <p>
@@ -210,70 +186,7 @@
                                     </div>
                                 </div> 
                                 <!---------------- END TAB ABOUT------------->
-                                <!----------------START TAB CLASS JOIN------------->
-                                <div
-                                    class="tab-pane fade"
-                                    id="class-join"
-                                    role="tabpanel"
-                                    aria-labelledby="class-join-tab"
-                                    >
-                                    <table class="table shadow table-hover table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">No</th>
-                                                <th scope="col">Class</th>
-                                                <th scope="col">Lecturers</th>
-                                                <th scope="col">Number of students</th>
-                                                <th scope="col">Semester</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${requestScope.lstClass}" var="o" varStatus="i">
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>    
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <!----------------END TAB CLASS JOIN------------->
-                                <!------------------START TAB MY CERTIFICATE----------------------->
-
-                                <div
-                                    class="tab-pane fade"
-                                    id="my-certificate"
-                                    role="tabpanel"
-                                    aria-labelledby="my-certificate-tab"
-                                    >
-                                    <table class="table shadow table-hover table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">No</th>
-                                                <th scope="col">Name Lesson</th>
-                                                <th scope="col">Started Date</th>
-                                                <th scope="col">Done Date</th>
-                                                <th scope="col">View</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${requestScope.lstNewOrder}" var="o" varStatus="i">
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
+                               
                                 <!------------------END  MY CERTIFICATE----------------------->
                             </div>
                         </div>

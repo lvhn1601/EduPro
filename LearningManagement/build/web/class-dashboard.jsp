@@ -35,7 +35,6 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet"/>
     </head>
     <body>
-
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="components/sidebar.jsp"/>
 
@@ -144,7 +143,7 @@
                                             <h5 class="text-dark h5">${classData.class_name}</h5>
                                             <p class="text-dark small"><i class="uil uil-meeting-board" style="font-size: 18px"></i> Trainer: ${classData.class_trainer_name}</p>
                                             <p class="text-dark">Start date: ${classData.class_start}</p>
-                                            <p class="text-success">End date: ${classData.class_end} (Class working)</p>
+                                            <p class="text-${classData.class_status ? 'success' : 'danger'}">End date: ${classData.class_end} (Class ${classData.class_status ? 'Working' : 'Ended'})</p>
                                         </div>
                                     </div>
                                 </div>

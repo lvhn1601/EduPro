@@ -53,6 +53,55 @@
             border-color: red;
             background-color: rgba(255, 0, 4, 0.5);
         }
+        form {
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .form-heading {
+            color: #06BBCC;
+        }
+
+        .form-subtext {
+            color: #06BBCC;
+        }
+
+        .form-input {
+            background: #ffffff;
+            color: #000;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+
+        #recaptcha-container {
+            /* Add your styles for recaptcha container */
+        }
+
+        button {
+            background-color: #06BBCC;
+            color: #ffffff;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .form-message {
+            margin-top: 10px;
+            padding: 8px;
+        }
+
+        .success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .error {
+            background-color: #f44336;
+            color: white;
+        }
     </style>
 
     <body>
@@ -105,7 +154,7 @@
                             if (number.charAt(0) === '0') {
                                 number = '+84' + number.substr(1);
                             }
-                            var phoneList = <%= request.getAttribute("jsonList") %>; 
+                            var phoneList = <%= request.getAttribute("jsonList") %>;
                             console.log(phoneList)
                             console.log(number)
                             var isPhoneNumberValid = checkPhoneNumberInList(number, phoneList);

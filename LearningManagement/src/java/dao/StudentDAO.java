@@ -208,7 +208,7 @@ public class StudentDAO extends DBContext {
     }
 
     public Class getClassWithId(int classId) {
-        String sql = "select class_id, class_name, class_start, class_end, account_name from class\n"
+        String sql = "select class_id, class_name, class_start, class_end, account_name, class_end >= curdate() as status from class\n"
                 + "join account on class_trainer_id = account_id \n"
                 + "where class_id = ?";
 
@@ -224,6 +224,7 @@ public class StudentDAO extends DBContext {
                         .class_trainer_name(rs.getString("account_name"))
                         .class_start(rs.getDate("class_start"))
                         .class_end(rs.getDate("class_end"))
+                        .class_status(rs.getBoolean("status"))
                         .build();
             }
         } catch (SQLException e) {

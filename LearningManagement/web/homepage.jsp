@@ -55,12 +55,7 @@
                                             <p class="fs-5 text-white mb-4 pb-2">
                                                 The website serves the convenience needs of Lecturers and
                                                 Students
-                                            </p>
-                                            <a
-                                                href="#class"
-                                                class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft"
-                                                >Hire class</a
-                                            >
+                                            </p>                                          
                                         </div>
                                     </div>
                                 </div>
@@ -87,11 +82,7 @@
                                                 Learnning knowledge whether you are at school or anywhere
                                                 else
                                             </p>
-                                            <a
-                                                href="#lesson"
-                                                class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft"
-                                                >Hire lesson</a
-                                            >
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +103,7 @@
                                         <h5 class="mb-3">Skilled Lecturers</h5>
                                         <p>
                                             All are teachers with 10 years or more experience, lecturers,
-                                            masters, and doctors from prestigious universities across the
+                                            masters from prestigious universities across the
                                             country.
                                         </p>
                                     </div>
@@ -161,199 +152,9 @@
                     </div>
                 </div>
                 <!-- Service End -->
+         
 
-                <!-- Lesson Start -->
-                <div id="lesson" class="container-xxl py-5 category">
-                    <div class="container">
-                        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                            <h6 class="section-title bg-white text-center text-primary px-3">
-                                Lesson
-                            </h6>
-                            <h1 class="mb-5">Subject Lesson</h1>
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.3s">
-                                <a class="position-relative d-block overflow-hidden" href="">
-                                    <img
-                                        class="img-fluid"
-                                        src="assets/img/MAE101.ee704482946a2485d1e5.png"
-                                        alt=""
-                                        />
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.3s">
-                                <a class="position-relative d-block overflow-hidden" href="">
-                                    <img
-                                        class="img-fluid"
-                                        src="assets/img/NWC203c.6ecd3d55eee2cb73258a.png"
-                                        alt=""
-                                        />
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.3s">
-                                <a class="position-relative d-block overflow-hidden" href="">
-                                    <img
-                                        class="img-fluid"
-                                        src="assets/img/SSG104.a516ba469c28c817dfa5.png"
-                                        alt=""
-                                        />
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.3s">
-                                <a class="position-relative d-block overflow-hidden" href="">
-                                    <img
-                                        class="img-fluid"
-                                        src="assets/img/DBI202.bbdf62f3484cdc415fcd.png"
-                                        alt=""
-                                        />
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.3s">
-                                <a class="position-relative d-block overflow-hidden" href="">
-                                    <img
-                                        class="img-fluid"
-                                        src="assets/img/OSG202.7af0e6b0a252d2a5dc5f.png"
-                                        alt=""
-                                        />
-                                </a>
-                            </div>
-                            <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.3s">
-                                <a class="position-relative d-block overflow-hidden" href="">
-                                    <img
-                                        class="img-fluid"
-                                        src="assets/img/CSI104.2184a7868fa678077f03.png"
-                                        alt=""
-                                        />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Lesson End -->
-
-                <!-- Class Start -->
-                <div  id="class" class="container-xxl py-5">
-                    <div class="container">
-                        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                            <h6 class="section-title bg-white text-center text-primary px-3">
-                                Group class
-                            </h6>
-                            <h1 class="mb-5">Class</h1>
-                        </div>
-                        <div class="row g-4 justify-content-center">
-                            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                                <div class="course-item bg-light">
-                                    <div class="position-relative overflow-hidden">
-                                        <img
-                                            class="img-fluid"
-                                            src="assets/img/CEA201.726e8249a187ad5531b6.png"
-                                            alt=""
-                                            />
-                                        <div
-                                            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-                                            >
-                                            <a
-                                                href="#"
-                                                class="flex-shrink-0 btn btn-sm btn-primary px-3"
-                                                style="border-radius: 0 30px 30px 0"
-                                                >Join Now</a
-                                            >
-                                        </div>
-                                    </div>
-                                    <div class="text-center p-4 pb-0">
-                                        <h5 class="mb-4">
-                                            Computer Architecture & Computer Organization- SE1741 -
-                                            Fall2023
-                                        </h5>
-                                    </div>
-                                    <div class="d-flex border-top">
-                                        <small class="flex-fill text-center border-end py-2"
-                                               ><i class="fa fa-user-tie text-primary me-2"></i>John
-                                            Doe</small
-                                        >
-                                        <small class="flex-fill text-center py-2"
-                                               ><i class="fa fa-user text-primary me-2"></i>30
-                                            Students</small
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                                <div class="course-item bg-light">
-                                    <div class="position-relative overflow-hidden">
-                                        <img
-                                            class="img-fluid"
-                                            src="assets/img/MAD101.20b9f72d53ca43e48a53.png"
-                                            alt=""
-                                            />
-                                        <div
-                                            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-                                            >
-                                            <a
-                                                href="#"
-                                                class="flex-shrink-0 btn btn-sm btn-primary px-3"
-                                                style="border-radius: 0 30px 30px 0"
-                                                >Join Now</a
-                                            >
-                                        </div>
-                                    </div>
-                                    <div class="text-center p-4 pb-0">
-                                        <h5 class="mb-4">Discrete Mathematics - SE1741 - Fall2023</h5>
-                                    </div>
-                                    <div class="d-flex border-top">
-                                        <small class="flex-fill text-center border-end py-2"
-                                               ><i class="fa fa-user-tie text-primary me-2"></i>John
-                                            Doe</small
-                                        >
-
-                                        <small class="flex-fill text-center py-2"
-                                               ><i class="fa fa-user text-primary me-2"></i>30
-                                            Students</small
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                                <div class="course-item bg-light">
-                                    <div class="position-relative overflow-hidden">
-                                        <img
-                                            class="img-fluid"
-                                            src="assets/img/PRF192.175d27716986ea8c2f05.png"
-                                            alt=""
-                                            />
-                                        <div
-                                            class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4"
-                                            >
-                                            <a
-                                                href="#"
-                                                class="flex-shrink-0 btn btn-sm btn-primary px-3"
-                                                style="border-radius: 0 30px 30px 0"
-                                                >Join Now</a
-                                            >
-                                        </div>
-                                    </div >
-                                    <div class="text-center p-4 pb-0">
-                                        <h5 class="mb-4">
-                                            Programming Fundamentals - SE1741 - Fall2023
-                                        </h5>
-                                    </div>
-                                    <div class="d-flex border-top">
-                                        <small class="flex-fill text-center border-end py-2"
-                                               ><i class="fa fa-user-tie text-primary me-2"></i>John
-                                            Doe</small
-                                        >
-
-                                        <small class="flex-fill text-center py-2"
-                                               ><i class="fa fa-user text-primary me-2"></i>30
-                                            Students</small
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Class End -->
+               
                 <%@include file="components/footer.jsp" %>
                 <!-- Back to Top -->
                 <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"

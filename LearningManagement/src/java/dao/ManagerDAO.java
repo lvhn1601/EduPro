@@ -914,7 +914,7 @@ public class ManagerDAO extends DBContext {
                 + "join subject on chapter_subject_id = subject_id\n"
                 + "join account as creator on lesson.created_by = creator.account_id\n"
                 + "join account as updater on lesson.update_by = updater.account_id\n"
-                + "where subject_manager_id = ?" + (subject_id == 0 ? "" : " and subject_id = " + subject_id) + " and lesson_title like '%" + search + "%'"
+                + "where subject_manager_id = ? and lesson_extra = 0" + (subject_id == 0 ? "" : " and subject_id = " + subject_id) + " and lesson_title like '%" + search + "%'"
                 + "limit 8 offset ?";
 
         List<Lesson> list = new ArrayList<>();
